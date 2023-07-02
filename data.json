@@ -78,20 +78,20 @@
         }
     ],
     "participants": [
-        "o",
+        "c",
         "b",
-        "c"
+        "o"
     ],
     "types": [
         "B",
         "C"
     ],
     "states": [
-        "S3",
-        "S2",
         "N1",
+        "S2",
         "S0",
-        "S1"
+        "S1",
+        "S3"
     ],
     "initialStates": [
         "S0"

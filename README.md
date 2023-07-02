@@ -56,7 +56,7 @@ The FSM description should follow a specific format:
 - Use `participant>` to represent existing participants.
 - Use `>action` to represent the action called in the transition.
 
-Example FSM description:
+## Example FSM description:
 
 ```
 N1 c:C>start(c) S0
@@ -69,4 +69,114 @@ S3 b|b:B>c.makeOffer(p) S1
 
 ```
 For more details, please refer to the [FSM Parser and Visualization documentation](https://github.com/your-username/fsm-parser).
+```
+
+## Generated JSON file for that example 
+
+```
+{
+    "transitions": [
+        {
+            "from": "N1",
+            "to": "S0",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {
+                "c": "C"
+            },
+            "existingParticipants": {},
+            "actionCalled": "start",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S0",
+            "to": "S1",
+            "initialStates": [
+                "S0"
+            ],
+            "finalStates": [],
+            "newParticipants": {
+                "b": "B"
+            },
+            "existingParticipants": {},
+            "actionCalled": "c.makeoffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S1",
+            "to": "S2",
+            "initialStates": [],
+            "finalStates": [
+                "S2"
+            ],
+            "newParticipants": {},
+            "existingParticipants": {
+                "o": ""
+            },
+            "actionCalled": "c.acceptoffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S1",
+            "to": "S3",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {},
+            "existingParticipants": {
+                "o": ""
+            },
+            "actionCalled": "c.rejectoffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S3",
+            "to": "S1",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {
+                "b": "B"
+            },
+            "existingParticipants": {
+                "b": ""
+            },
+            "actionCalled": "c.makeOffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        }
+    ],
+    "participants": [
+        "c",
+        "b",
+        "o"
+    ],
+    "types": [
+        "B",
+        "C"
+    ],
+    "states": [
+        "N1",
+        "S2",
+        "S0",
+        "S1",
+        "S3"
+    ],
+    "initialStates": [
+        "S0"
+    ],
+    "finalStates": [
+        "S2"
+    ],
+    "unreachableStates": [
+        "N1"
+    ]
+}
 ```
