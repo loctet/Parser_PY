@@ -1,5 +1,4 @@
 
-```markdown
 # Finite State Machine (FSM) Parser and Visualization
 
 This project contains a Python implementation to parse a description of a Finite State Machine (FSM) and visualize it as a transition graph.
