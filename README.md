@@ -14,8 +14,8 @@ This project contains a Python implementation to parse a description of a Finite
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/fsm-parser.git
-   cd fsm-parser
+   git clone https://github.com/loctet/Parser_PY
+   cd Parser_PY
    ```
 
 2. Example usage in `main.py`:
