@@ -67,7 +67,7 @@ def draw_fsm_graph(graph):
     # Draw labels
     labels = nx.get_edge_attributes(graph, 'action')
     nx.draw_networkx_labels(graph, pos)
-    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels, horizontalalignment="left", verticalalignment="top")
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
 
     # Prevent edge overlap
     plt.tight_layout()

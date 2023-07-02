@@ -59,12 +59,14 @@ The FSM description should follow a specific format:
 Example FSM description:
 
 ```
-_S0 o:O>action(x) S1
-S1 o>Test(x1) S2+
-S2 b:B>f2() S3
-S3 o>makeOffer(c:B) S1
+N1 c:C>start(c) S0
+_S0 b:B>c.makeoffer(p) S1
+S1 o>c.acceptoffer() S2+
+S1 o>c.rejectoffer() S3
+S3 b|b:B>c.makeOffer(p) S1
 ```
-```
+![alt text](./images/example1.png)
 
+```
 For more details, please refer to the [FSM Parser and Visualization documentation](https://github.com/your-username/fsm-parser).
 ```

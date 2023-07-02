@@ -1,0 +1,5 @@
+N1 c:C>start(c) S0
+_S0 b:B>c.makeoffer(p) S1
+S1 o>c.acceptoffer() S2+
+S1 o>c.rejectoffer() S3
+S3 b|b:B>c.makeOffer(p) S1

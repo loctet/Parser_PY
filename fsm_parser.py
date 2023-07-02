@@ -138,9 +138,8 @@ def parse_transition_line(line):
     return transition
 
 
-def parse_transitions(text):
+def parse_transitions(lines):
     transitions = []
-    lines = text.splitlines()
 
     for line in lines:
         transition = parse_transition_line(line)
@@ -153,9 +152,9 @@ def parse_transitions(text):
     return transitions
 
 
-def generate_fsm_json(text):
+def generate_fsm_json(lines):
     fsm = {}
-    fsm["transitions"] = parse_transitions(text)
+    fsm["transitions"] = parse_transitions(lines)
 
     participants = set()
     types = set()
