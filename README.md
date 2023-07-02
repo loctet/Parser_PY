@@ -191,7 +191,7 @@ The external call is here `S1 o<c.ao() S2+` it will generate the `OK` and `NOK` 
 
 Output will be 
 
-![alt text](./images/example1.png)
+![alt text](./images/example2.png)
 
 ## Data JSON 
 ```
