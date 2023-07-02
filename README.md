@@ -67,10 +67,6 @@ S3 b|b:B>c.makeOffer(p) S1
 ```
 ![alt text](./images/example1.png)
 
-```
-For more details, please refer to the [FSM Parser and Visualization documentation](https://github.com/your-username/fsm-parser).
-```
-
 ## Generated JSON file for that example 
 
 ```
@@ -179,4 +175,166 @@ For more details, please refer to the [FSM Parser and Visualization documentatio
         "N1"
     ]
 }
+```
+
+## Second exemple with external call
+
+```
+N1 c:C>start(c) S0
+_S0 b:B>c.mo(p) S1
+S1 o<c.ao() S2+
+S1 o>c.ro() S3
+S3 b|b:B>c.mo(p) S1
+```
+
+The external call is here `S1 o<c.ao() S2+` it will generate the `OK` and `NOK` externale call 
+
+Output will be 
+
+![alt text](./images/example1.png)
+
+## Data JSON 
+```
+{
+    "transitions": [
+        {
+            "from": "N1",
+            "to": "S0",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {
+                "c": "C"
+            },
+            "existingParticipants": {},
+            "actionCalled": "start",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S0",
+            "to": "S1",
+            "initialStates": [
+                "S0"
+            ],
+            "finalStates": [],
+            "newParticipants": {
+                "b": "B"
+            },
+            "existingParticipants": {},
+            "actionCalled": "c.makeoffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S1",
+            "to": "I1",
+            "initialStates": [],
+            "finalStates": [
+                "S2"
+            ],
+            "newParticipants": {},
+            "existingParticipants": {
+                "o": ""
+            },
+            "actionCalled": "c.acceptoffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": true,
+            "externalActionList": [
+                "I1 c>OK() S2",
+                "I1 c>NOK() S1"
+            ]
+        },
+        {
+            "from": "I1",
+            "to": "S2",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {},
+            "existingParticipants": {
+                "c": ""
+            },
+            "actionCalled": "OK",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "I1",
+            "to": "S1",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {},
+            "existingParticipants": {
+                "c": ""
+            },
+            "actionCalled": "NOK",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S1",
+            "to": "S3",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {},
+            "existingParticipants": {
+                "o": ""
+            },
+            "actionCalled": "c.rejectoffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "S3",
+            "to": "S1",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {
+                "b": "B"
+            },
+            "existingParticipants": {
+                "b": ""
+            },
+            "actionCalled": "c.makeOffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        }
+    ],
+    "participants": [
+        "b",
+        "c",
+        "o"
+    ],
+    "types": [
+        "B",
+        "C"
+    ],
+    "states": [
+        "S0",
+        "S2",
+        "I1",
+        "S3",
+        "N1",
+        "S1"
+    ],
+    "initialStates": [
+        "S0"
+    ],
+    "finalStates": [
+        "S2"
+    ],
+    "unreachableStates": [
+        "N1"
+    ]
+}
+```
+
+```
+For more details, please refer to the [FSM Parser and Visualization documentation](https://github.com/loctet/Parser_PY).
 ```
