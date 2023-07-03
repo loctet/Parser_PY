@@ -334,9 +334,9 @@ Output will be
 }
 ```
 
-```
+
 For more details, please refer to the [FSM Parser and Visualization documentation](https://github.com/loctet/Parser_PY).
-```
+
 
 # Parser file 
 This file will parse expression to check if they are syntaxticaly correct 
