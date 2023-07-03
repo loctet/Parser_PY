@@ -337,3 +337,30 @@ Output will be
 ```
 For more details, please refer to the [FSM Parser and Visualization documentation](https://github.com/loctet/Parser_PY).
 ```
+
+# Parser file 
+This file will parse expression to check if they are syntaxticaly correct 
+
+```
+check_assertion_syntax("b1 ^ b2 ^ e == c")
+check_assertion_syntax("£x.b")
+check_assertion_syntax("b1 == b2")
+check_assertion_syntax("b1 ^ b2 ^ e == c")
+check_assertion_syntax("b1 ^ b2 ^ e == c")
+check_assertion_syntax("b1 ^ b2 ^  ∀x.b")
+check_assertion_syntax("∀x.b ^ £x.b")
+check_assertion_syntax("£x.b")
+check_assertion_syntax("∀x.b")
+check_assertion_syntax("∃b.p")
+check_assertion_syntax("p")
+```
+
+All these expression are correctly written 
+
+while this 
+
+```
+check_assertion_syntax("b1 ^ b2 or not c")
+```
+
+is not 
