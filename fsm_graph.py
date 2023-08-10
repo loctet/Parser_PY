@@ -2,7 +2,6 @@ import json
 import re
 import networkx as nx
 import matplotlib.pyplot as plt
-from fsm_parser import generate_fsm_json
 
 
 def generate_fsm_graph(fsmTextJson):

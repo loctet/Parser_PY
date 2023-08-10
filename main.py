@@ -1,16 +1,20 @@
-from fsm_parser import generate_fsm_json
-from fsm_graph import generate_fsm_graph, draw_fsm_graph
+import json
+from DataTypes.RolesParticipants import RolesParticipants
+from parser_module import Parser, process_transitions
 
-input_path = "./input.txt"
+input_path = "./global_out.json"
 
-with open(input_path) as file:
+with open(input_path, 'r') as file:
     input_text = file.readlines()
 
-fsm = generate_fsm_json(input_text)
-graph = generate_fsm_graph(fsm)
-draw_fsm_graph(graph)
-file_path = "data.json"
+fsm = json.loads(''.join(input_text))
+transitions = fsm['transitions']
 
-# Dump the data into the file
-with open(file_path, "w") as file:
-    file.writelines(fsm)
+role_set = RolesParticipants()
+role_set.add_multiple_elements(fsm['rPAssociation'])
+
+parser = Parser(role_set)
+process_transitions(transitions, parser)
+
+# Test cases
+# ...

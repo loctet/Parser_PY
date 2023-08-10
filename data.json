@@ -32,7 +32,7 @@
         },
         {
             "from": "S1",
-            "to": "S2",
+            "to": "I1",
             "initialStates": [],
             "finalStates": [
                 "S2"
@@ -44,13 +44,47 @@
             "actionCalled": "c.acceptoffer",
             "precondition": "",
             "postcondition": "",
+            "externalAction": true,
+            "externalActionList": [
+                "I1 c>OK() S2",
+                "I1 c>NOK() S1"
+            ]
+        },
+        {
+            "from": "I1",
+            "to": "S2",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {},
+            "existingParticipants": {
+                "c": ""
+            },
+            "actionCalled": "OK",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
+        },
+        {
+            "from": "I1",
+            "to": "S1",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {},
+            "existingParticipants": {
+                "c": ""
+            },
+            "actionCalled": "NOK",
+            "precondition": "",
+            "postcondition": "",
             "externalAction": false
         },
         {
             "from": "S1",
             "to": "S3",
             "initialStates": [],
-            "finalStates": [],
+            "finalStates": [
+                "S3"
+            ],
             "newParticipants": {},
             "existingParticipants": {
                 "o": ""
@@ -75,31 +109,49 @@
             "precondition": "",
             "postcondition": "",
             "externalAction": false
+        },
+        {
+            "from": "S5",
+            "to": "S2",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": {},
+            "existingParticipants": {
+                "o": ""
+            },
+            "actionCalled": "c.acceptoffer",
+            "precondition": "",
+            "postcondition": "",
+            "externalAction": false
         }
     ],
     "participants": [
-        "c",
         "b",
-        "o"
+        "o",
+        "c"
     ],
     "types": [
-        "B",
-        "C"
+        "C",
+        "B"
     ],
     "states": [
-        "N1",
-        "S2",
-        "S0",
+        "I1",
+        "S5",
         "S1",
-        "S3"
+        "S3",
+        "S2",
+        "N1",
+        "S0"
     ],
     "initialStates": [
         "S0"
     ],
     "finalStates": [
+        "S3",
         "S2"
     ],
     "unreachableStates": [
+        "S5",
         "N1"
     ]
 }
