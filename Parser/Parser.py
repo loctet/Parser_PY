@@ -25,18 +25,21 @@ class Parser(object):
     def handle_declaration(self, p):
         self.has_declaration[self.key] = True
         # Return the extracted data
-        if (p[1] != 'adress'):
+        if len(p) <= 3 or (len(p) > 3 and p[3] != ':'):
             self.register_var(p[2], p[1])
-            return p[1], p[2], p[4]
+            return p
         
-        self.tobe_in_existential[self.key].append(p[2] + ' '+ p[4])
-        if not self.participants.is_part_of_subset(p[2], p[4]):
-            self.participants.add_element(p[2], p[4])
+        if (p[1] == 'address') :
+            self.tobe_in_existential[self.key].append(p[2] + ' '+ p[4])
+            if not self.participants.is_part_of_subset(p[2], p[4]):
+                self.participants.add_element(p[2], p[4])
+            else:
+                self.has_error[self.key] = True
+                print(f"Participant '{p[2]}' is already in list '{p[4]}' ")
         else:
             self.has_error[self.key] = True
-            print(f"Participant '{p[2]}' is already in list '{p[4]}' ")
 
-        return p[1], p[2], p[4]
+        return p
 
     # Custom function to handle assignation rule
     def handle_assignation(self, p):
@@ -53,9 +56,8 @@ class Parser(object):
 
     def p_statement(self, p):
         '''statement : declaration
-                    | existential
                     | assertion
-                    | freeze
+                    | assignation
                     | SEMICOLON statement'''
 
     def p_assertion(self, p):
@@ -66,9 +68,9 @@ class Parser(object):
                     | NOT assertion
                     | assertion AND assertion
                     | assertion OR assertion
-                    | FORALL DOT assertion
-                    | FORALL PARTICIPANT DOT assertion
-                    | assignation
+                    | existential
+                    | forall
+                    | freeze
                     '''
         self.handle_assertion(p)
 
@@ -94,14 +96,15 @@ class Parser(object):
         return(p)
     
     def p_declaration(self, p):
-        '''declaration : VTYPE ATOM ASSIGNATION ATOM
+        '''declaration :  VTYPE ATOM
+                    | VTYPE ATOM ASSIGNATION ATOM
                     | VTYPE ATOM ASSIGNATION TRUE
                     | VTYPE ATOM ASSIGNATION FALSE
                     | VTYPE ATOM ASSIGNATION INTEGER
                     | VTYPE ATOM ASSIGNATION STRING
                     | VTYPE ATOM COLON ATOM
         '''
-        variable_type, identifier, expression = self.handle_declaration(p)
+        self.handle_declaration(p)
         return p
 
     def p_assignation(self, p):
@@ -116,7 +119,8 @@ class Parser(object):
 
 
     def p_existential(self, p):
-        '''existential : EXISTS ATOM ATOM'''
+        '''existential : EXISTS ATOM ATOM
+                       | EXISTS ATOM ATOM DOT ATOM'''
         self.has_existential[self.key] = True
         self.has_existentials[self.key][p[2] + ' ' + p[3]] = True
         if not self.participants.is_part_of_subset(p[2], p[3]):
@@ -124,6 +128,11 @@ class Parser(object):
             print(f"Variable '{p[2]}' Not in list '{p[3]}' ")
 
         return p
+
+    def p_forall(self, p):
+        '''forall : FORALL ATOM ATOM'''
+        return p
+
 
     def p_freeze(self, p):
         '''freeze : FREEZE ATOM ATOM'''
@@ -144,8 +153,10 @@ class Parser(object):
             print(f"Variable '{v}' has already been registered.")
             self.has_error[self.key] = True
             return
-        
-        self.registered_variables[v] = t
+        if (t == 'set') : 
+            self.registered_variables[v] = {}
+        else:
+            self.registered_variables[v] = t
         
     # Error handling for syntax errors
     def p_error(self, p):
@@ -170,6 +181,8 @@ class Parser(object):
 
     # Function to check if the assertion is correctly written
     def check_assertion_syntax(self, input_str, key):
+        if (len(input_str) == 0) : 
+            return
         self.input_str = input_str
         self.key = key
         self.reset()

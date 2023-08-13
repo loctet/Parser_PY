@@ -1,7 +1,7 @@
 import ply.lex as lex
 
 class Lexer(object):
-    reserved_words = ['int', 'string', 'array', 'set', 'adress']
+    reserved_words = ['int', 'string', 'array', 'set', 'address']
     # Define tokens
     tokens = [
         'TRUE', 'FALSE', 'ATOM', 'REL_OP',
@@ -26,7 +26,7 @@ class Lexer(object):
     t_ASSIGNATION = r':='
     t_SEMICOLON = r';'
     t_VTYPE = r'' + '|'.join(reserved_words)
-    t_ACCEPTEDCHAR = r'\.|\(|\)'
+    t_ACCEPTEDCHAR = r'\(|\)'
 
     
     # Ignored characters
@@ -38,7 +38,7 @@ class Lexer(object):
         t.lexer.skip(1)
 
     def t_ATOM(self, t):
-        r'(?!(?:int|string|array|set|True|False|adress)\b)[a-zA-Z_][a-zA-Z_0-9]*'
+        r'(?!(?:int|string|array|set|True|False|address)\b)[a-zA-Z_][a-zA-Z_0-9]*'
         return t
     
     def t_STRING(self, t): 

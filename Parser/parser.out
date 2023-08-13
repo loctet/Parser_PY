@@ -12,29 +12,29 @@ Rule 0     S' -> statements
 Rule 1     statements -> statement
 Rule 2     statements -> statements statement
 Rule 3     statement -> declaration
-Rule 4     statement -> existential
-Rule 5     statement -> assertion
-Rule 6     statement -> freeze
-Rule 7     statement -> SEMICOLON statement
-Rule 8     assertion -> ATOM
-Rule 9     assertion -> TRUE
-Rule 10    assertion -> FALSE
-Rule 11    assertion -> expression REL_OP expression
-Rule 12    assertion -> NOT assertion
-Rule 13    assertion -> assertion AND assertion
-Rule 14    assertion -> assertion OR assertion
-Rule 15    assertion -> FORALL DOT assertion
-Rule 16    assertion -> FORALL PARTICIPANT DOT assertion
-Rule 17    assertion -> assignation
-Rule 18    expression -> fixedvalues
-Rule 19    expression -> variablename
-Rule 20    expression -> expression REL_OP expression
-Rule 21    expression -> PARTICIPANT DOT ATOM
-Rule 22    variablename -> ATOM
-Rule 23    fixedvalues -> TRUE
-Rule 24    fixedvalues -> FALSE
-Rule 25    fixedvalues -> INTEGER
-Rule 26    fixedvalues -> STRING
+Rule 4     statement -> assertion
+Rule 5     statement -> assignation
+Rule 6     statement -> SEMICOLON statement
+Rule 7     assertion -> ATOM
+Rule 8     assertion -> TRUE
+Rule 9     assertion -> FALSE
+Rule 10    assertion -> expression REL_OP expression
+Rule 11    assertion -> NOT assertion
+Rule 12    assertion -> assertion AND assertion
+Rule 13    assertion -> assertion OR assertion
+Rule 14    assertion -> existential
+Rule 15    assertion -> forall
+Rule 16    assertion -> freeze
+Rule 17    expression -> fixedvalues
+Rule 18    expression -> variablename
+Rule 19    expression -> expression REL_OP expression
+Rule 20    expression -> PARTICIPANT DOT ATOM
+Rule 21    variablename -> ATOM
+Rule 22    fixedvalues -> TRUE
+Rule 23    fixedvalues -> FALSE
+Rule 24    fixedvalues -> INTEGER
+Rule 25    fixedvalues -> STRING
+Rule 26    declaration -> VTYPE ATOM
 Rule 27    declaration -> VTYPE ATOM ASSIGNATION ATOM
 Rule 28    declaration -> VTYPE ATOM ASSIGNATION TRUE
 Rule 29    declaration -> VTYPE ATOM ASSIGNATION FALSE
@@ -47,45 +47,48 @@ Rule 35    assignation -> ATOM ASSIGNATION FALSE
 Rule 36    assignation -> ATOM ASSIGNATION INTEGER
 Rule 37    assignation -> ATOM ASSIGNATION STRING
 Rule 38    existential -> EXISTS ATOM ATOM
-Rule 39    freeze -> FREEZE ATOM ATOM
+Rule 39    existential -> EXISTS ATOM ATOM DOT ATOM
+Rule 40    forall -> FORALL ATOM ATOM
+Rule 41    freeze -> FREEZE ATOM ATOM
 
 Terminals, with rules where they appear
 
 ACCEPTEDCHAR         : 
-AND                  : 13
+AND                  : 12
 ASSIGNATION          : 27 28 29 30 31 33 34 35 36 37
-ATOM                 : 8 21 22 27 27 28 29 30 31 32 32 33 33 34 35 36 37 38 38 39 39
+ATOM                 : 7 20 21 26 27 27 28 29 30 31 32 32 33 33 34 35 36 37 38 38 39 39 39 40 40 41 41
 COLON                : 32
-DOT                  : 15 16 21
-EXISTS               : 38
-FALSE                : 10 24 29 35
-FORALL               : 15 16
-FREEZE               : 39
+DOT                  : 20 39
+EXISTS               : 38 39
+FALSE                : 9 23 29 35
+FORALL               : 40
+FREEZE               : 41
 ID                   : 
 IN                   : 
-INTEGER              : 25 30 36
-NOT                  : 12
-OR                   : 14
-PARTICIPANT          : 16 21
-REL_OP               : 11 20
-SEMICOLON            : 7
-STRING               : 26 31 37
-TRUE                 : 9 23 28 34
-VTYPE                : 27 28 29 30 31 32
+INTEGER              : 24 30 36
+NOT                  : 11
+OR                   : 13
+PARTICIPANT          : 20
+REL_OP               : 10 19
+SEMICOLON            : 6
+STRING               : 25 31 37
+TRUE                 : 8 22 28 34
+VTYPE                : 26 27 28 29 30 31 32
 error                : 
 
 Nonterminals, with rules where they appear
 
-assertion            : 5 12 13 13 14 14 15 16
-assignation          : 17
+assertion            : 4 11 12 12 13 13
+assignation          : 5
 declaration          : 3
-existential          : 4
-expression           : 11 11 20 20
-fixedvalues          : 18
-freeze               : 6
-statement            : 1 2 7
+existential          : 14
+expression           : 10 10 19 19
+fixedvalues          : 17
+forall               : 15
+freeze               : 16
+statement            : 1 2 6
 statements           : 2 0
-variablename         : 19
+variablename         : 18
 
 Parsing method: LALR
 
@@ -95,131 +98,137 @@ state 0
     (1) statements -> . statement
     (2) statements -> . statements statement
     (3) statement -> . declaration
-    (4) statement -> . existential
-    (5) statement -> . assertion
-    (6) statement -> . freeze
-    (7) statement -> . SEMICOLON statement
+    (4) statement -> . assertion
+    (5) statement -> . assignation
+    (6) statement -> . SEMICOLON statement
+    (26) declaration -> . VTYPE ATOM
     (27) declaration -> . VTYPE ATOM ASSIGNATION ATOM
     (28) declaration -> . VTYPE ATOM ASSIGNATION TRUE
     (29) declaration -> . VTYPE ATOM ASSIGNATION FALSE
     (30) declaration -> . VTYPE ATOM ASSIGNATION INTEGER
     (31) declaration -> . VTYPE ATOM ASSIGNATION STRING
     (32) declaration -> . VTYPE ATOM COLON ATOM
-    (38) existential -> . EXISTS ATOM ATOM
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (39) freeze -> . FREEZE ATOM ATOM
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
+    (7) assertion -> . ATOM
+    (8) assertion -> . TRUE
+    (9) assertion -> . FALSE
+    (10) assertion -> . expression REL_OP expression
+    (11) assertion -> . NOT assertion
+    (12) assertion -> . assertion AND assertion
+    (13) assertion -> . assertion OR assertion
+    (14) assertion -> . existential
+    (15) assertion -> . forall
+    (16) assertion -> . freeze
     (33) assignation -> . ATOM ASSIGNATION ATOM
     (34) assignation -> . ATOM ASSIGNATION TRUE
     (35) assignation -> . ATOM ASSIGNATION FALSE
     (36) assignation -> . ATOM ASSIGNATION INTEGER
     (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (38) existential -> . EXISTS ATOM ATOM
+    (39) existential -> . EXISTS ATOM ATOM DOT ATOM
+    (40) forall -> . FORALL ATOM ATOM
+    (41) freeze -> . FREEZE ATOM ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    SEMICOLON       shift and go to state 7
-    VTYPE           shift and go to state 8
-    EXISTS          shift and go to state 14
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    FREEZE          shift and go to state 20
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    SEMICOLON       shift and go to state 6
+    VTYPE           shift and go to state 7
+    ATOM            shift and go to state 8
+    TRUE            shift and go to state 9
+    FALSE           shift and go to state 10
+    NOT             shift and go to state 14
+    PARTICIPANT     shift and go to state 20
+    EXISTS          shift and go to state 21
+    FORALL          shift and go to state 22
+    FREEZE          shift and go to state 23
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
 
     statements                     shift and go to state 1
     statement                      shift and go to state 2
     declaration                    shift and go to state 3
-    existential                    shift and go to state 4
-    assertion                      shift and go to state 5
-    freeze                         shift and go to state 6
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
+    assertion                      shift and go to state 4
+    assignation                    shift and go to state 5
+    expression                     shift and go to state 13
+    existential                    shift and go to state 15
+    forall                         shift and go to state 16
+    freeze                         shift and go to state 17
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
 
 state 1
 
     (0) S' -> statements .
     (2) statements -> statements . statement
     (3) statement -> . declaration
-    (4) statement -> . existential
-    (5) statement -> . assertion
-    (6) statement -> . freeze
-    (7) statement -> . SEMICOLON statement
+    (4) statement -> . assertion
+    (5) statement -> . assignation
+    (6) statement -> . SEMICOLON statement
+    (26) declaration -> . VTYPE ATOM
     (27) declaration -> . VTYPE ATOM ASSIGNATION ATOM
     (28) declaration -> . VTYPE ATOM ASSIGNATION TRUE
     (29) declaration -> . VTYPE ATOM ASSIGNATION FALSE
     (30) declaration -> . VTYPE ATOM ASSIGNATION INTEGER
     (31) declaration -> . VTYPE ATOM ASSIGNATION STRING
     (32) declaration -> . VTYPE ATOM COLON ATOM
-    (38) existential -> . EXISTS ATOM ATOM
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (39) freeze -> . FREEZE ATOM ATOM
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
+    (7) assertion -> . ATOM
+    (8) assertion -> . TRUE
+    (9) assertion -> . FALSE
+    (10) assertion -> . expression REL_OP expression
+    (11) assertion -> . NOT assertion
+    (12) assertion -> . assertion AND assertion
+    (13) assertion -> . assertion OR assertion
+    (14) assertion -> . existential
+    (15) assertion -> . forall
+    (16) assertion -> . freeze
     (33) assignation -> . ATOM ASSIGNATION ATOM
     (34) assignation -> . ATOM ASSIGNATION TRUE
     (35) assignation -> . ATOM ASSIGNATION FALSE
     (36) assignation -> . ATOM ASSIGNATION INTEGER
     (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (38) existential -> . EXISTS ATOM ATOM
+    (39) existential -> . EXISTS ATOM ATOM DOT ATOM
+    (40) forall -> . FORALL ATOM ATOM
+    (41) freeze -> . FREEZE ATOM ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    SEMICOLON       shift and go to state 7
-    VTYPE           shift and go to state 8
-    EXISTS          shift and go to state 14
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    FREEZE          shift and go to state 20
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    SEMICOLON       shift and go to state 6
+    VTYPE           shift and go to state 7
+    ATOM            shift and go to state 8
+    TRUE            shift and go to state 9
+    FALSE           shift and go to state 10
+    NOT             shift and go to state 14
+    PARTICIPANT     shift and go to state 20
+    EXISTS          shift and go to state 21
+    FORALL          shift and go to state 22
+    FREEZE          shift and go to state 23
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
 
-    statement                      shift and go to state 23
+    statement                      shift and go to state 24
     declaration                    shift and go to state 3
-    existential                    shift and go to state 4
-    assertion                      shift and go to state 5
-    freeze                         shift and go to state 6
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
+    assertion                      shift and go to state 4
+    assignation                    shift and go to state 5
+    expression                     shift and go to state 13
+    existential                    shift and go to state 15
+    forall                         shift and go to state 16
+    freeze                         shift and go to state 17
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
 
 state 2
 
@@ -227,14 +236,14 @@ state 2
 
     SEMICOLON       reduce using rule 1 (statements -> statement .)
     VTYPE           reduce using rule 1 (statements -> statement .)
-    EXISTS          reduce using rule 1 (statements -> statement .)
     ATOM            reduce using rule 1 (statements -> statement .)
     TRUE            reduce using rule 1 (statements -> statement .)
     FALSE           reduce using rule 1 (statements -> statement .)
     NOT             reduce using rule 1 (statements -> statement .)
+    PARTICIPANT     reduce using rule 1 (statements -> statement .)
+    EXISTS          reduce using rule 1 (statements -> statement .)
     FORALL          reduce using rule 1 (statements -> statement .)
     FREEZE          reduce using rule 1 (statements -> statement .)
-    PARTICIPANT     reduce using rule 1 (statements -> statement .)
     INTEGER         reduce using rule 1 (statements -> statement .)
     STRING          reduce using rule 1 (statements -> statement .)
     $end            reduce using rule 1 (statements -> statement .)
@@ -246,14 +255,14 @@ state 3
 
     SEMICOLON       reduce using rule 3 (statement -> declaration .)
     VTYPE           reduce using rule 3 (statement -> declaration .)
-    EXISTS          reduce using rule 3 (statement -> declaration .)
     ATOM            reduce using rule 3 (statement -> declaration .)
     TRUE            reduce using rule 3 (statement -> declaration .)
     FALSE           reduce using rule 3 (statement -> declaration .)
     NOT             reduce using rule 3 (statement -> declaration .)
+    PARTICIPANT     reduce using rule 3 (statement -> declaration .)
+    EXISTS          reduce using rule 3 (statement -> declaration .)
     FORALL          reduce using rule 3 (statement -> declaration .)
     FREEZE          reduce using rule 3 (statement -> declaration .)
-    PARTICIPANT     reduce using rule 3 (statement -> declaration .)
     INTEGER         reduce using rule 3 (statement -> declaration .)
     STRING          reduce using rule 3 (statement -> declaration .)
     $end            reduce using rule 3 (statement -> declaration .)
@@ -261,131 +270,116 @@ state 3
 
 state 4
 
-    (4) statement -> existential .
+    (4) statement -> assertion .
+    (12) assertion -> assertion . AND assertion
+    (13) assertion -> assertion . OR assertion
 
-    SEMICOLON       reduce using rule 4 (statement -> existential .)
-    VTYPE           reduce using rule 4 (statement -> existential .)
-    EXISTS          reduce using rule 4 (statement -> existential .)
-    ATOM            reduce using rule 4 (statement -> existential .)
-    TRUE            reduce using rule 4 (statement -> existential .)
-    FALSE           reduce using rule 4 (statement -> existential .)
-    NOT             reduce using rule 4 (statement -> existential .)
-    FORALL          reduce using rule 4 (statement -> existential .)
-    FREEZE          reduce using rule 4 (statement -> existential .)
-    PARTICIPANT     reduce using rule 4 (statement -> existential .)
-    INTEGER         reduce using rule 4 (statement -> existential .)
-    STRING          reduce using rule 4 (statement -> existential .)
-    $end            reduce using rule 4 (statement -> existential .)
+    SEMICOLON       reduce using rule 4 (statement -> assertion .)
+    VTYPE           reduce using rule 4 (statement -> assertion .)
+    ATOM            reduce using rule 4 (statement -> assertion .)
+    TRUE            reduce using rule 4 (statement -> assertion .)
+    FALSE           reduce using rule 4 (statement -> assertion .)
+    NOT             reduce using rule 4 (statement -> assertion .)
+    PARTICIPANT     reduce using rule 4 (statement -> assertion .)
+    EXISTS          reduce using rule 4 (statement -> assertion .)
+    FORALL          reduce using rule 4 (statement -> assertion .)
+    FREEZE          reduce using rule 4 (statement -> assertion .)
+    INTEGER         reduce using rule 4 (statement -> assertion .)
+    STRING          reduce using rule 4 (statement -> assertion .)
+    $end            reduce using rule 4 (statement -> assertion .)
+    AND             shift and go to state 25
+    OR              shift and go to state 26
 
 
 state 5
 
-    (5) statement -> assertion .
-    (13) assertion -> assertion . AND assertion
-    (14) assertion -> assertion . OR assertion
+    (5) statement -> assignation .
 
-    SEMICOLON       reduce using rule 5 (statement -> assertion .)
-    VTYPE           reduce using rule 5 (statement -> assertion .)
-    EXISTS          reduce using rule 5 (statement -> assertion .)
-    ATOM            reduce using rule 5 (statement -> assertion .)
-    TRUE            reduce using rule 5 (statement -> assertion .)
-    FALSE           reduce using rule 5 (statement -> assertion .)
-    NOT             reduce using rule 5 (statement -> assertion .)
-    FORALL          reduce using rule 5 (statement -> assertion .)
-    FREEZE          reduce using rule 5 (statement -> assertion .)
-    PARTICIPANT     reduce using rule 5 (statement -> assertion .)
-    INTEGER         reduce using rule 5 (statement -> assertion .)
-    STRING          reduce using rule 5 (statement -> assertion .)
-    $end            reduce using rule 5 (statement -> assertion .)
-    AND             shift and go to state 24
-    OR              shift and go to state 25
+    SEMICOLON       reduce using rule 5 (statement -> assignation .)
+    VTYPE           reduce using rule 5 (statement -> assignation .)
+    ATOM            reduce using rule 5 (statement -> assignation .)
+    TRUE            reduce using rule 5 (statement -> assignation .)
+    FALSE           reduce using rule 5 (statement -> assignation .)
+    NOT             reduce using rule 5 (statement -> assignation .)
+    PARTICIPANT     reduce using rule 5 (statement -> assignation .)
+    EXISTS          reduce using rule 5 (statement -> assignation .)
+    FORALL          reduce using rule 5 (statement -> assignation .)
+    FREEZE          reduce using rule 5 (statement -> assignation .)
+    INTEGER         reduce using rule 5 (statement -> assignation .)
+    STRING          reduce using rule 5 (statement -> assignation .)
+    $end            reduce using rule 5 (statement -> assignation .)
 
 
 state 6
 
-    (6) statement -> freeze .
-
-    SEMICOLON       reduce using rule 6 (statement -> freeze .)
-    VTYPE           reduce using rule 6 (statement -> freeze .)
-    EXISTS          reduce using rule 6 (statement -> freeze .)
-    ATOM            reduce using rule 6 (statement -> freeze .)
-    TRUE            reduce using rule 6 (statement -> freeze .)
-    FALSE           reduce using rule 6 (statement -> freeze .)
-    NOT             reduce using rule 6 (statement -> freeze .)
-    FORALL          reduce using rule 6 (statement -> freeze .)
-    FREEZE          reduce using rule 6 (statement -> freeze .)
-    PARTICIPANT     reduce using rule 6 (statement -> freeze .)
-    INTEGER         reduce using rule 6 (statement -> freeze .)
-    STRING          reduce using rule 6 (statement -> freeze .)
-    $end            reduce using rule 6 (statement -> freeze .)
-
-
-state 7
-
-    (7) statement -> SEMICOLON . statement
+    (6) statement -> SEMICOLON . statement
     (3) statement -> . declaration
-    (4) statement -> . existential
-    (5) statement -> . assertion
-    (6) statement -> . freeze
-    (7) statement -> . SEMICOLON statement
+    (4) statement -> . assertion
+    (5) statement -> . assignation
+    (6) statement -> . SEMICOLON statement
+    (26) declaration -> . VTYPE ATOM
     (27) declaration -> . VTYPE ATOM ASSIGNATION ATOM
     (28) declaration -> . VTYPE ATOM ASSIGNATION TRUE
     (29) declaration -> . VTYPE ATOM ASSIGNATION FALSE
     (30) declaration -> . VTYPE ATOM ASSIGNATION INTEGER
     (31) declaration -> . VTYPE ATOM ASSIGNATION STRING
     (32) declaration -> . VTYPE ATOM COLON ATOM
-    (38) existential -> . EXISTS ATOM ATOM
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (39) freeze -> . FREEZE ATOM ATOM
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
+    (7) assertion -> . ATOM
+    (8) assertion -> . TRUE
+    (9) assertion -> . FALSE
+    (10) assertion -> . expression REL_OP expression
+    (11) assertion -> . NOT assertion
+    (12) assertion -> . assertion AND assertion
+    (13) assertion -> . assertion OR assertion
+    (14) assertion -> . existential
+    (15) assertion -> . forall
+    (16) assertion -> . freeze
     (33) assignation -> . ATOM ASSIGNATION ATOM
     (34) assignation -> . ATOM ASSIGNATION TRUE
     (35) assignation -> . ATOM ASSIGNATION FALSE
     (36) assignation -> . ATOM ASSIGNATION INTEGER
     (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (38) existential -> . EXISTS ATOM ATOM
+    (39) existential -> . EXISTS ATOM ATOM DOT ATOM
+    (40) forall -> . FORALL ATOM ATOM
+    (41) freeze -> . FREEZE ATOM ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    SEMICOLON       shift and go to state 7
-    VTYPE           shift and go to state 8
-    EXISTS          shift and go to state 14
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    FREEZE          shift and go to state 20
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    SEMICOLON       shift and go to state 6
+    VTYPE           shift and go to state 7
+    ATOM            shift and go to state 8
+    TRUE            shift and go to state 9
+    FALSE           shift and go to state 10
+    NOT             shift and go to state 14
+    PARTICIPANT     shift and go to state 20
+    EXISTS          shift and go to state 21
+    FORALL          shift and go to state 22
+    FREEZE          shift and go to state 23
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
 
-    statement                      shift and go to state 26
+    statement                      shift and go to state 27
     declaration                    shift and go to state 3
-    existential                    shift and go to state 4
-    assertion                      shift and go to state 5
-    freeze                         shift and go to state 6
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
+    assertion                      shift and go to state 4
+    assignation                    shift and go to state 5
+    expression                     shift and go to state 13
+    existential                    shift and go to state 15
+    forall                         shift and go to state 16
+    freeze                         shift and go to state 17
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
 
-state 8
+state 7
 
+    (26) declaration -> VTYPE . ATOM
     (27) declaration -> VTYPE . ATOM ASSIGNATION ATOM
     (28) declaration -> VTYPE . ATOM ASSIGNATION TRUE
     (29) declaration -> VTYPE . ATOM ASSIGNATION FALSE
@@ -393,400 +387,451 @@ state 8
     (31) declaration -> VTYPE . ATOM ASSIGNATION STRING
     (32) declaration -> VTYPE . ATOM COLON ATOM
 
-    ATOM            shift and go to state 27
+    ATOM            shift and go to state 28
 
 
-state 9
+state 8
 
-    (8) assertion -> ATOM .
+    (7) assertion -> ATOM .
     (33) assignation -> ATOM . ASSIGNATION ATOM
     (34) assignation -> ATOM . ASSIGNATION TRUE
     (35) assignation -> ATOM . ASSIGNATION FALSE
     (36) assignation -> ATOM . ASSIGNATION INTEGER
     (37) assignation -> ATOM . ASSIGNATION STRING
-    (22) variablename -> ATOM .
+    (21) variablename -> ATOM .
 
-    AND             reduce using rule 8 (assertion -> ATOM .)
-    OR              reduce using rule 8 (assertion -> ATOM .)
-    SEMICOLON       reduce using rule 8 (assertion -> ATOM .)
-    VTYPE           reduce using rule 8 (assertion -> ATOM .)
-    EXISTS          reduce using rule 8 (assertion -> ATOM .)
-    ATOM            reduce using rule 8 (assertion -> ATOM .)
-    TRUE            reduce using rule 8 (assertion -> ATOM .)
-    FALSE           reduce using rule 8 (assertion -> ATOM .)
-    NOT             reduce using rule 8 (assertion -> ATOM .)
-    FORALL          reduce using rule 8 (assertion -> ATOM .)
-    FREEZE          reduce using rule 8 (assertion -> ATOM .)
-    PARTICIPANT     reduce using rule 8 (assertion -> ATOM .)
-    INTEGER         reduce using rule 8 (assertion -> ATOM .)
-    STRING          reduce using rule 8 (assertion -> ATOM .)
-    $end            reduce using rule 8 (assertion -> ATOM .)
-    ASSIGNATION     shift and go to state 28
-    REL_OP          reduce using rule 22 (variablename -> ATOM .)
+    AND             reduce using rule 7 (assertion -> ATOM .)
+    OR              reduce using rule 7 (assertion -> ATOM .)
+    SEMICOLON       reduce using rule 7 (assertion -> ATOM .)
+    VTYPE           reduce using rule 7 (assertion -> ATOM .)
+    ATOM            reduce using rule 7 (assertion -> ATOM .)
+    TRUE            reduce using rule 7 (assertion -> ATOM .)
+    FALSE           reduce using rule 7 (assertion -> ATOM .)
+    NOT             reduce using rule 7 (assertion -> ATOM .)
+    PARTICIPANT     reduce using rule 7 (assertion -> ATOM .)
+    EXISTS          reduce using rule 7 (assertion -> ATOM .)
+    FORALL          reduce using rule 7 (assertion -> ATOM .)
+    FREEZE          reduce using rule 7 (assertion -> ATOM .)
+    INTEGER         reduce using rule 7 (assertion -> ATOM .)
+    STRING          reduce using rule 7 (assertion -> ATOM .)
+    $end            reduce using rule 7 (assertion -> ATOM .)
+    ASSIGNATION     shift and go to state 29
+    REL_OP          reduce using rule 21 (variablename -> ATOM .)
+
+
+state 9
+
+    (8) assertion -> TRUE .
+    (22) fixedvalues -> TRUE .
+
+    AND             reduce using rule 8 (assertion -> TRUE .)
+    OR              reduce using rule 8 (assertion -> TRUE .)
+    SEMICOLON       reduce using rule 8 (assertion -> TRUE .)
+    VTYPE           reduce using rule 8 (assertion -> TRUE .)
+    ATOM            reduce using rule 8 (assertion -> TRUE .)
+    TRUE            reduce using rule 8 (assertion -> TRUE .)
+    FALSE           reduce using rule 8 (assertion -> TRUE .)
+    NOT             reduce using rule 8 (assertion -> TRUE .)
+    PARTICIPANT     reduce using rule 8 (assertion -> TRUE .)
+    EXISTS          reduce using rule 8 (assertion -> TRUE .)
+    FORALL          reduce using rule 8 (assertion -> TRUE .)
+    FREEZE          reduce using rule 8 (assertion -> TRUE .)
+    INTEGER         reduce using rule 8 (assertion -> TRUE .)
+    STRING          reduce using rule 8 (assertion -> TRUE .)
+    $end            reduce using rule 8 (assertion -> TRUE .)
+    REL_OP          reduce using rule 22 (fixedvalues -> TRUE .)
 
 
 state 10
 
-    (9) assertion -> TRUE .
-    (23) fixedvalues -> TRUE .
+    (9) assertion -> FALSE .
+    (23) fixedvalues -> FALSE .
 
-    AND             reduce using rule 9 (assertion -> TRUE .)
-    OR              reduce using rule 9 (assertion -> TRUE .)
-    SEMICOLON       reduce using rule 9 (assertion -> TRUE .)
-    VTYPE           reduce using rule 9 (assertion -> TRUE .)
-    EXISTS          reduce using rule 9 (assertion -> TRUE .)
-    ATOM            reduce using rule 9 (assertion -> TRUE .)
-    TRUE            reduce using rule 9 (assertion -> TRUE .)
-    FALSE           reduce using rule 9 (assertion -> TRUE .)
-    NOT             reduce using rule 9 (assertion -> TRUE .)
-    FORALL          reduce using rule 9 (assertion -> TRUE .)
-    FREEZE          reduce using rule 9 (assertion -> TRUE .)
-    PARTICIPANT     reduce using rule 9 (assertion -> TRUE .)
-    INTEGER         reduce using rule 9 (assertion -> TRUE .)
-    STRING          reduce using rule 9 (assertion -> TRUE .)
-    $end            reduce using rule 9 (assertion -> TRUE .)
-    REL_OP          reduce using rule 23 (fixedvalues -> TRUE .)
+    AND             reduce using rule 9 (assertion -> FALSE .)
+    OR              reduce using rule 9 (assertion -> FALSE .)
+    SEMICOLON       reduce using rule 9 (assertion -> FALSE .)
+    VTYPE           reduce using rule 9 (assertion -> FALSE .)
+    ATOM            reduce using rule 9 (assertion -> FALSE .)
+    TRUE            reduce using rule 9 (assertion -> FALSE .)
+    FALSE           reduce using rule 9 (assertion -> FALSE .)
+    NOT             reduce using rule 9 (assertion -> FALSE .)
+    PARTICIPANT     reduce using rule 9 (assertion -> FALSE .)
+    EXISTS          reduce using rule 9 (assertion -> FALSE .)
+    FORALL          reduce using rule 9 (assertion -> FALSE .)
+    FREEZE          reduce using rule 9 (assertion -> FALSE .)
+    INTEGER         reduce using rule 9 (assertion -> FALSE .)
+    STRING          reduce using rule 9 (assertion -> FALSE .)
+    $end            reduce using rule 9 (assertion -> FALSE .)
+    REL_OP          reduce using rule 23 (fixedvalues -> FALSE .)
 
 
 state 11
 
-    (10) assertion -> FALSE .
-    (24) fixedvalues -> FALSE .
+    (24) fixedvalues -> INTEGER .
 
-    AND             reduce using rule 10 (assertion -> FALSE .)
-    OR              reduce using rule 10 (assertion -> FALSE .)
-    SEMICOLON       reduce using rule 10 (assertion -> FALSE .)
-    VTYPE           reduce using rule 10 (assertion -> FALSE .)
-    EXISTS          reduce using rule 10 (assertion -> FALSE .)
-    ATOM            reduce using rule 10 (assertion -> FALSE .)
-    TRUE            reduce using rule 10 (assertion -> FALSE .)
-    FALSE           reduce using rule 10 (assertion -> FALSE .)
-    NOT             reduce using rule 10 (assertion -> FALSE .)
-    FORALL          reduce using rule 10 (assertion -> FALSE .)
-    FREEZE          reduce using rule 10 (assertion -> FALSE .)
-    PARTICIPANT     reduce using rule 10 (assertion -> FALSE .)
-    INTEGER         reduce using rule 10 (assertion -> FALSE .)
-    STRING          reduce using rule 10 (assertion -> FALSE .)
-    $end            reduce using rule 10 (assertion -> FALSE .)
-    REL_OP          reduce using rule 24 (fixedvalues -> FALSE .)
+    REL_OP          reduce using rule 24 (fixedvalues -> INTEGER .)
+    AND             reduce using rule 24 (fixedvalues -> INTEGER .)
+    OR              reduce using rule 24 (fixedvalues -> INTEGER .)
+    SEMICOLON       reduce using rule 24 (fixedvalues -> INTEGER .)
+    VTYPE           reduce using rule 24 (fixedvalues -> INTEGER .)
+    ATOM            reduce using rule 24 (fixedvalues -> INTEGER .)
+    TRUE            reduce using rule 24 (fixedvalues -> INTEGER .)
+    FALSE           reduce using rule 24 (fixedvalues -> INTEGER .)
+    NOT             reduce using rule 24 (fixedvalues -> INTEGER .)
+    PARTICIPANT     reduce using rule 24 (fixedvalues -> INTEGER .)
+    EXISTS          reduce using rule 24 (fixedvalues -> INTEGER .)
+    FORALL          reduce using rule 24 (fixedvalues -> INTEGER .)
+    FREEZE          reduce using rule 24 (fixedvalues -> INTEGER .)
+    INTEGER         reduce using rule 24 (fixedvalues -> INTEGER .)
+    STRING          reduce using rule 24 (fixedvalues -> INTEGER .)
+    $end            reduce using rule 24 (fixedvalues -> INTEGER .)
 
 
 state 12
 
-    (25) fixedvalues -> INTEGER .
+    (25) fixedvalues -> STRING .
 
-    REL_OP          reduce using rule 25 (fixedvalues -> INTEGER .)
-    AND             reduce using rule 25 (fixedvalues -> INTEGER .)
-    OR              reduce using rule 25 (fixedvalues -> INTEGER .)
-    SEMICOLON       reduce using rule 25 (fixedvalues -> INTEGER .)
-    VTYPE           reduce using rule 25 (fixedvalues -> INTEGER .)
-    EXISTS          reduce using rule 25 (fixedvalues -> INTEGER .)
-    ATOM            reduce using rule 25 (fixedvalues -> INTEGER .)
-    TRUE            reduce using rule 25 (fixedvalues -> INTEGER .)
-    FALSE           reduce using rule 25 (fixedvalues -> INTEGER .)
-    NOT             reduce using rule 25 (fixedvalues -> INTEGER .)
-    FORALL          reduce using rule 25 (fixedvalues -> INTEGER .)
-    FREEZE          reduce using rule 25 (fixedvalues -> INTEGER .)
-    PARTICIPANT     reduce using rule 25 (fixedvalues -> INTEGER .)
-    INTEGER         reduce using rule 25 (fixedvalues -> INTEGER .)
-    STRING          reduce using rule 25 (fixedvalues -> INTEGER .)
-    $end            reduce using rule 25 (fixedvalues -> INTEGER .)
+    REL_OP          reduce using rule 25 (fixedvalues -> STRING .)
+    AND             reduce using rule 25 (fixedvalues -> STRING .)
+    OR              reduce using rule 25 (fixedvalues -> STRING .)
+    SEMICOLON       reduce using rule 25 (fixedvalues -> STRING .)
+    VTYPE           reduce using rule 25 (fixedvalues -> STRING .)
+    ATOM            reduce using rule 25 (fixedvalues -> STRING .)
+    TRUE            reduce using rule 25 (fixedvalues -> STRING .)
+    FALSE           reduce using rule 25 (fixedvalues -> STRING .)
+    NOT             reduce using rule 25 (fixedvalues -> STRING .)
+    PARTICIPANT     reduce using rule 25 (fixedvalues -> STRING .)
+    EXISTS          reduce using rule 25 (fixedvalues -> STRING .)
+    FORALL          reduce using rule 25 (fixedvalues -> STRING .)
+    FREEZE          reduce using rule 25 (fixedvalues -> STRING .)
+    INTEGER         reduce using rule 25 (fixedvalues -> STRING .)
+    STRING          reduce using rule 25 (fixedvalues -> STRING .)
+    $end            reduce using rule 25 (fixedvalues -> STRING .)
 
 
 state 13
 
-    (26) fixedvalues -> STRING .
-
-    REL_OP          reduce using rule 26 (fixedvalues -> STRING .)
-    AND             reduce using rule 26 (fixedvalues -> STRING .)
-    OR              reduce using rule 26 (fixedvalues -> STRING .)
-    SEMICOLON       reduce using rule 26 (fixedvalues -> STRING .)
-    VTYPE           reduce using rule 26 (fixedvalues -> STRING .)
-    EXISTS          reduce using rule 26 (fixedvalues -> STRING .)
-    ATOM            reduce using rule 26 (fixedvalues -> STRING .)
-    TRUE            reduce using rule 26 (fixedvalues -> STRING .)
-    FALSE           reduce using rule 26 (fixedvalues -> STRING .)
-    NOT             reduce using rule 26 (fixedvalues -> STRING .)
-    FORALL          reduce using rule 26 (fixedvalues -> STRING .)
-    FREEZE          reduce using rule 26 (fixedvalues -> STRING .)
-    PARTICIPANT     reduce using rule 26 (fixedvalues -> STRING .)
-    INTEGER         reduce using rule 26 (fixedvalues -> STRING .)
-    STRING          reduce using rule 26 (fixedvalues -> STRING .)
-    $end            reduce using rule 26 (fixedvalues -> STRING .)
-
-
-state 14
-
-    (38) existential -> EXISTS . ATOM ATOM
-
-    ATOM            shift and go to state 29
-
-
-state 15
-
-    (11) assertion -> expression . REL_OP expression
-    (20) expression -> expression . REL_OP expression
+    (10) assertion -> expression . REL_OP expression
+    (19) expression -> expression . REL_OP expression
 
     REL_OP          shift and go to state 30
 
 
-state 16
+state 14
 
-    (12) assertion -> NOT . assertion
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
-    (33) assignation -> . ATOM ASSIGNATION ATOM
-    (34) assignation -> . ATOM ASSIGNATION TRUE
-    (35) assignation -> . ATOM ASSIGNATION FALSE
-    (36) assignation -> . ATOM ASSIGNATION INTEGER
-    (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (11) assertion -> NOT . assertion
+    (7) assertion -> . ATOM
+    (8) assertion -> . TRUE
+    (9) assertion -> . FALSE
+    (10) assertion -> . expression REL_OP expression
+    (11) assertion -> . NOT assertion
+    (12) assertion -> . assertion AND assertion
+    (13) assertion -> . assertion OR assertion
+    (14) assertion -> . existential
+    (15) assertion -> . forall
+    (16) assertion -> . freeze
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (38) existential -> . EXISTS ATOM ATOM
+    (39) existential -> . EXISTS ATOM ATOM DOT ATOM
+    (40) forall -> . FORALL ATOM ATOM
+    (41) freeze -> . FREEZE ATOM ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    ATOM            shift and go to state 32
+    TRUE            shift and go to state 9
+    FALSE           shift and go to state 10
+    NOT             shift and go to state 14
+    PARTICIPANT     shift and go to state 20
+    EXISTS          shift and go to state 21
+    FORALL          shift and go to state 22
+    FREEZE          shift and go to state 23
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
 
     assertion                      shift and go to state 31
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
+    expression                     shift and go to state 13
+    existential                    shift and go to state 15
+    forall                         shift and go to state 16
+    freeze                         shift and go to state 17
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
+
+state 15
+
+    (14) assertion -> existential .
+
+    AND             reduce using rule 14 (assertion -> existential .)
+    OR              reduce using rule 14 (assertion -> existential .)
+    SEMICOLON       reduce using rule 14 (assertion -> existential .)
+    VTYPE           reduce using rule 14 (assertion -> existential .)
+    ATOM            reduce using rule 14 (assertion -> existential .)
+    TRUE            reduce using rule 14 (assertion -> existential .)
+    FALSE           reduce using rule 14 (assertion -> existential .)
+    NOT             reduce using rule 14 (assertion -> existential .)
+    PARTICIPANT     reduce using rule 14 (assertion -> existential .)
+    EXISTS          reduce using rule 14 (assertion -> existential .)
+    FORALL          reduce using rule 14 (assertion -> existential .)
+    FREEZE          reduce using rule 14 (assertion -> existential .)
+    INTEGER         reduce using rule 14 (assertion -> existential .)
+    STRING          reduce using rule 14 (assertion -> existential .)
+    $end            reduce using rule 14 (assertion -> existential .)
+
+
+state 16
+
+    (15) assertion -> forall .
+
+    AND             reduce using rule 15 (assertion -> forall .)
+    OR              reduce using rule 15 (assertion -> forall .)
+    SEMICOLON       reduce using rule 15 (assertion -> forall .)
+    VTYPE           reduce using rule 15 (assertion -> forall .)
+    ATOM            reduce using rule 15 (assertion -> forall .)
+    TRUE            reduce using rule 15 (assertion -> forall .)
+    FALSE           reduce using rule 15 (assertion -> forall .)
+    NOT             reduce using rule 15 (assertion -> forall .)
+    PARTICIPANT     reduce using rule 15 (assertion -> forall .)
+    EXISTS          reduce using rule 15 (assertion -> forall .)
+    FORALL          reduce using rule 15 (assertion -> forall .)
+    FREEZE          reduce using rule 15 (assertion -> forall .)
+    INTEGER         reduce using rule 15 (assertion -> forall .)
+    STRING          reduce using rule 15 (assertion -> forall .)
+    $end            reduce using rule 15 (assertion -> forall .)
+
 
 state 17
 
-    (15) assertion -> FORALL . DOT assertion
-    (16) assertion -> FORALL . PARTICIPANT DOT assertion
+    (16) assertion -> freeze .
 
-    DOT             shift and go to state 32
-    PARTICIPANT     shift and go to state 33
+    AND             reduce using rule 16 (assertion -> freeze .)
+    OR              reduce using rule 16 (assertion -> freeze .)
+    SEMICOLON       reduce using rule 16 (assertion -> freeze .)
+    VTYPE           reduce using rule 16 (assertion -> freeze .)
+    ATOM            reduce using rule 16 (assertion -> freeze .)
+    TRUE            reduce using rule 16 (assertion -> freeze .)
+    FALSE           reduce using rule 16 (assertion -> freeze .)
+    NOT             reduce using rule 16 (assertion -> freeze .)
+    PARTICIPANT     reduce using rule 16 (assertion -> freeze .)
+    EXISTS          reduce using rule 16 (assertion -> freeze .)
+    FORALL          reduce using rule 16 (assertion -> freeze .)
+    FREEZE          reduce using rule 16 (assertion -> freeze .)
+    INTEGER         reduce using rule 16 (assertion -> freeze .)
+    STRING          reduce using rule 16 (assertion -> freeze .)
+    $end            reduce using rule 16 (assertion -> freeze .)
 
 
 state 18
 
-    (21) expression -> PARTICIPANT . DOT ATOM
+    (17) expression -> fixedvalues .
 
-    DOT             shift and go to state 34
+    REL_OP          reduce using rule 17 (expression -> fixedvalues .)
+    AND             reduce using rule 17 (expression -> fixedvalues .)
+    OR              reduce using rule 17 (expression -> fixedvalues .)
+    SEMICOLON       reduce using rule 17 (expression -> fixedvalues .)
+    VTYPE           reduce using rule 17 (expression -> fixedvalues .)
+    ATOM            reduce using rule 17 (expression -> fixedvalues .)
+    TRUE            reduce using rule 17 (expression -> fixedvalues .)
+    FALSE           reduce using rule 17 (expression -> fixedvalues .)
+    NOT             reduce using rule 17 (expression -> fixedvalues .)
+    PARTICIPANT     reduce using rule 17 (expression -> fixedvalues .)
+    EXISTS          reduce using rule 17 (expression -> fixedvalues .)
+    FORALL          reduce using rule 17 (expression -> fixedvalues .)
+    FREEZE          reduce using rule 17 (expression -> fixedvalues .)
+    INTEGER         reduce using rule 17 (expression -> fixedvalues .)
+    STRING          reduce using rule 17 (expression -> fixedvalues .)
+    $end            reduce using rule 17 (expression -> fixedvalues .)
 
 
 state 19
 
-    (17) assertion -> assignation .
+    (18) expression -> variablename .
 
-    AND             reduce using rule 17 (assertion -> assignation .)
-    OR              reduce using rule 17 (assertion -> assignation .)
-    SEMICOLON       reduce using rule 17 (assertion -> assignation .)
-    VTYPE           reduce using rule 17 (assertion -> assignation .)
-    EXISTS          reduce using rule 17 (assertion -> assignation .)
-    ATOM            reduce using rule 17 (assertion -> assignation .)
-    TRUE            reduce using rule 17 (assertion -> assignation .)
-    FALSE           reduce using rule 17 (assertion -> assignation .)
-    NOT             reduce using rule 17 (assertion -> assignation .)
-    FORALL          reduce using rule 17 (assertion -> assignation .)
-    FREEZE          reduce using rule 17 (assertion -> assignation .)
-    PARTICIPANT     reduce using rule 17 (assertion -> assignation .)
-    INTEGER         reduce using rule 17 (assertion -> assignation .)
-    STRING          reduce using rule 17 (assertion -> assignation .)
-    $end            reduce using rule 17 (assertion -> assignation .)
+    REL_OP          reduce using rule 18 (expression -> variablename .)
+    AND             reduce using rule 18 (expression -> variablename .)
+    OR              reduce using rule 18 (expression -> variablename .)
+    SEMICOLON       reduce using rule 18 (expression -> variablename .)
+    VTYPE           reduce using rule 18 (expression -> variablename .)
+    ATOM            reduce using rule 18 (expression -> variablename .)
+    TRUE            reduce using rule 18 (expression -> variablename .)
+    FALSE           reduce using rule 18 (expression -> variablename .)
+    NOT             reduce using rule 18 (expression -> variablename .)
+    PARTICIPANT     reduce using rule 18 (expression -> variablename .)
+    EXISTS          reduce using rule 18 (expression -> variablename .)
+    FORALL          reduce using rule 18 (expression -> variablename .)
+    FREEZE          reduce using rule 18 (expression -> variablename .)
+    INTEGER         reduce using rule 18 (expression -> variablename .)
+    STRING          reduce using rule 18 (expression -> variablename .)
+    $end            reduce using rule 18 (expression -> variablename .)
 
 
 state 20
 
-    (39) freeze -> FREEZE . ATOM ATOM
+    (20) expression -> PARTICIPANT . DOT ATOM
 
-    ATOM            shift and go to state 35
+    DOT             shift and go to state 33
 
 
 state 21
 
-    (18) expression -> fixedvalues .
+    (38) existential -> EXISTS . ATOM ATOM
+    (39) existential -> EXISTS . ATOM ATOM DOT ATOM
 
-    REL_OP          reduce using rule 18 (expression -> fixedvalues .)
-    AND             reduce using rule 18 (expression -> fixedvalues .)
-    OR              reduce using rule 18 (expression -> fixedvalues .)
-    SEMICOLON       reduce using rule 18 (expression -> fixedvalues .)
-    VTYPE           reduce using rule 18 (expression -> fixedvalues .)
-    EXISTS          reduce using rule 18 (expression -> fixedvalues .)
-    ATOM            reduce using rule 18 (expression -> fixedvalues .)
-    TRUE            reduce using rule 18 (expression -> fixedvalues .)
-    FALSE           reduce using rule 18 (expression -> fixedvalues .)
-    NOT             reduce using rule 18 (expression -> fixedvalues .)
-    FORALL          reduce using rule 18 (expression -> fixedvalues .)
-    FREEZE          reduce using rule 18 (expression -> fixedvalues .)
-    PARTICIPANT     reduce using rule 18 (expression -> fixedvalues .)
-    INTEGER         reduce using rule 18 (expression -> fixedvalues .)
-    STRING          reduce using rule 18 (expression -> fixedvalues .)
-    $end            reduce using rule 18 (expression -> fixedvalues .)
+    ATOM            shift and go to state 34
 
 
 state 22
 
-    (19) expression -> variablename .
+    (40) forall -> FORALL . ATOM ATOM
 
-    REL_OP          reduce using rule 19 (expression -> variablename .)
-    AND             reduce using rule 19 (expression -> variablename .)
-    OR              reduce using rule 19 (expression -> variablename .)
-    SEMICOLON       reduce using rule 19 (expression -> variablename .)
-    VTYPE           reduce using rule 19 (expression -> variablename .)
-    EXISTS          reduce using rule 19 (expression -> variablename .)
-    ATOM            reduce using rule 19 (expression -> variablename .)
-    TRUE            reduce using rule 19 (expression -> variablename .)
-    FALSE           reduce using rule 19 (expression -> variablename .)
-    NOT             reduce using rule 19 (expression -> variablename .)
-    FORALL          reduce using rule 19 (expression -> variablename .)
-    FREEZE          reduce using rule 19 (expression -> variablename .)
-    PARTICIPANT     reduce using rule 19 (expression -> variablename .)
-    INTEGER         reduce using rule 19 (expression -> variablename .)
-    STRING          reduce using rule 19 (expression -> variablename .)
-    $end            reduce using rule 19 (expression -> variablename .)
+    ATOM            shift and go to state 35
 
 
 state 23
+
+    (41) freeze -> FREEZE . ATOM ATOM
+
+    ATOM            shift and go to state 36
+
+
+state 24
 
     (2) statements -> statements statement .
 
     SEMICOLON       reduce using rule 2 (statements -> statements statement .)
     VTYPE           reduce using rule 2 (statements -> statements statement .)
-    EXISTS          reduce using rule 2 (statements -> statements statement .)
     ATOM            reduce using rule 2 (statements -> statements statement .)
     TRUE            reduce using rule 2 (statements -> statements statement .)
     FALSE           reduce using rule 2 (statements -> statements statement .)
     NOT             reduce using rule 2 (statements -> statements statement .)
+    PARTICIPANT     reduce using rule 2 (statements -> statements statement .)
+    EXISTS          reduce using rule 2 (statements -> statements statement .)
     FORALL          reduce using rule 2 (statements -> statements statement .)
     FREEZE          reduce using rule 2 (statements -> statements statement .)
-    PARTICIPANT     reduce using rule 2 (statements -> statements statement .)
     INTEGER         reduce using rule 2 (statements -> statements statement .)
     STRING          reduce using rule 2 (statements -> statements statement .)
     $end            reduce using rule 2 (statements -> statements statement .)
 
 
-state 24
-
-    (13) assertion -> assertion AND . assertion
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
-    (33) assignation -> . ATOM ASSIGNATION ATOM
-    (34) assignation -> . ATOM ASSIGNATION TRUE
-    (35) assignation -> . ATOM ASSIGNATION FALSE
-    (36) assignation -> . ATOM ASSIGNATION INTEGER
-    (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
-
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
-
-    assertion                      shift and go to state 36
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
-
 state 25
 
-    (14) assertion -> assertion OR . assertion
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
-    (33) assignation -> . ATOM ASSIGNATION ATOM
-    (34) assignation -> . ATOM ASSIGNATION TRUE
-    (35) assignation -> . ATOM ASSIGNATION FALSE
-    (36) assignation -> . ATOM ASSIGNATION INTEGER
-    (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (12) assertion -> assertion AND . assertion
+    (7) assertion -> . ATOM
+    (8) assertion -> . TRUE
+    (9) assertion -> . FALSE
+    (10) assertion -> . expression REL_OP expression
+    (11) assertion -> . NOT assertion
+    (12) assertion -> . assertion AND assertion
+    (13) assertion -> . assertion OR assertion
+    (14) assertion -> . existential
+    (15) assertion -> . forall
+    (16) assertion -> . freeze
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (38) existential -> . EXISTS ATOM ATOM
+    (39) existential -> . EXISTS ATOM ATOM DOT ATOM
+    (40) forall -> . FORALL ATOM ATOM
+    (41) freeze -> . FREEZE ATOM ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    ATOM            shift and go to state 32
+    TRUE            shift and go to state 9
+    FALSE           shift and go to state 10
+    NOT             shift and go to state 14
+    PARTICIPANT     shift and go to state 20
+    EXISTS          shift and go to state 21
+    FORALL          shift and go to state 22
+    FREEZE          shift and go to state 23
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
 
     assertion                      shift and go to state 37
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
+    expression                     shift and go to state 13
+    existential                    shift and go to state 15
+    forall                         shift and go to state 16
+    freeze                         shift and go to state 17
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
 
 state 26
 
-    (7) statement -> SEMICOLON statement .
+    (13) assertion -> assertion OR . assertion
+    (7) assertion -> . ATOM
+    (8) assertion -> . TRUE
+    (9) assertion -> . FALSE
+    (10) assertion -> . expression REL_OP expression
+    (11) assertion -> . NOT assertion
+    (12) assertion -> . assertion AND assertion
+    (13) assertion -> . assertion OR assertion
+    (14) assertion -> . existential
+    (15) assertion -> . forall
+    (16) assertion -> . freeze
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (38) existential -> . EXISTS ATOM ATOM
+    (39) existential -> . EXISTS ATOM ATOM DOT ATOM
+    (40) forall -> . FORALL ATOM ATOM
+    (41) freeze -> . FREEZE ATOM ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    SEMICOLON       reduce using rule 7 (statement -> SEMICOLON statement .)
-    VTYPE           reduce using rule 7 (statement -> SEMICOLON statement .)
-    EXISTS          reduce using rule 7 (statement -> SEMICOLON statement .)
-    ATOM            reduce using rule 7 (statement -> SEMICOLON statement .)
-    TRUE            reduce using rule 7 (statement -> SEMICOLON statement .)
-    FALSE           reduce using rule 7 (statement -> SEMICOLON statement .)
-    NOT             reduce using rule 7 (statement -> SEMICOLON statement .)
-    FORALL          reduce using rule 7 (statement -> SEMICOLON statement .)
-    FREEZE          reduce using rule 7 (statement -> SEMICOLON statement .)
-    PARTICIPANT     reduce using rule 7 (statement -> SEMICOLON statement .)
-    INTEGER         reduce using rule 7 (statement -> SEMICOLON statement .)
-    STRING          reduce using rule 7 (statement -> SEMICOLON statement .)
-    $end            reduce using rule 7 (statement -> SEMICOLON statement .)
+    ATOM            shift and go to state 32
+    TRUE            shift and go to state 9
+    FALSE           shift and go to state 10
+    NOT             shift and go to state 14
+    PARTICIPANT     shift and go to state 20
+    EXISTS          shift and go to state 21
+    FORALL          shift and go to state 22
+    FREEZE          shift and go to state 23
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
 
+    assertion                      shift and go to state 38
+    expression                     shift and go to state 13
+    existential                    shift and go to state 15
+    forall                         shift and go to state 16
+    freeze                         shift and go to state 17
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
 
 state 27
 
+    (6) statement -> SEMICOLON statement .
+
+    SEMICOLON       reduce using rule 6 (statement -> SEMICOLON statement .)
+    VTYPE           reduce using rule 6 (statement -> SEMICOLON statement .)
+    ATOM            reduce using rule 6 (statement -> SEMICOLON statement .)
+    TRUE            reduce using rule 6 (statement -> SEMICOLON statement .)
+    FALSE           reduce using rule 6 (statement -> SEMICOLON statement .)
+    NOT             reduce using rule 6 (statement -> SEMICOLON statement .)
+    PARTICIPANT     reduce using rule 6 (statement -> SEMICOLON statement .)
+    EXISTS          reduce using rule 6 (statement -> SEMICOLON statement .)
+    FORALL          reduce using rule 6 (statement -> SEMICOLON statement .)
+    FREEZE          reduce using rule 6 (statement -> SEMICOLON statement .)
+    INTEGER         reduce using rule 6 (statement -> SEMICOLON statement .)
+    STRING          reduce using rule 6 (statement -> SEMICOLON statement .)
+    $end            reduce using rule 6 (statement -> SEMICOLON statement .)
+
+
+state 28
+
+    (26) declaration -> VTYPE ATOM .
     (27) declaration -> VTYPE ATOM . ASSIGNATION ATOM
     (28) declaration -> VTYPE ATOM . ASSIGNATION TRUE
     (29) declaration -> VTYPE ATOM . ASSIGNATION FALSE
@@ -794,11 +839,24 @@ state 27
     (31) declaration -> VTYPE ATOM . ASSIGNATION STRING
     (32) declaration -> VTYPE ATOM . COLON ATOM
 
-    ASSIGNATION     shift and go to state 38
-    COLON           shift and go to state 39
+    SEMICOLON       reduce using rule 26 (declaration -> VTYPE ATOM .)
+    VTYPE           reduce using rule 26 (declaration -> VTYPE ATOM .)
+    ATOM            reduce using rule 26 (declaration -> VTYPE ATOM .)
+    TRUE            reduce using rule 26 (declaration -> VTYPE ATOM .)
+    FALSE           reduce using rule 26 (declaration -> VTYPE ATOM .)
+    NOT             reduce using rule 26 (declaration -> VTYPE ATOM .)
+    PARTICIPANT     reduce using rule 26 (declaration -> VTYPE ATOM .)
+    EXISTS          reduce using rule 26 (declaration -> VTYPE ATOM .)
+    FORALL          reduce using rule 26 (declaration -> VTYPE ATOM .)
+    FREEZE          reduce using rule 26 (declaration -> VTYPE ATOM .)
+    INTEGER         reduce using rule 26 (declaration -> VTYPE ATOM .)
+    STRING          reduce using rule 26 (declaration -> VTYPE ATOM .)
+    $end            reduce using rule 26 (declaration -> VTYPE ATOM .)
+    ASSIGNATION     shift and go to state 39
+    COLON           shift and go to state 40
 
 
-state 28
+state 29
 
     (33) assignation -> ATOM ASSIGNATION . ATOM
     (34) assignation -> ATOM ASSIGNATION . TRUE
@@ -806,194 +864,175 @@ state 28
     (36) assignation -> ATOM ASSIGNATION . INTEGER
     (37) assignation -> ATOM ASSIGNATION . STRING
 
-    ATOM            shift and go to state 40
-    TRUE            shift and go to state 41
-    FALSE           shift and go to state 42
-    INTEGER         shift and go to state 43
-    STRING          shift and go to state 44
-
-
-state 29
-
-    (38) existential -> EXISTS ATOM . ATOM
-
-    ATOM            shift and go to state 45
+    ATOM            shift and go to state 41
+    TRUE            shift and go to state 42
+    FALSE           shift and go to state 43
+    INTEGER         shift and go to state 44
+    STRING          shift and go to state 45
 
 
 state 30
 
-    (11) assertion -> expression REL_OP . expression
-    (20) expression -> expression REL_OP . expression
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (10) assertion -> expression REL_OP . expression
+    (19) expression -> expression REL_OP . expression
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    PARTICIPANT     shift and go to state 18
+    PARTICIPANT     shift and go to state 20
     TRUE            shift and go to state 48
     FALSE           shift and go to state 49
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
     ATOM            shift and go to state 47
 
     expression                     shift and go to state 46
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
 
 state 31
 
-    (12) assertion -> NOT assertion .
-    (13) assertion -> assertion . AND assertion
-    (14) assertion -> assertion . OR assertion
+    (11) assertion -> NOT assertion .
+    (12) assertion -> assertion . AND assertion
+    (13) assertion -> assertion . OR assertion
 
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
-    SEMICOLON       reduce using rule 12 (assertion -> NOT assertion .)
-    VTYPE           reduce using rule 12 (assertion -> NOT assertion .)
-    EXISTS          reduce using rule 12 (assertion -> NOT assertion .)
-    ATOM            reduce using rule 12 (assertion -> NOT assertion .)
-    TRUE            reduce using rule 12 (assertion -> NOT assertion .)
-    FALSE           reduce using rule 12 (assertion -> NOT assertion .)
-    NOT             reduce using rule 12 (assertion -> NOT assertion .)
-    FORALL          reduce using rule 12 (assertion -> NOT assertion .)
-    FREEZE          reduce using rule 12 (assertion -> NOT assertion .)
-    PARTICIPANT     reduce using rule 12 (assertion -> NOT assertion .)
-    INTEGER         reduce using rule 12 (assertion -> NOT assertion .)
-    STRING          reduce using rule 12 (assertion -> NOT assertion .)
-    $end            reduce using rule 12 (assertion -> NOT assertion .)
-    AND             shift and go to state 24
-    OR              shift and go to state 25
+    SEMICOLON       reduce using rule 11 (assertion -> NOT assertion .)
+    VTYPE           reduce using rule 11 (assertion -> NOT assertion .)
+    ATOM            reduce using rule 11 (assertion -> NOT assertion .)
+    TRUE            reduce using rule 11 (assertion -> NOT assertion .)
+    FALSE           reduce using rule 11 (assertion -> NOT assertion .)
+    NOT             reduce using rule 11 (assertion -> NOT assertion .)
+    PARTICIPANT     reduce using rule 11 (assertion -> NOT assertion .)
+    EXISTS          reduce using rule 11 (assertion -> NOT assertion .)
+    FORALL          reduce using rule 11 (assertion -> NOT assertion .)
+    FREEZE          reduce using rule 11 (assertion -> NOT assertion .)
+    INTEGER         reduce using rule 11 (assertion -> NOT assertion .)
+    STRING          reduce using rule 11 (assertion -> NOT assertion .)
+    $end            reduce using rule 11 (assertion -> NOT assertion .)
+    AND             shift and go to state 25
+    OR              shift and go to state 26
 
-  ! AND             [ reduce using rule 12 (assertion -> NOT assertion .) ]
-  ! OR              [ reduce using rule 12 (assertion -> NOT assertion .) ]
+  ! AND             [ reduce using rule 11 (assertion -> NOT assertion .) ]
+  ! OR              [ reduce using rule 11 (assertion -> NOT assertion .) ]
 
 
 state 32
 
-    (15) assertion -> FORALL DOT . assertion
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
-    (33) assignation -> . ATOM ASSIGNATION ATOM
-    (34) assignation -> . ATOM ASSIGNATION TRUE
-    (35) assignation -> . ATOM ASSIGNATION FALSE
-    (36) assignation -> . ATOM ASSIGNATION INTEGER
-    (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (7) assertion -> ATOM .
+    (21) variablename -> ATOM .
 
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    AND             reduce using rule 7 (assertion -> ATOM .)
+    OR              reduce using rule 7 (assertion -> ATOM .)
+    SEMICOLON       reduce using rule 7 (assertion -> ATOM .)
+    VTYPE           reduce using rule 7 (assertion -> ATOM .)
+    ATOM            reduce using rule 7 (assertion -> ATOM .)
+    TRUE            reduce using rule 7 (assertion -> ATOM .)
+    FALSE           reduce using rule 7 (assertion -> ATOM .)
+    NOT             reduce using rule 7 (assertion -> ATOM .)
+    PARTICIPANT     reduce using rule 7 (assertion -> ATOM .)
+    EXISTS          reduce using rule 7 (assertion -> ATOM .)
+    FORALL          reduce using rule 7 (assertion -> ATOM .)
+    FREEZE          reduce using rule 7 (assertion -> ATOM .)
+    INTEGER         reduce using rule 7 (assertion -> ATOM .)
+    STRING          reduce using rule 7 (assertion -> ATOM .)
+    $end            reduce using rule 7 (assertion -> ATOM .)
+    REL_OP          reduce using rule 21 (variablename -> ATOM .)
 
-    assertion                      shift and go to state 50
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
 
 state 33
 
-    (16) assertion -> FORALL PARTICIPANT . DOT assertion
+    (20) expression -> PARTICIPANT DOT . ATOM
 
-    DOT             shift and go to state 51
+    ATOM            shift and go to state 50
 
 
 state 34
 
-    (21) expression -> PARTICIPANT DOT . ATOM
+    (38) existential -> EXISTS ATOM . ATOM
+    (39) existential -> EXISTS ATOM . ATOM DOT ATOM
 
-    ATOM            shift and go to state 52
+    ATOM            shift and go to state 51
 
 
 state 35
 
-    (39) freeze -> FREEZE ATOM . ATOM
+    (40) forall -> FORALL ATOM . ATOM
 
-    ATOM            shift and go to state 53
+    ATOM            shift and go to state 52
 
 
 state 36
 
-    (13) assertion -> assertion AND assertion .
-    (13) assertion -> assertion . AND assertion
-    (14) assertion -> assertion . OR assertion
+    (41) freeze -> FREEZE ATOM . ATOM
 
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    SEMICOLON       reduce using rule 13 (assertion -> assertion AND assertion .)
-    VTYPE           reduce using rule 13 (assertion -> assertion AND assertion .)
-    EXISTS          reduce using rule 13 (assertion -> assertion AND assertion .)
-    ATOM            reduce using rule 13 (assertion -> assertion AND assertion .)
-    TRUE            reduce using rule 13 (assertion -> assertion AND assertion .)
-    FALSE           reduce using rule 13 (assertion -> assertion AND assertion .)
-    NOT             reduce using rule 13 (assertion -> assertion AND assertion .)
-    FORALL          reduce using rule 13 (assertion -> assertion AND assertion .)
-    FREEZE          reduce using rule 13 (assertion -> assertion AND assertion .)
-    PARTICIPANT     reduce using rule 13 (assertion -> assertion AND assertion .)
-    INTEGER         reduce using rule 13 (assertion -> assertion AND assertion .)
-    STRING          reduce using rule 13 (assertion -> assertion AND assertion .)
-    $end            reduce using rule 13 (assertion -> assertion AND assertion .)
-    AND             shift and go to state 24
-    OR              shift and go to state 25
-
-  ! AND             [ reduce using rule 13 (assertion -> assertion AND assertion .) ]
-  ! OR              [ reduce using rule 13 (assertion -> assertion AND assertion .) ]
+    ATOM            shift and go to state 53
 
 
 state 37
 
-    (14) assertion -> assertion OR assertion .
-    (13) assertion -> assertion . AND assertion
-    (14) assertion -> assertion . OR assertion
+    (12) assertion -> assertion AND assertion .
+    (12) assertion -> assertion . AND assertion
+    (13) assertion -> assertion . OR assertion
 
   ! shift/reduce conflict for AND resolved as shift
   ! shift/reduce conflict for OR resolved as shift
-    SEMICOLON       reduce using rule 14 (assertion -> assertion OR assertion .)
-    VTYPE           reduce using rule 14 (assertion -> assertion OR assertion .)
-    EXISTS          reduce using rule 14 (assertion -> assertion OR assertion .)
-    ATOM            reduce using rule 14 (assertion -> assertion OR assertion .)
-    TRUE            reduce using rule 14 (assertion -> assertion OR assertion .)
-    FALSE           reduce using rule 14 (assertion -> assertion OR assertion .)
-    NOT             reduce using rule 14 (assertion -> assertion OR assertion .)
-    FORALL          reduce using rule 14 (assertion -> assertion OR assertion .)
-    FREEZE          reduce using rule 14 (assertion -> assertion OR assertion .)
-    PARTICIPANT     reduce using rule 14 (assertion -> assertion OR assertion .)
-    INTEGER         reduce using rule 14 (assertion -> assertion OR assertion .)
-    STRING          reduce using rule 14 (assertion -> assertion OR assertion .)
-    $end            reduce using rule 14 (assertion -> assertion OR assertion .)
-    AND             shift and go to state 24
-    OR              shift and go to state 25
+    SEMICOLON       reduce using rule 12 (assertion -> assertion AND assertion .)
+    VTYPE           reduce using rule 12 (assertion -> assertion AND assertion .)
+    ATOM            reduce using rule 12 (assertion -> assertion AND assertion .)
+    TRUE            reduce using rule 12 (assertion -> assertion AND assertion .)
+    FALSE           reduce using rule 12 (assertion -> assertion AND assertion .)
+    NOT             reduce using rule 12 (assertion -> assertion AND assertion .)
+    PARTICIPANT     reduce using rule 12 (assertion -> assertion AND assertion .)
+    EXISTS          reduce using rule 12 (assertion -> assertion AND assertion .)
+    FORALL          reduce using rule 12 (assertion -> assertion AND assertion .)
+    FREEZE          reduce using rule 12 (assertion -> assertion AND assertion .)
+    INTEGER         reduce using rule 12 (assertion -> assertion AND assertion .)
+    STRING          reduce using rule 12 (assertion -> assertion AND assertion .)
+    $end            reduce using rule 12 (assertion -> assertion AND assertion .)
+    AND             shift and go to state 25
+    OR              shift and go to state 26
 
-  ! AND             [ reduce using rule 14 (assertion -> assertion OR assertion .) ]
-  ! OR              [ reduce using rule 14 (assertion -> assertion OR assertion .) ]
+  ! AND             [ reduce using rule 12 (assertion -> assertion AND assertion .) ]
+  ! OR              [ reduce using rule 12 (assertion -> assertion AND assertion .) ]
 
 
 state 38
+
+    (13) assertion -> assertion OR assertion .
+    (12) assertion -> assertion . AND assertion
+    (13) assertion -> assertion . OR assertion
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 13 (assertion -> assertion OR assertion .)
+    VTYPE           reduce using rule 13 (assertion -> assertion OR assertion .)
+    ATOM            reduce using rule 13 (assertion -> assertion OR assertion .)
+    TRUE            reduce using rule 13 (assertion -> assertion OR assertion .)
+    FALSE           reduce using rule 13 (assertion -> assertion OR assertion .)
+    NOT             reduce using rule 13 (assertion -> assertion OR assertion .)
+    PARTICIPANT     reduce using rule 13 (assertion -> assertion OR assertion .)
+    EXISTS          reduce using rule 13 (assertion -> assertion OR assertion .)
+    FORALL          reduce using rule 13 (assertion -> assertion OR assertion .)
+    FREEZE          reduce using rule 13 (assertion -> assertion OR assertion .)
+    INTEGER         reduce using rule 13 (assertion -> assertion OR assertion .)
+    STRING          reduce using rule 13 (assertion -> assertion OR assertion .)
+    $end            reduce using rule 13 (assertion -> assertion OR assertion .)
+    AND             shift and go to state 25
+    OR              shift and go to state 26
+
+  ! AND             [ reduce using rule 13 (assertion -> assertion OR assertion .) ]
+  ! OR              [ reduce using rule 13 (assertion -> assertion OR assertion .) ]
+
+
+state 39
 
     (27) declaration -> VTYPE ATOM ASSIGNATION . ATOM
     (28) declaration -> VTYPE ATOM ASSIGNATION . TRUE
@@ -1008,340 +1047,286 @@ state 38
     STRING          shift and go to state 58
 
 
-state 39
+state 40
 
     (32) declaration -> VTYPE ATOM COLON . ATOM
 
     ATOM            shift and go to state 59
 
 
-state 40
+state 41
 
     (33) assignation -> ATOM ASSIGNATION ATOM .
 
-    AND             reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
-    OR              reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     SEMICOLON       reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     VTYPE           reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
-    EXISTS          reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     ATOM            reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     TRUE            reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     FALSE           reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     NOT             reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
+    PARTICIPANT     reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
+    EXISTS          reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     FORALL          reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     FREEZE          reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
-    PARTICIPANT     reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     INTEGER         reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     STRING          reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
     $end            reduce using rule 33 (assignation -> ATOM ASSIGNATION ATOM .)
 
 
-state 41
+state 42
 
     (34) assignation -> ATOM ASSIGNATION TRUE .
 
-    AND             reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
-    OR              reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     SEMICOLON       reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     VTYPE           reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
-    EXISTS          reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     ATOM            reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     TRUE            reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     FALSE           reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     NOT             reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
+    PARTICIPANT     reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
+    EXISTS          reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     FORALL          reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     FREEZE          reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
-    PARTICIPANT     reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     INTEGER         reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     STRING          reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
     $end            reduce using rule 34 (assignation -> ATOM ASSIGNATION TRUE .)
 
 
-state 42
+state 43
 
     (35) assignation -> ATOM ASSIGNATION FALSE .
 
-    AND             reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
-    OR              reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     SEMICOLON       reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     VTYPE           reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
-    EXISTS          reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     ATOM            reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     TRUE            reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     FALSE           reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     NOT             reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
+    PARTICIPANT     reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
+    EXISTS          reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     FORALL          reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     FREEZE          reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
-    PARTICIPANT     reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     INTEGER         reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     STRING          reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
     $end            reduce using rule 35 (assignation -> ATOM ASSIGNATION FALSE .)
 
 
-state 43
+state 44
 
     (36) assignation -> ATOM ASSIGNATION INTEGER .
 
-    AND             reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
-    OR              reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     SEMICOLON       reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     VTYPE           reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
-    EXISTS          reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     ATOM            reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     TRUE            reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     FALSE           reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     NOT             reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
+    PARTICIPANT     reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
+    EXISTS          reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     FORALL          reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     FREEZE          reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
-    PARTICIPANT     reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     INTEGER         reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     STRING          reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
     $end            reduce using rule 36 (assignation -> ATOM ASSIGNATION INTEGER .)
 
 
-state 44
+state 45
 
     (37) assignation -> ATOM ASSIGNATION STRING .
 
-    AND             reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
-    OR              reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     SEMICOLON       reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     VTYPE           reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
-    EXISTS          reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     ATOM            reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     TRUE            reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     FALSE           reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     NOT             reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
+    PARTICIPANT     reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
+    EXISTS          reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     FORALL          reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     FREEZE          reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
-    PARTICIPANT     reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     INTEGER         reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     STRING          reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
     $end            reduce using rule 37 (assignation -> ATOM ASSIGNATION STRING .)
 
 
-state 45
-
-    (38) existential -> EXISTS ATOM ATOM .
-
-    SEMICOLON       reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    VTYPE           reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    EXISTS          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    ATOM            reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    TRUE            reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    FALSE           reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    NOT             reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    FORALL          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    FREEZE          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    PARTICIPANT     reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    INTEGER         reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    STRING          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-    $end            reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
-
-
 state 46
 
-    (11) assertion -> expression REL_OP expression .
-    (20) expression -> expression REL_OP expression .
-    (20) expression -> expression . REL_OP expression
+    (10) assertion -> expression REL_OP expression .
+    (19) expression -> expression REL_OP expression .
+    (19) expression -> expression . REL_OP expression
 
   ! shift/reduce conflict for REL_OP resolved as shift
-    AND             reduce using rule 11 (assertion -> expression REL_OP expression .)
-    OR              reduce using rule 11 (assertion -> expression REL_OP expression .)
-    SEMICOLON       reduce using rule 11 (assertion -> expression REL_OP expression .)
-    VTYPE           reduce using rule 11 (assertion -> expression REL_OP expression .)
-    EXISTS          reduce using rule 11 (assertion -> expression REL_OP expression .)
-    ATOM            reduce using rule 11 (assertion -> expression REL_OP expression .)
-    TRUE            reduce using rule 11 (assertion -> expression REL_OP expression .)
-    FALSE           reduce using rule 11 (assertion -> expression REL_OP expression .)
-    NOT             reduce using rule 11 (assertion -> expression REL_OP expression .)
-    FORALL          reduce using rule 11 (assertion -> expression REL_OP expression .)
-    FREEZE          reduce using rule 11 (assertion -> expression REL_OP expression .)
-    PARTICIPANT     reduce using rule 11 (assertion -> expression REL_OP expression .)
-    INTEGER         reduce using rule 11 (assertion -> expression REL_OP expression .)
-    STRING          reduce using rule 11 (assertion -> expression REL_OP expression .)
-    $end            reduce using rule 11 (assertion -> expression REL_OP expression .)
+    AND             reduce using rule 10 (assertion -> expression REL_OP expression .)
+    OR              reduce using rule 10 (assertion -> expression REL_OP expression .)
+    SEMICOLON       reduce using rule 10 (assertion -> expression REL_OP expression .)
+    VTYPE           reduce using rule 10 (assertion -> expression REL_OP expression .)
+    ATOM            reduce using rule 10 (assertion -> expression REL_OP expression .)
+    TRUE            reduce using rule 10 (assertion -> expression REL_OP expression .)
+    FALSE           reduce using rule 10 (assertion -> expression REL_OP expression .)
+    NOT             reduce using rule 10 (assertion -> expression REL_OP expression .)
+    PARTICIPANT     reduce using rule 10 (assertion -> expression REL_OP expression .)
+    EXISTS          reduce using rule 10 (assertion -> expression REL_OP expression .)
+    FORALL          reduce using rule 10 (assertion -> expression REL_OP expression .)
+    FREEZE          reduce using rule 10 (assertion -> expression REL_OP expression .)
+    INTEGER         reduce using rule 10 (assertion -> expression REL_OP expression .)
+    STRING          reduce using rule 10 (assertion -> expression REL_OP expression .)
+    $end            reduce using rule 10 (assertion -> expression REL_OP expression .)
     REL_OP          shift and go to state 60
 
-  ! REL_OP          [ reduce using rule 20 (expression -> expression REL_OP expression .) ]
+  ! REL_OP          [ reduce using rule 19 (expression -> expression REL_OP expression .) ]
 
 
 state 47
 
-    (22) variablename -> ATOM .
+    (21) variablename -> ATOM .
 
-    REL_OP          reduce using rule 22 (variablename -> ATOM .)
-    AND             reduce using rule 22 (variablename -> ATOM .)
-    OR              reduce using rule 22 (variablename -> ATOM .)
-    SEMICOLON       reduce using rule 22 (variablename -> ATOM .)
-    VTYPE           reduce using rule 22 (variablename -> ATOM .)
-    EXISTS          reduce using rule 22 (variablename -> ATOM .)
-    ATOM            reduce using rule 22 (variablename -> ATOM .)
-    TRUE            reduce using rule 22 (variablename -> ATOM .)
-    FALSE           reduce using rule 22 (variablename -> ATOM .)
-    NOT             reduce using rule 22 (variablename -> ATOM .)
-    FORALL          reduce using rule 22 (variablename -> ATOM .)
-    FREEZE          reduce using rule 22 (variablename -> ATOM .)
-    PARTICIPANT     reduce using rule 22 (variablename -> ATOM .)
-    INTEGER         reduce using rule 22 (variablename -> ATOM .)
-    STRING          reduce using rule 22 (variablename -> ATOM .)
-    $end            reduce using rule 22 (variablename -> ATOM .)
+    REL_OP          reduce using rule 21 (variablename -> ATOM .)
+    AND             reduce using rule 21 (variablename -> ATOM .)
+    OR              reduce using rule 21 (variablename -> ATOM .)
+    SEMICOLON       reduce using rule 21 (variablename -> ATOM .)
+    VTYPE           reduce using rule 21 (variablename -> ATOM .)
+    ATOM            reduce using rule 21 (variablename -> ATOM .)
+    TRUE            reduce using rule 21 (variablename -> ATOM .)
+    FALSE           reduce using rule 21 (variablename -> ATOM .)
+    NOT             reduce using rule 21 (variablename -> ATOM .)
+    PARTICIPANT     reduce using rule 21 (variablename -> ATOM .)
+    EXISTS          reduce using rule 21 (variablename -> ATOM .)
+    FORALL          reduce using rule 21 (variablename -> ATOM .)
+    FREEZE          reduce using rule 21 (variablename -> ATOM .)
+    INTEGER         reduce using rule 21 (variablename -> ATOM .)
+    STRING          reduce using rule 21 (variablename -> ATOM .)
+    $end            reduce using rule 21 (variablename -> ATOM .)
 
 
 state 48
 
-    (23) fixedvalues -> TRUE .
+    (22) fixedvalues -> TRUE .
 
-    REL_OP          reduce using rule 23 (fixedvalues -> TRUE .)
-    AND             reduce using rule 23 (fixedvalues -> TRUE .)
-    OR              reduce using rule 23 (fixedvalues -> TRUE .)
-    SEMICOLON       reduce using rule 23 (fixedvalues -> TRUE .)
-    VTYPE           reduce using rule 23 (fixedvalues -> TRUE .)
-    EXISTS          reduce using rule 23 (fixedvalues -> TRUE .)
-    ATOM            reduce using rule 23 (fixedvalues -> TRUE .)
-    TRUE            reduce using rule 23 (fixedvalues -> TRUE .)
-    FALSE           reduce using rule 23 (fixedvalues -> TRUE .)
-    NOT             reduce using rule 23 (fixedvalues -> TRUE .)
-    FORALL          reduce using rule 23 (fixedvalues -> TRUE .)
-    FREEZE          reduce using rule 23 (fixedvalues -> TRUE .)
-    PARTICIPANT     reduce using rule 23 (fixedvalues -> TRUE .)
-    INTEGER         reduce using rule 23 (fixedvalues -> TRUE .)
-    STRING          reduce using rule 23 (fixedvalues -> TRUE .)
-    $end            reduce using rule 23 (fixedvalues -> TRUE .)
+    REL_OP          reduce using rule 22 (fixedvalues -> TRUE .)
+    AND             reduce using rule 22 (fixedvalues -> TRUE .)
+    OR              reduce using rule 22 (fixedvalues -> TRUE .)
+    SEMICOLON       reduce using rule 22 (fixedvalues -> TRUE .)
+    VTYPE           reduce using rule 22 (fixedvalues -> TRUE .)
+    ATOM            reduce using rule 22 (fixedvalues -> TRUE .)
+    TRUE            reduce using rule 22 (fixedvalues -> TRUE .)
+    FALSE           reduce using rule 22 (fixedvalues -> TRUE .)
+    NOT             reduce using rule 22 (fixedvalues -> TRUE .)
+    PARTICIPANT     reduce using rule 22 (fixedvalues -> TRUE .)
+    EXISTS          reduce using rule 22 (fixedvalues -> TRUE .)
+    FORALL          reduce using rule 22 (fixedvalues -> TRUE .)
+    FREEZE          reduce using rule 22 (fixedvalues -> TRUE .)
+    INTEGER         reduce using rule 22 (fixedvalues -> TRUE .)
+    STRING          reduce using rule 22 (fixedvalues -> TRUE .)
+    $end            reduce using rule 22 (fixedvalues -> TRUE .)
 
 
 state 49
 
-    (24) fixedvalues -> FALSE .
+    (23) fixedvalues -> FALSE .
 
-    REL_OP          reduce using rule 24 (fixedvalues -> FALSE .)
-    AND             reduce using rule 24 (fixedvalues -> FALSE .)
-    OR              reduce using rule 24 (fixedvalues -> FALSE .)
-    SEMICOLON       reduce using rule 24 (fixedvalues -> FALSE .)
-    VTYPE           reduce using rule 24 (fixedvalues -> FALSE .)
-    EXISTS          reduce using rule 24 (fixedvalues -> FALSE .)
-    ATOM            reduce using rule 24 (fixedvalues -> FALSE .)
-    TRUE            reduce using rule 24 (fixedvalues -> FALSE .)
-    FALSE           reduce using rule 24 (fixedvalues -> FALSE .)
-    NOT             reduce using rule 24 (fixedvalues -> FALSE .)
-    FORALL          reduce using rule 24 (fixedvalues -> FALSE .)
-    FREEZE          reduce using rule 24 (fixedvalues -> FALSE .)
-    PARTICIPANT     reduce using rule 24 (fixedvalues -> FALSE .)
-    INTEGER         reduce using rule 24 (fixedvalues -> FALSE .)
-    STRING          reduce using rule 24 (fixedvalues -> FALSE .)
-    $end            reduce using rule 24 (fixedvalues -> FALSE .)
+    REL_OP          reduce using rule 23 (fixedvalues -> FALSE .)
+    AND             reduce using rule 23 (fixedvalues -> FALSE .)
+    OR              reduce using rule 23 (fixedvalues -> FALSE .)
+    SEMICOLON       reduce using rule 23 (fixedvalues -> FALSE .)
+    VTYPE           reduce using rule 23 (fixedvalues -> FALSE .)
+    ATOM            reduce using rule 23 (fixedvalues -> FALSE .)
+    TRUE            reduce using rule 23 (fixedvalues -> FALSE .)
+    FALSE           reduce using rule 23 (fixedvalues -> FALSE .)
+    NOT             reduce using rule 23 (fixedvalues -> FALSE .)
+    PARTICIPANT     reduce using rule 23 (fixedvalues -> FALSE .)
+    EXISTS          reduce using rule 23 (fixedvalues -> FALSE .)
+    FORALL          reduce using rule 23 (fixedvalues -> FALSE .)
+    FREEZE          reduce using rule 23 (fixedvalues -> FALSE .)
+    INTEGER         reduce using rule 23 (fixedvalues -> FALSE .)
+    STRING          reduce using rule 23 (fixedvalues -> FALSE .)
+    $end            reduce using rule 23 (fixedvalues -> FALSE .)
 
 
 state 50
 
-    (15) assertion -> FORALL DOT assertion .
-    (13) assertion -> assertion . AND assertion
-    (14) assertion -> assertion . OR assertion
+    (20) expression -> PARTICIPANT DOT ATOM .
 
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    SEMICOLON       reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    VTYPE           reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    EXISTS          reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    ATOM            reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    TRUE            reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    FALSE           reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    NOT             reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    FORALL          reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    FREEZE          reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    PARTICIPANT     reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    INTEGER         reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    STRING          reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    $end            reduce using rule 15 (assertion -> FORALL DOT assertion .)
-    AND             shift and go to state 24
-    OR              shift and go to state 25
-
-  ! AND             [ reduce using rule 15 (assertion -> FORALL DOT assertion .) ]
-  ! OR              [ reduce using rule 15 (assertion -> FORALL DOT assertion .) ]
+    REL_OP          reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    AND             reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    OR              reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    SEMICOLON       reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    VTYPE           reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    ATOM            reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    TRUE            reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    FALSE           reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    NOT             reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    PARTICIPANT     reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    EXISTS          reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    FORALL          reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    FREEZE          reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    INTEGER         reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    STRING          reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
+    $end            reduce using rule 20 (expression -> PARTICIPANT DOT ATOM .)
 
 
 state 51
 
-    (16) assertion -> FORALL PARTICIPANT DOT . assertion
-    (8) assertion -> . ATOM
-    (9) assertion -> . TRUE
-    (10) assertion -> . FALSE
-    (11) assertion -> . expression REL_OP expression
-    (12) assertion -> . NOT assertion
-    (13) assertion -> . assertion AND assertion
-    (14) assertion -> . assertion OR assertion
-    (15) assertion -> . FORALL DOT assertion
-    (16) assertion -> . FORALL PARTICIPANT DOT assertion
-    (17) assertion -> . assignation
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
-    (33) assignation -> . ATOM ASSIGNATION ATOM
-    (34) assignation -> . ATOM ASSIGNATION TRUE
-    (35) assignation -> . ATOM ASSIGNATION FALSE
-    (36) assignation -> . ATOM ASSIGNATION INTEGER
-    (37) assignation -> . ATOM ASSIGNATION STRING
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (38) existential -> EXISTS ATOM ATOM .
+    (39) existential -> EXISTS ATOM ATOM . DOT ATOM
 
-    ATOM            shift and go to state 9
-    TRUE            shift and go to state 10
-    FALSE           shift and go to state 11
-    NOT             shift and go to state 16
-    FORALL          shift and go to state 17
-    PARTICIPANT     shift and go to state 18
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    AND             reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    OR              reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    SEMICOLON       reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    VTYPE           reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    ATOM            reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    TRUE            reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    FALSE           reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    NOT             reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    PARTICIPANT     reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    EXISTS          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    FORALL          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    FREEZE          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    INTEGER         reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    STRING          reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    $end            reduce using rule 38 (existential -> EXISTS ATOM ATOM .)
+    DOT             shift and go to state 61
 
-    assertion                      shift and go to state 61
-    expression                     shift and go to state 15
-    assignation                    shift and go to state 19
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
 
 state 52
 
-    (21) expression -> PARTICIPANT DOT ATOM .
+    (40) forall -> FORALL ATOM ATOM .
 
-    REL_OP          reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    AND             reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    OR              reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    SEMICOLON       reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    VTYPE           reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    EXISTS          reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    ATOM            reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    TRUE            reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    FALSE           reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    NOT             reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    FORALL          reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    FREEZE          reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    PARTICIPANT     reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    INTEGER         reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    STRING          reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
-    $end            reduce using rule 21 (expression -> PARTICIPANT DOT ATOM .)
+    AND             reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    OR              reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    SEMICOLON       reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    VTYPE           reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    ATOM            reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    TRUE            reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    FALSE           reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    NOT             reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    PARTICIPANT     reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    EXISTS          reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    FORALL          reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    FREEZE          reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    INTEGER         reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    STRING          reduce using rule 40 (forall -> FORALL ATOM ATOM .)
+    $end            reduce using rule 40 (forall -> FORALL ATOM ATOM .)
 
 
 state 53
 
-    (39) freeze -> FREEZE ATOM ATOM .
+    (41) freeze -> FREEZE ATOM ATOM .
 
-    SEMICOLON       reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    VTYPE           reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    EXISTS          reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    ATOM            reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    TRUE            reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    FALSE           reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    NOT             reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    FORALL          reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    FREEZE          reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    PARTICIPANT     reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    INTEGER         reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    STRING          reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
-    $end            reduce using rule 39 (freeze -> FREEZE ATOM ATOM .)
+    AND             reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    OR              reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    SEMICOLON       reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    VTYPE           reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    ATOM            reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    TRUE            reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    FALSE           reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    NOT             reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    PARTICIPANT     reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    EXISTS          reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    FORALL          reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    FREEZE          reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    INTEGER         reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    STRING          reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
+    $end            reduce using rule 41 (freeze -> FREEZE ATOM ATOM .)
 
 
 state 54
@@ -1350,14 +1335,14 @@ state 54
 
     SEMICOLON       reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     VTYPE           reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
-    EXISTS          reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     ATOM            reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     TRUE            reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     FALSE           reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     NOT             reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
+    PARTICIPANT     reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
+    EXISTS          reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     FORALL          reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     FREEZE          reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
-    PARTICIPANT     reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     INTEGER         reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     STRING          reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
     $end            reduce using rule 27 (declaration -> VTYPE ATOM ASSIGNATION ATOM .)
@@ -1369,14 +1354,14 @@ state 55
 
     SEMICOLON       reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     VTYPE           reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
-    EXISTS          reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     ATOM            reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     TRUE            reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     FALSE           reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     NOT             reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
+    PARTICIPANT     reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
+    EXISTS          reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     FORALL          reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     FREEZE          reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
-    PARTICIPANT     reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     INTEGER         reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     STRING          reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
     $end            reduce using rule 28 (declaration -> VTYPE ATOM ASSIGNATION TRUE .)
@@ -1388,14 +1373,14 @@ state 56
 
     SEMICOLON       reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     VTYPE           reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
-    EXISTS          reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     ATOM            reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     TRUE            reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     FALSE           reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     NOT             reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
+    PARTICIPANT     reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
+    EXISTS          reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     FORALL          reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     FREEZE          reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
-    PARTICIPANT     reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     INTEGER         reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     STRING          reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
     $end            reduce using rule 29 (declaration -> VTYPE ATOM ASSIGNATION FALSE .)
@@ -1407,14 +1392,14 @@ state 57
 
     SEMICOLON       reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     VTYPE           reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
-    EXISTS          reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     ATOM            reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     TRUE            reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     FALSE           reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     NOT             reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
+    PARTICIPANT     reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
+    EXISTS          reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     FORALL          reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     FREEZE          reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
-    PARTICIPANT     reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     INTEGER         reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     STRING          reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
     $end            reduce using rule 30 (declaration -> VTYPE ATOM ASSIGNATION INTEGER .)
@@ -1426,14 +1411,14 @@ state 58
 
     SEMICOLON       reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     VTYPE           reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
-    EXISTS          reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     ATOM            reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     TRUE            reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     FALSE           reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     NOT             reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
+    PARTICIPANT     reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
+    EXISTS          reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     FORALL          reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     FREEZE          reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
-    PARTICIPANT     reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     INTEGER         reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     STRING          reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
     $end            reduce using rule 31 (declaration -> VTYPE ATOM ASSIGNATION STRING .)
@@ -1445,14 +1430,14 @@ state 59
 
     SEMICOLON       reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     VTYPE           reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
-    EXISTS          reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     ATOM            reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     TRUE            reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     FALSE           reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     NOT             reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
+    PARTICIPANT     reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
+    EXISTS          reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     FORALL          reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     FREEZE          reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
-    PARTICIPANT     reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     INTEGER         reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     STRING          reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
     $end            reduce using rule 32 (declaration -> VTYPE ATOM COLON ATOM .)
@@ -1460,93 +1445,89 @@ state 59
 
 state 60
 
-    (20) expression -> expression REL_OP . expression
-    (18) expression -> . fixedvalues
-    (19) expression -> . variablename
-    (20) expression -> . expression REL_OP expression
-    (21) expression -> . PARTICIPANT DOT ATOM
-    (23) fixedvalues -> . TRUE
-    (24) fixedvalues -> . FALSE
-    (25) fixedvalues -> . INTEGER
-    (26) fixedvalues -> . STRING
-    (22) variablename -> . ATOM
+    (19) expression -> expression REL_OP . expression
+    (17) expression -> . fixedvalues
+    (18) expression -> . variablename
+    (19) expression -> . expression REL_OP expression
+    (20) expression -> . PARTICIPANT DOT ATOM
+    (22) fixedvalues -> . TRUE
+    (23) fixedvalues -> . FALSE
+    (24) fixedvalues -> . INTEGER
+    (25) fixedvalues -> . STRING
+    (21) variablename -> . ATOM
 
-    PARTICIPANT     shift and go to state 18
+    PARTICIPANT     shift and go to state 20
     TRUE            shift and go to state 48
     FALSE           shift and go to state 49
-    INTEGER         shift and go to state 12
-    STRING          shift and go to state 13
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
     ATOM            shift and go to state 47
 
     expression                     shift and go to state 62
-    fixedvalues                    shift and go to state 21
-    variablename                   shift and go to state 22
+    fixedvalues                    shift and go to state 18
+    variablename                   shift and go to state 19
 
 state 61
 
-    (16) assertion -> FORALL PARTICIPANT DOT assertion .
-    (13) assertion -> assertion . AND assertion
-    (14) assertion -> assertion . OR assertion
+    (39) existential -> EXISTS ATOM ATOM DOT . ATOM
 
-  ! shift/reduce conflict for AND resolved as shift
-  ! shift/reduce conflict for OR resolved as shift
-    SEMICOLON       reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    VTYPE           reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    EXISTS          reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    ATOM            reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    TRUE            reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    FALSE           reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    NOT             reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    FORALL          reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    FREEZE          reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    PARTICIPANT     reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    INTEGER         reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    STRING          reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    $end            reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .)
-    AND             shift and go to state 24
-    OR              shift and go to state 25
-
-  ! AND             [ reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .) ]
-  ! OR              [ reduce using rule 16 (assertion -> FORALL PARTICIPANT DOT assertion .) ]
+    ATOM            shift and go to state 63
 
 
 state 62
 
-    (20) expression -> expression REL_OP expression .
-    (20) expression -> expression . REL_OP expression
+    (19) expression -> expression REL_OP expression .
+    (19) expression -> expression . REL_OP expression
 
   ! shift/reduce conflict for REL_OP resolved as shift
-    AND             reduce using rule 20 (expression -> expression REL_OP expression .)
-    OR              reduce using rule 20 (expression -> expression REL_OP expression .)
-    SEMICOLON       reduce using rule 20 (expression -> expression REL_OP expression .)
-    VTYPE           reduce using rule 20 (expression -> expression REL_OP expression .)
-    EXISTS          reduce using rule 20 (expression -> expression REL_OP expression .)
-    ATOM            reduce using rule 20 (expression -> expression REL_OP expression .)
-    TRUE            reduce using rule 20 (expression -> expression REL_OP expression .)
-    FALSE           reduce using rule 20 (expression -> expression REL_OP expression .)
-    NOT             reduce using rule 20 (expression -> expression REL_OP expression .)
-    FORALL          reduce using rule 20 (expression -> expression REL_OP expression .)
-    FREEZE          reduce using rule 20 (expression -> expression REL_OP expression .)
-    PARTICIPANT     reduce using rule 20 (expression -> expression REL_OP expression .)
-    INTEGER         reduce using rule 20 (expression -> expression REL_OP expression .)
-    STRING          reduce using rule 20 (expression -> expression REL_OP expression .)
-    $end            reduce using rule 20 (expression -> expression REL_OP expression .)
+    AND             reduce using rule 19 (expression -> expression REL_OP expression .)
+    OR              reduce using rule 19 (expression -> expression REL_OP expression .)
+    SEMICOLON       reduce using rule 19 (expression -> expression REL_OP expression .)
+    VTYPE           reduce using rule 19 (expression -> expression REL_OP expression .)
+    ATOM            reduce using rule 19 (expression -> expression REL_OP expression .)
+    TRUE            reduce using rule 19 (expression -> expression REL_OP expression .)
+    FALSE           reduce using rule 19 (expression -> expression REL_OP expression .)
+    NOT             reduce using rule 19 (expression -> expression REL_OP expression .)
+    PARTICIPANT     reduce using rule 19 (expression -> expression REL_OP expression .)
+    EXISTS          reduce using rule 19 (expression -> expression REL_OP expression .)
+    FORALL          reduce using rule 19 (expression -> expression REL_OP expression .)
+    FREEZE          reduce using rule 19 (expression -> expression REL_OP expression .)
+    INTEGER         reduce using rule 19 (expression -> expression REL_OP expression .)
+    STRING          reduce using rule 19 (expression -> expression REL_OP expression .)
+    $end            reduce using rule 19 (expression -> expression REL_OP expression .)
     REL_OP          shift and go to state 60
 
-  ! REL_OP          [ reduce using rule 20 (expression -> expression REL_OP expression .) ]
+  ! REL_OP          [ reduce using rule 19 (expression -> expression REL_OP expression .) ]
+
+
+state 63
+
+    (39) existential -> EXISTS ATOM ATOM DOT ATOM .
+
+    AND             reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    OR              reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    SEMICOLON       reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    VTYPE           reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    ATOM            reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    TRUE            reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    FALSE           reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    NOT             reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    PARTICIPANT     reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    EXISTS          reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    FORALL          reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    FREEZE          reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    INTEGER         reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    STRING          reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
+    $end            reduce using rule 39 (existential -> EXISTS ATOM ATOM DOT ATOM .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
 WARNING: shift/reduce conflict for AND in state 31 resolved as shift
 WARNING: shift/reduce conflict for OR in state 31 resolved as shift
-WARNING: shift/reduce conflict for AND in state 36 resolved as shift
-WARNING: shift/reduce conflict for OR in state 36 resolved as shift
 WARNING: shift/reduce conflict for AND in state 37 resolved as shift
 WARNING: shift/reduce conflict for OR in state 37 resolved as shift
+WARNING: shift/reduce conflict for AND in state 38 resolved as shift
+WARNING: shift/reduce conflict for OR in state 38 resolved as shift
 WARNING: shift/reduce conflict for REL_OP in state 46 resolved as shift
-WARNING: shift/reduce conflict for AND in state 50 resolved as shift
-WARNING: shift/reduce conflict for OR in state 50 resolved as shift
-WARNING: shift/reduce conflict for AND in state 61 resolved as shift
-WARNING: shift/reduce conflict for OR in state 61 resolved as shift
 WARNING: shift/reduce conflict for REL_OP in state 62 resolved as shift
