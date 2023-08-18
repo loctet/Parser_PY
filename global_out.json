@@ -17,7 +17,7 @@
     },
     "input" : "",
     "preCondition" : "",
-    "postCondition" : "int a := 0 ; int b := 10 ; a >= b ; int B := 0; set M",
+    "postCondition" : "int a := 0 ; int b := 10; set B := 0; set M ; a >= b + 10 ",
     "internal" : false,
     "externalCall" : true
   }, {
@@ -71,7 +71,7 @@
     },
     "input" : "address b2:B",
     "preCondition" : "int c := 0",
-    "postCondition" : "∃ b2 B.B && c==23",
+    "postCondition" : "(b2 in B && b==23) || ∃ c M.(b2 in B && c>0)",
     "internal" : false,
     "externalCall" : false
   } ],
