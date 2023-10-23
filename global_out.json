@@ -71,7 +71,7 @@
     },
     "input" : "address b2:B",
     "preCondition" : "int c := 0",
-    "postCondition" : "(b2 in B && b==23) || ∃ c M.(b2 in B && c>0)",
+    "postCondition" : "(b2 in B && b==23) || ∃ c M.(b2 in B && c>0) || ∀ c M.(b2 in B && c>0)",
     "internal" : false,
     "externalCall" : false
   } ],

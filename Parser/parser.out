@@ -55,30 +55,31 @@ Rule 44    checkin -> ATOM IN ATOM
 Rule 45    existential -> EXISTS ATOM ATOM
 Rule 46    existential -> EXISTS ATOM ATOM DOT LPAR assertion RPAR
 Rule 47    forall -> FORALL ATOM ATOM
-Rule 48    freeze -> FREEZE ATOM ATOM
+Rule 48    forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR
+Rule 49    freeze -> FREEZE ATOM ATOM
 
 Terminals, with rules where they appear
 
 ACCEPTEDCHAR         : 
 AND                  : 20
 ASSIGNATION          : 33 34 35 36 37 39 40 41 42 43
-ATOM                 : 7 26 27 32 33 33 34 35 36 37 38 38 39 39 40 41 42 43 44 44 45 45 46 46 47 47 48 48
+ATOM                 : 7 26 27 32 33 33 34 35 36 37 38 38 39 39 40 41 42 43 44 44 45 45 46 46 47 47 48 48 49 49
 COLON                : 38
-DOT                  : 26 46
+DOT                  : 26 46 48
 EXISTS               : 45 46
 FALSE                : 9 29 35 41
-FORALL               : 47
-FREEZE               : 48
+FORALL               : 47 48
+FREEZE               : 49
 ID                   : 
 IN                   : 44
 INTEGER              : 30 36 42
-LPAR                 : 18 46
+LPAR                 : 18 46 48
 NOT                  : 11
 OPERATOR             : 25
 OR                   : 21
 PARTICIPANT          : 26
 REL_OP               : 19 24
-RPAR                 : 18 46
+RPAR                 : 18 46 48
 SEMICOLON            : 6
 STRING               : 31 37 43
 TRUE                 : 8 28 34 40
@@ -88,7 +89,7 @@ error                :
 Nonterminals, with rules where they appear
 
 and_op_assertion     : 12
-assertion            : 4 11 18 20 20 21 21 46
+assertion            : 4 11 18 20 20 21 21 46 48
 assignation          : 5
 checkin              : 14
 declaration          : 3
@@ -145,7 +146,8 @@ state 0
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -226,7 +228,8 @@ state 1
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -389,7 +392,8 @@ state 6
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -623,7 +627,8 @@ state 14
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -819,7 +824,8 @@ state 21
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -876,13 +882,14 @@ state 23
 state 24
 
     (47) forall -> FORALL . ATOM ATOM
+    (48) forall -> FORALL . ATOM ATOM DOT LPAR assertion RPAR
 
     ATOM            shift and go to state 42
 
 
 state 25
 
-    (48) freeze -> FREEZE . ATOM ATOM
+    (49) freeze -> FREEZE . ATOM ATOM
 
     ATOM            shift and go to state 43
 
@@ -986,7 +993,8 @@ state 30
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -1044,7 +1052,8 @@ state 31
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -1281,13 +1290,14 @@ state 41
 state 42
 
     (47) forall -> FORALL ATOM . ATOM
+    (48) forall -> FORALL ATOM . ATOM DOT LPAR assertion RPAR
 
     ATOM            shift and go to state 62
 
 
 state 43
 
-    (48) freeze -> FREEZE ATOM . ATOM
+    (49) freeze -> FREEZE ATOM . ATOM
 
     ATOM            shift and go to state 63
 
@@ -1695,6 +1705,7 @@ state 61
 state 62
 
     (47) forall -> FORALL ATOM ATOM .
+    (48) forall -> FORALL ATOM ATOM . DOT LPAR assertion RPAR
 
     AND             reduce using rule 47 (forall -> FORALL ATOM ATOM .)
     OR              reduce using rule 47 (forall -> FORALL ATOM ATOM .)
@@ -1713,29 +1724,30 @@ state 62
     STRING          reduce using rule 47 (forall -> FORALL ATOM ATOM .)
     $end            reduce using rule 47 (forall -> FORALL ATOM ATOM .)
     RPAR            reduce using rule 47 (forall -> FORALL ATOM ATOM .)
+    DOT             shift and go to state 73
 
 
 state 63
 
-    (48) freeze -> FREEZE ATOM ATOM .
+    (49) freeze -> FREEZE ATOM ATOM .
 
-    AND             reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    OR              reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    SEMICOLON       reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    VTYPE           reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    ATOM            reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    TRUE            reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    FALSE           reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    NOT             reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    LPAR            reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    EXISTS          reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    FORALL          reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    FREEZE          reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    PARTICIPANT     reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    INTEGER         reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    STRING          reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    $end            reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
-    RPAR            reduce using rule 48 (freeze -> FREEZE ATOM ATOM .)
+    AND             reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    OR              reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    SEMICOLON       reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    VTYPE           reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    ATOM            reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    TRUE            reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    FALSE           reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    NOT             reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    LPAR            reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    EXISTS          reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    FORALL          reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    FREEZE          reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    PARTICIPANT     reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    INTEGER         reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    STRING          reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    $end            reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
+    RPAR            reduce using rule 49 (freeze -> FREEZE ATOM ATOM .)
 
 
 state 64
@@ -1904,7 +1916,7 @@ state 71
     STRING          shift and go to state 12
     ATOM            shift and go to state 57
 
-    expression                     shift and go to state 73
+    expression                     shift and go to state 74
     fixedvalues                    shift and go to state 26
     variablename                   shift and go to state 27
 
@@ -1912,10 +1924,17 @@ state 72
 
     (46) existential -> EXISTS ATOM ATOM DOT . LPAR assertion RPAR
 
-    LPAR            shift and go to state 74
+    LPAR            shift and go to state 75
 
 
 state 73
+
+    (48) forall -> FORALL ATOM ATOM DOT . LPAR assertion RPAR
+
+    LPAR            shift and go to state 76
+
+
+state 74
 
     (24) expression -> expression REL_OP expression .
     (24) expression -> expression . REL_OP expression
@@ -1947,7 +1966,7 @@ state 73
   ! OPERATOR        [ reduce using rule 24 (expression -> expression REL_OP expression .) ]
 
 
-state 74
+state 75
 
     (46) existential -> EXISTS ATOM ATOM DOT LPAR . assertion RPAR
     (7) assertion -> . ATOM
@@ -1969,7 +1988,8 @@ state 74
     (45) existential -> . EXISTS ATOM ATOM
     (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
     (47) forall -> . FORALL ATOM ATOM
-    (48) freeze -> . FREEZE ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
     (22) expression -> . fixedvalues
     (23) expression -> . variablename
     (24) expression -> . expression REL_OP expression
@@ -1993,7 +2013,7 @@ state 74
     INTEGER         shift and go to state 11
     STRING          shift and go to state 12
 
-    assertion                      shift and go to state 75
+    assertion                      shift and go to state 77
     rel_op_assertion               shift and go to state 13
     and_op_assertion               shift and go to state 15
     or_op_assertion                shift and go to state 16
@@ -2005,18 +2025,88 @@ state 74
     fixedvalues                    shift and go to state 26
     variablename                   shift and go to state 27
 
-state 75
+state 76
+
+    (48) forall -> FORALL ATOM ATOM DOT LPAR . assertion RPAR
+    (7) assertion -> . ATOM
+    (8) assertion -> . TRUE
+    (9) assertion -> . FALSE
+    (10) assertion -> . rel_op_assertion
+    (11) assertion -> . NOT assertion
+    (12) assertion -> . and_op_assertion
+    (13) assertion -> . or_op_assertion
+    (14) assertion -> . checkin
+    (15) assertion -> . existential
+    (16) assertion -> . forall
+    (17) assertion -> . freeze
+    (18) assertion -> . LPAR assertion RPAR
+    (19) rel_op_assertion -> . expression REL_OP expression
+    (20) and_op_assertion -> . assertion AND assertion
+    (21) or_op_assertion -> . assertion OR assertion
+    (44) checkin -> . ATOM IN ATOM
+    (45) existential -> . EXISTS ATOM ATOM
+    (46) existential -> . EXISTS ATOM ATOM DOT LPAR assertion RPAR
+    (47) forall -> . FORALL ATOM ATOM
+    (48) forall -> . FORALL ATOM ATOM DOT LPAR assertion RPAR
+    (49) freeze -> . FREEZE ATOM ATOM
+    (22) expression -> . fixedvalues
+    (23) expression -> . variablename
+    (24) expression -> . expression REL_OP expression
+    (25) expression -> . expression OPERATOR expression
+    (26) expression -> . PARTICIPANT DOT ATOM
+    (28) fixedvalues -> . TRUE
+    (29) fixedvalues -> . FALSE
+    (30) fixedvalues -> . INTEGER
+    (31) fixedvalues -> . STRING
+    (27) variablename -> . ATOM
+
+    ATOM            shift and go to state 37
+    TRUE            shift and go to state 9
+    FALSE           shift and go to state 10
+    NOT             shift and go to state 14
+    LPAR            shift and go to state 21
+    EXISTS          shift and go to state 23
+    FORALL          shift and go to state 24
+    FREEZE          shift and go to state 25
+    PARTICIPANT     shift and go to state 28
+    INTEGER         shift and go to state 11
+    STRING          shift and go to state 12
+
+    assertion                      shift and go to state 78
+    rel_op_assertion               shift and go to state 13
+    and_op_assertion               shift and go to state 15
+    or_op_assertion                shift and go to state 16
+    checkin                        shift and go to state 17
+    existential                    shift and go to state 18
+    forall                         shift and go to state 19
+    freeze                         shift and go to state 20
+    expression                     shift and go to state 22
+    fixedvalues                    shift and go to state 26
+    variablename                   shift and go to state 27
+
+state 77
 
     (46) existential -> EXISTS ATOM ATOM DOT LPAR assertion . RPAR
     (20) and_op_assertion -> assertion . AND assertion
     (21) or_op_assertion -> assertion . OR assertion
 
-    RPAR            shift and go to state 76
+    RPAR            shift and go to state 79
     AND             shift and go to state 30
     OR              shift and go to state 31
 
 
-state 76
+state 78
+
+    (48) forall -> FORALL ATOM ATOM DOT LPAR assertion . RPAR
+    (20) and_op_assertion -> assertion . AND assertion
+    (21) or_op_assertion -> assertion . OR assertion
+
+    RPAR            shift and go to state 80
+    AND             shift and go to state 30
+    OR              shift and go to state 31
+
+
+state 79
 
     (46) existential -> EXISTS ATOM ATOM DOT LPAR assertion RPAR .
 
@@ -2038,6 +2128,29 @@ state 76
     $end            reduce using rule 46 (existential -> EXISTS ATOM ATOM DOT LPAR assertion RPAR .)
     RPAR            reduce using rule 46 (existential -> EXISTS ATOM ATOM DOT LPAR assertion RPAR .)
 
+
+state 80
+
+    (48) forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .
+
+    AND             reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    OR              reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    SEMICOLON       reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    VTYPE           reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    ATOM            reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    TRUE            reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    FALSE           reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    NOT             reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    LPAR            reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    EXISTS          reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    FORALL          reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    FREEZE          reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    PARTICIPANT     reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    INTEGER         reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    STRING          reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    $end            reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+    RPAR            reduce using rule 48 (forall -> FORALL ATOM ATOM DOT LPAR assertion RPAR .)
+
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
@@ -2051,5 +2164,5 @@ WARNING: shift/reduce conflict for REL_OP in state 56 resolved as shift
 WARNING: shift/reduce conflict for OPERATOR in state 56 resolved as shift
 WARNING: shift/reduce conflict for REL_OP in state 60 resolved as shift
 WARNING: shift/reduce conflict for OPERATOR in state 60 resolved as shift
-WARNING: shift/reduce conflict for REL_OP in state 73 resolved as shift
-WARNING: shift/reduce conflict for OPERATOR in state 73 resolved as shift
+WARNING: shift/reduce conflict for REL_OP in state 74 resolved as shift
+WARNING: shift/reduce conflict for OPERATOR in state 74 resolved as shift
