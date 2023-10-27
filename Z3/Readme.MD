@@ -23,10 +23,10 @@ Before you can run the code, make sure you have the following prerequisites inst
 3. **Execute the Code:** Open a terminal or command prompt and navigate to the directory where you have saved the code and the input JSON file. Run the Python script using the following command:
 
    ```bash
-   python .\Z3\converter.py
+   python .\Z3\Chercker.py
    ```
 
-   Replace `converter.py` with the name of the Python script that contains the provided code. This will execute the code and attempt to check the satisfiability of temporal logic properties.
+   Replace `Chercker.py` with the name of the Python script that contains the provided code. This will execute the code and attempt to check the satisfiability of temporal logic properties.
 
 4. **Check the Result:** The code will generate solver code based on the input JSON file and execute it. If the `check_resut` variable is `True`, it means that the temporal logic properties are satisfiable. You will see the message "satisfiable" printed to the console. If `check_resut` is not `True`, it means that the properties are not satisfiable.
 
