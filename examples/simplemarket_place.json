@@ -1,0 +1,69 @@
+{
+    "id" : "c",
+    "initialState" : "S0",
+    "statesDeclaration" : "int a := 10 ; bool c := True; set B := 0; set M ",
+    "states" : [ "S0", "S1", "S2" ],
+    "finalStates" : [ "S1" ],
+    "transitions" : [ {
+      "from" : "_",
+      "to" : "S1",
+      "actionLabel" : "starts",
+      "newParts" : [ {
+        "role" : "O",
+        "participants" : [ "o" ]
+      } ],
+      "existantParts" : {
+        "role" : "",
+        "participants" : [ ]
+      },
+      "input" : "",
+      "preCondition" : "True",
+      "postCondition" : "And(Or(False,True),True)",
+      "internal" : false,
+      "externalCall" : true
+    }, {
+      "from" : "S1",
+      "to" : "_",
+      "actionLabel" : "f1",
+      "newParts" : [ {
+        "role" : "O",
+        "participants" : [ "o" ]
+      } ],
+      "existantParts" : {
+        "role" : "",
+        "participants" : [ ]
+      },
+      "input" : "",
+      "preCondition" : "And(Or(False,True),True)",
+      "postCondition" : "",
+      "internal" : false,
+      "externalCall" : false
+    }, {
+      "from" : "S1",
+      "to" : "S2",
+      "actionLabel" : "OK",
+      "newParts" : [ {
+        "role" : "O",
+        "participants" : [ "o" ]
+      } ],
+      "existantParts" : {
+        "role" : "",
+        "participants" : [ ]
+      },
+      "input" : "",
+      "preCondition" : "And(Or(False,True),a >= 10)",
+      "postCondition" : "True",
+      "internal" : false,
+      "externalCall" : false
+    }],
+    "rPAssociation" : [ {
+        "role" : "O",
+        "participants" : [ "o" ]
+      }, {
+        "role" : "B",
+        "participants" : [ "b" ]
+      }, {
+        "role" : "D",
+        "participants" : [ "d" ]
+      } ]
+  }
