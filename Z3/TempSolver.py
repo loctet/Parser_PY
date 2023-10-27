@@ -28,6 +28,11 @@ class TempSolver(object):
                         initial_value = int(initial_value)
                         z3_var = f"{var_name} = Int('{var_name}')"
                         z3_var_init = f"{var_name} = {initial_value}"
+
+                    if var_type == 'string':
+                        initial_value = str(initial_value)
+                        z3_var = f"{var_name} = String('{var_name}')"
+                        z3_var_init = f"{var_name} = \"{initial_value}\""
                     
                     elif var_type == 'bool':
                         initial_value = bool(initial_value)
@@ -40,6 +45,8 @@ class TempSolver(object):
                     # Create Z3 variables without initial values
                     if var_type == 'int':
                         z3_var = f"{var_name} = Int('{var_name}')"
+                    if var_type == 'string':
+                        z3_var = f"{var_name} = String('{var_name}')"
                     elif var_type == 'float':
                         z3_var = f"{var_name} = Real('{var_name}')"
                     elif var_type == 'bool':

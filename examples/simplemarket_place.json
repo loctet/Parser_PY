@@ -1,7 +1,7 @@
 {
     "id" : "c",
     "initialState" : "S0",
-    "statesDeclaration" : "int a := 10 ; bool c := True; set B := 0; set M ",
+    "statesDeclaration" : "int a := 10 ; bool c := True; set B := 0; set M; string v = 'elvis'",
     "states" : [ "S0", "S1", "S2" ],
     "finalStates" : [ "S1" ],
     "transitions" : [ {
