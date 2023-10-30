@@ -8,7 +8,7 @@ def generate_fsm_graph(fsmTextJson):
     fsm = json.loads(fsmTextJson)
 
     states = fsm['states']
-    initial_states = fsm['initialStates']
+    initial_states = fsm['initialState']
     final_states = fsm['finalStates']
     transitions = fsm['transitions']
 
@@ -28,7 +28,7 @@ def generate_fsm_graph(fsmTextJson):
         if matches:
             node_attributes['external'] = True
 
-        if state == "N1":
+        if state == "_":
             node_attributes['open'] = True
 
         if state not in initial_states and state not in final_states and 'external' not in node_attributes and 'open' not in node_attributes:
@@ -38,7 +38,7 @@ def generate_fsm_graph(fsmTextJson):
 
     # Add transitions as edges
     for transition in transitions:
-        graph.add_edge(transition['from'], transition['to'], action=transition['actionCalled'])
+        graph.add_edge(transition['from'], transition['to'], action=transition['actionLabel'])
 
     return graph
 

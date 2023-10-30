@@ -39,7 +39,7 @@
       "input": "int _p",
       "existingParticipants": {},
       "actionLabel": "makeoffer",
-      "preCondition": "And(_p > 0, False)",
+      "preCondition": "And(_p > 0, state == True)",
       "postCondition": "price == _p",
       "externalAction": false
     },
