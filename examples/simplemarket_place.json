@@ -1,7 +1,7 @@
 {
   "id": "c",
   "initialState": "S0",
-  "statesDeclaration": "int price ; bool state",
+  "statesDeclaration": "int price ; bool state; array M := [1,2,3,4,5]",
   "states": [
     "S0",
     "S1",
@@ -75,7 +75,7 @@
       },
       "actionLabel": "OK",
       "preCondition": "True",
-      "postCondition": "Not(state)",
+      "postCondition": "And(Not(state), Or(forall(M, item > 0), exist(M, item > 0)))",
       "input": "",
       "externalAction": false
     },

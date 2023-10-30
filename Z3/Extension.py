@@ -1,4 +1,7 @@
 from z3 import *
+import re
+
+formulas = {}
 
 def is_in_set(value, set):
   value = str(value)
@@ -41,3 +44,43 @@ def forall_in_set(formula, set):
 
   # Check if the solver has a solution.
   return solver.check() == z3.sat
+
+# Function to parse and replace assertions
+def replace_assertion(assertion):
+    # Define a replacement function for re.sub
+
+    def replace(match):
+        if match.group(1) == 'in':
+            return f'is_in_set({match.group(2)}, {match.group(3)})'
+        elif match.group(1) == 'exist':
+            set_name = match.group(2)
+            formula = match.group(3)
+            # Define a function to evaluate the formula
+            formula_function = f"formula_{len(formulas)}"
+            formulas[formula_function] = formula
+            return f'exist_in_set({formula_function}, {set_name})'
+        elif match.group(1) == 'forall':
+            set_name = match.group(2)
+            formula = match.group(3)
+            # Define a function to evaluate the formula
+            formula_function = f"formula_{len(formulas)}"
+            formulas[formula_function] = formula
+            return f'forall_in_set({formula_function}, {set_name})'
+        else:
+            return match.group(0)
+
+    # Use re.sub with the replacement function to replace all occurrences
+    assertion = re.sub(r'(in|exist|forall)\((.*?), (.*?)\)', replace, assertion)
+
+    return assertion
+
+def generateFormulas():
+  code = ""
+  for name in formulas:
+    code += f"""\n
+def {name}(item):
+  solver = z3.Solver()
+  solver.add({formulas[name]})
+  return solver.check() == z3.sat
+  """
+  return code

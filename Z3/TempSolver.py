@@ -1,3 +1,4 @@
+from Extension import *
 
 class TempSolver(object):
     str_code = """"""
@@ -41,6 +42,9 @@ class TempSolver(object):
                         
                     elif var_type == 'set':
                         z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+
+                    elif var_type == 'array':
+                        z3_var = f"{var_name} = {initial_value}"
                 else:
                     # Create Z3 variables without initial values
                     if var_type == 'int':
@@ -53,6 +57,8 @@ class TempSolver(object):
                         z3_var = f"{var_name} = Bool('{var_name}')"
                     elif var_type == 'set':
                         z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+                    elif var_type == 'array':
+                        z3_var = f"{var_name} = []"
 
                 if z3_var is not None:
                     result += f"{z3_var}\n"
@@ -90,6 +96,9 @@ class TempSolver(object):
         if func not in self.solvers:
             self.solvers[func] = []
 
+        pre = replace_assertion(pre)
+        post = replace_assertion(post)
+
         self.solvers[func].append({
             'sname': f'solver_{func}',
             'snamePr': f'solver_{func}_pr',
@@ -102,12 +111,16 @@ class TempSolver(object):
             'spost': f"solver_{func}_po.add({post})",
             'sCore': f"solver_{func}.add(And(solver_{func}_pr.check() == z3.sat, solver_{func}_po.check() == z3.sat))"
         })
+
     def generate_solver_code(self, result_var):
+        #create formulas functions
+        self.append(generateFormulas())
+        
+        #Add roles to the model 
         for role  in self.roles:
             self.append(self.roles[role]["declaration"])
             self.append("\n".join(self.roles[role]["list"]))
         
-
         checks = []
         for s in self.solvers:
            self.append("\n")
@@ -128,8 +141,6 @@ class TempSolver(object):
         for s in self.solvers:
            self.append("\n")
            for item in self.solvers[s]:
-                code += f"print('{item['snamePr']}')\n"
-                code += f"print({item['snamePr']}.model())\n"
-                code += f"print('{item['snamePo']}')\n"
-                code += f"print({item['snamePo']}.model())\n"
+                code += f"print({item['snamePr']}.model()) if {item['snamePr']}.check() == z3.sat else print('{item['snamePr']}')\n"
+                code += f"print({item['snamePo']}.model()) if {item['snamePo']}.check() == z3.sat else print('{item['snamePo']}')\n"
         return code
