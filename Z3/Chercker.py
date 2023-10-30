@@ -26,11 +26,17 @@ for transition in transitions:
     temp.add_assertion(preC, postC, transition['actionLabel'], transition['input'])
 
 str_code = temp.generate_solver_code("check_resut")
-print(str_code)
+
 exec(str_code)
 
 if  check_resut == True:
-   print("satisfiable")
+    print("satisfiable")
+else:
+    print("unSatisfiable")
+
+print("(Check the generated file str_code.py to fine the z3 code generated)")
+
+str_code += temp.dump_models()
 
 
 # Specify the file name with a .py extension

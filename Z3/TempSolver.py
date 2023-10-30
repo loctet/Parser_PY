@@ -92,23 +92,44 @@ class TempSolver(object):
 
         self.solvers[func].append({
             'sname': f'solver_{func}',
+            'snamePr': f'solver_{func}_pr',
+            'snamePo': f'solver_{func}_po',
             'sinit': f'solver_{func} = z3.Solver()',
+            'sinitPr': f'solver_{func}_pr = z3.Solver()',
+            'sinitPo': f'solver_{func}_po = z3.Solver()',
             'sparams': self.convert_to_z3_declarations(params),
-            'spre': f"solver_{func}.add({pre})",
-            'spost': f"solver_{func}.add({post})"
+            'spre': f"solver_{func}_pr.add({pre})",
+            'spost': f"solver_{func}_po.add({post})",
+            'sCore': f"solver_{func}.add(And(solver_{func}_pr.check() == z3.sat, solver_{func}_po.check() == z3.sat))"
         })
     def generate_solver_code(self, result_var):
         for role  in self.roles:
             self.append(self.roles[role]["declaration"])
             self.append("\n".join(self.roles[role]["list"]))
         
+
         checks = []
-        for l in self.solvers:
-           for item in self.solvers[l]:
+        for s in self.solvers:
+           self.append("\n")
+           for item in self.solvers[s]:
                 self.append(item["sinit"])
+                self.append(item["sinitPr"])
+                self.append(item["sinitPo"])
                 self.append(item["sparams"])
                 self.append(item["spre"])
                 self.append(item["spost"])
+                self.append(item["sCore"])
                 checks.append(f"{item['sname']}.check() == z3.sat")
         self.append(f"{result_var} = (" + " and ".join(checks) + ")")
         return self.str_code
+
+    def dump_models(self):
+        code = ""
+        for s in self.solvers:
+           self.append("\n")
+           for item in self.solvers[s]:
+                code += f"print('{item['snamePr']}')\n"
+                code += f"print({item['snamePr']}.model())\n"
+                code += f"print('{item['snamePo']}')\n"
+                code += f"print({item['snamePo']}.model())\n"
+        return code

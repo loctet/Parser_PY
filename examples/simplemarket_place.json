@@ -1,69 +1,135 @@
 {
-    "id" : "c",
-    "initialState" : "S0",
-    "statesDeclaration" : "int a := 10 ; bool c := True; set B := 0; set M; string v = 'elvis'",
-    "states" : [ "S0", "S1", "S2" ],
-    "finalStates" : [ "S1" ],
-    "transitions" : [ {
-      "from" : "_",
-      "to" : "S1",
-      "actionLabel" : "starts",
-      "newParts" : [ {
-        "role" : "O",
-        "participants" : [ "o" ]
-      } ],
-      "existantParts" : {
-        "role" : "",
-        "participants" : [ ]
+  "id": "c",
+  "initialState": "S0",
+  "statesDeclaration": "int price ; bool state",
+  "states": [
+    "S0",
+    "S1",
+    "S2"
+  ],
+  "finalStates": [
+    "S1"
+  ],
+  "transitions": [
+    {
+      "from": "_",
+      "to": "S0",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {
+        "c": "C"
       },
-      "input" : "",
-      "preCondition" : "True",
-      "postCondition" : "And(Or(False,True),True)",
-      "internal" : false,
-      "externalCall" : true
-    }, {
-      "from" : "S1",
-      "to" : "_",
-      "actionLabel" : "f1",
-      "newParts" : [ {
-        "role" : "O",
-        "participants" : [ "o" ]
-      } ],
-      "existantParts" : {
-        "role" : "",
-        "participants" : [ ]
+      "existingParticipants": {},
+      "actionLabel": "start",
+      "preCondition": "True",
+      "postCondition": "state==True",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S0",
+      "to": "S1",
+      "initialStates": [
+        "S0"
+      ],
+      "finalStates": [],
+      "newParticipants": {
+        "b": "B"
       },
-      "input" : "",
-      "preCondition" : "And(Or(False,True),True)",
-      "postCondition" : "",
-      "internal" : false,
-      "externalCall" : false
-    }, {
-      "from" : "S1",
-      "to" : "S2",
-      "actionLabel" : "OK",
-      "newParts" : [ {
-        "role" : "O",
-        "participants" : [ "o" ]
-      } ],
-      "existantParts" : {
-        "role" : "",
-        "participants" : [ ]
+      "input": "int _p",
+      "existingParticipants": {},
+      "actionLabel": "makeoffer",
+      "preCondition": "And(_p > 0, False)",
+      "postCondition": "price == _p",
+      "externalAction": false
+    },
+    {
+      "from": "S1",
+      "to": "I1",
+      "initialStates": [],
+      "finalStates": [
+        "S2"
+      ],
+      "newParticipants": {},
+      "existingParticipants": {
+        "o": ""
       },
-      "input" : "",
-      "preCondition" : "And(Or(False,True),a >= 10)",
-      "postCondition" : "True",
-      "internal" : false,
-      "externalCall" : false
-    }],
-    "rPAssociation" : [ {
-        "role" : "O",
-        "participants" : [ "o" ]
-      }, {
-        "role" : "B",
-        "participants" : [ "b" ]
-      }, {
-        "role" : "D",
-        "participants" : [ "d" ]
-      } ]
-  }
+      "actionLabel": "acceptoffer",
+      "preCondition": "state",
+      "postCondition": "Not(state)",
+      "input": "",
+      "externalAction": true,
+      "externalActionList": [
+        "I1 c>OK() S2",
+        "I1 c>NOK() S1"
+      ]
+    },
+    {
+      "from": "I1",
+      "to": "S2",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {},
+      "existingParticipants": {
+        "c": ""
+      },
+      "actionLabel": "OK",
+      "preCondition": "True",
+      "postCondition": "Not(state)",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "I1",
+      "to": "S1",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {},
+      "existingParticipants": {
+        "c": ""
+      },
+      "actionLabel": "NOK",
+      "preCondition": "True",
+      "postCondition": "state",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S1",
+      "to": "S3",
+      "initialStates": [],
+      "finalStates": [
+        "S3"
+      ],
+      "newParticipants": {},
+      "existingParticipants": {
+        "o": ""
+      },
+      "actionLabel": "rejectoffer",
+      "preCondition": "state",
+      "postCondition": "Not(state)",
+      "input": "",
+      "externalAction": false
+    }
+  ],
+  "rPAssociation": [
+    {
+      "role": "O",
+      "participants": [
+        "o"
+      ]
+    },
+    {
+      "role": "B",
+      "participants": [
+        "b"
+      ]
+    },
+    {
+      "role": "D",
+      "participants": [
+        "d"
+      ]
+    }
+  ]
+}
