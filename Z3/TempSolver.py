@@ -66,6 +66,7 @@ class TempSolver(object):
                         result += f"{z3_var_init}\n"
         return result
     
+    #add a participant
     def add_participant(self, role, participant, index):
         if role not in self.roles:
             self.roles[role] = {
@@ -78,9 +79,9 @@ class TempSolver(object):
     def if_part_in_subset(self, participant, role):
         if role not in self.roles:
             return False
-
         return participant in self.roles[role]
     
+    #Participants Adding list
     def add_participants(self, data):
         for entry in data:
             index = 0
@@ -88,7 +89,7 @@ class TempSolver(object):
                 self.add_participant(entry["role"], participant, index)
                 index += 1
 
-
+    #Append to the global Code Model
     def append(self, str):
        self.str_code += str + "\n"
 
