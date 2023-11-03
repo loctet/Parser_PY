@@ -69,9 +69,10 @@ Here is a description of the JSON file that defines the Finite State Machine (FS
         "role" : "",
         "participants" : [ ]
       },
-      "input" : "",
       "preCondition" : "True",
       "postCondition" : "And(Or(False,True),True)",
+      "input" : "",
+      "varUpdate": "",
       "internal" : false,
       "externalCall" : true
     }, {
@@ -86,9 +87,10 @@ Here is a description of the JSON file that defines the Finite State Machine (FS
         "role" : "",
         "participants" : [ ]
       },
-      "input" : "",
       "preCondition" : "And(Or(False,True),True)",
       "postCondition" : "",
+      "input" : "",
+      "varUpdate": "",
       "internal" : false,
       "externalCall" : false
     }, {
@@ -103,9 +105,10 @@ Here is a description of the JSON file that defines the Finite State Machine (FS
         "role" : "",
         "participants" : [ ]
       },
-      "input" : "",
       "preCondition" : "And(Or(False,True),a >= 10)",
       "postCondition" : "True",
+      "input" : "",
+      "varUpdate": "",
       "internal" : false,
       "externalCall" : false
     }],
@@ -137,5 +140,7 @@ Here is a description of the JSON file that defines the Finite State Machine (FS
 - `"transitions"`: This section defines the transitions in the FSM. It includes transitions from the initial state to "S1" labeled as "starts," a self-transition in "S1" labeled as "f1," and a transition from "S1" to "S2" labeled as "OK." Each transition specifies preconditions, postconditions, and other details.
 
 - `"rPAssociation"`: This section defines role-participant associations, including the roles "O," "B," and "D" associated with participants "o," "b," and "d," respectively.
+
+- `"varUpdate"` : This is where to add how a function changes the state of vaiables
 
 The JSON file provides the necessary information for the FSM and its properties, which is used by the code to check the satisfiability of temporal logic properties associated with the transitions in the FSM.
