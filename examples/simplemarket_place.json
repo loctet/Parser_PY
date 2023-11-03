@@ -1,7 +1,7 @@
 {
   "id": "c",
   "initialState": "S0",
-  "statesDeclaration": "int price ; bool state; array M := [1,2,3,4,5]",
+  "statesDeclaration": "int price ; bool state; array M := [1,2,3,4,5]; int x := 0",
   "states": [
     "S0",
     "S1",
@@ -24,6 +24,7 @@
       "preCondition": "True",
       "postCondition": "state==True",
       "input": "",
+      "varUpdate": "",
       "externalAction": false
     },
     {
@@ -36,11 +37,12 @@
       "newParticipants": {
         "b": "B"
       },
-      "input": "int _p",
       "existingParticipants": {},
       "actionLabel": "makeoffer",
       "preCondition": "And(_p > 0, state == True)",
       "postCondition": "price == _p",
+      "input": "int _p",
+      "varUpdate": "",
       "externalAction": false
     },
     {
@@ -58,6 +60,7 @@
       "preCondition": "state",
       "postCondition": "Not(state)",
       "input": "",
+      "varUpdate": "",
       "externalAction": true,
       "externalActionList": [
         "I1 c>OK() S2",
@@ -75,9 +78,11 @@
       },
       "actionLabel": "OK",
       "preCondition": "True",
-      "postCondition": "And(Not(state), Or(forall(M, item > 0), exist(M, item > 0)))",
+      "postCondition": "And(Not(state), And(forall(M, item > 0), exist(M, item > 0)))",
       "input": "",
-      "externalAction": false
+      "varUpdate": "M[-1] := -5", 
+      "externalAction": false,
+      "Comment": "The model will fail because we update table with a value that will make the model having error"
     },
     {
       "from": "I1",
@@ -90,8 +95,9 @@
       },
       "actionLabel": "NOK",
       "preCondition": "True",
-      "postCondition": "state",
+      "postCondition": "And(state, x <= 10)",
       "input": "",
+      "varUpdate": "x := 0",
       "externalAction": false
     },
     {
@@ -109,6 +115,7 @@
       "preCondition": "state",
       "postCondition": "Not(state)",
       "input": "",
+      "varUpdate": "",
       "externalAction": false
     }
   ],

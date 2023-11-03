@@ -31,7 +31,7 @@ temp.append(temp.convert_to_z3_declarations(declarations_str))
 for transition in transitions:
     preC = transition['preCondition']
     postC = transition['postCondition']
-    temp.add_assertion(preC, postC, transition['actionLabel'], transition['input'])
+    temp.add_assertion(preC, postC, transition['actionLabel'], transition['input'], transition['varUpdate'])
 
 str_code = temp.generate_solver_code("check_resut")
 
@@ -46,7 +46,7 @@ else:
 
 print("(Check the generated file str_code.py to fine the z3 code generated)")
 
-str_code += temp.dump_models()
+#str_code += temp.dump_models()
 #save with models in case it executes
-save_infile(str_code)
+#save_infile(str_code)
 

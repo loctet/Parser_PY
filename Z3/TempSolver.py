@@ -4,12 +4,13 @@ class TempSolver(object):
     str_code = """"""
     solvers = {}
     roles = {}
+    deploy_init_var_val = []
 
     def __init__(self):
        self.solvers['starts'] = []
     
     
-    def convert_to_z3_declarations(self, declarations_str):
+    def convert_to_z3_declarations(self, declarations_str, deploy = True):
         declarations = declarations_str.split(';')  # Split input into separate variable declarations
         declarations = [declaration.strip() for declaration in declarations if declaration.strip()]  # Remove any empty declarations
         result = ""
@@ -44,7 +45,8 @@ class TempSolver(object):
                         z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
 
                     elif var_type == 'array':
-                        z3_var = f"{var_name} = {initial_value}"
+                        z3_var = f"{var_name} = []"
+                        z3_var_init = f"{var_name} = {initial_value}"
                 else:
                     # Create Z3 variables without initial values
                     if var_type == 'int':
@@ -64,7 +66,43 @@ class TempSolver(object):
                     result += f"{z3_var}\n"
                     if z3_var_init is not None:
                         result += f"{z3_var_init}\n"
+                        self.deploy_init_var_val.append(z3_var_init)
         return result
+    
+    
+    def safe_variable_assignment(self, assignation_str):
+        # Split the input string into individual assignments
+        assignments = assignation_str.split(';')
+
+        result = []
+
+        for assignment in assignments:
+            # Split each assignment into variable name and value
+            parts = assignment.strip().split(':=')
+            
+            # Ensure there are exactly two parts (variable name and value)
+            if len(parts) != 2:
+                return ""
+
+            variable_name, value = parts
+            partern = "r'[^\[\]{}()]*[^\[\]{}()\s]'"
+            result.append(f"""
+    # Define a regular expression pattern to match variable names inside brackets or parentheses
+    pattern = {partern}
+    # Use re.search to find the first match in the expression
+    match = re.search(pattern, "{variable_name.strip()}")
+    
+    # Check if the variable exists in locals() or globals()
+    if match.group(0) in globals():
+        # If the variable exists, create a valid assignment
+        {variable_name} = {value}
+    else:
+        raise NameError(f"State Variable '{{match.group(0)}}' does not exist")
+""")
+        # Join the generated assignments with newline characters
+        generated_code = "\n".join(result)
+
+        return generated_code 
     
     #add a participant
     def add_participant(self, role, participant, index):
@@ -93,7 +131,7 @@ class TempSolver(object):
     def append(self, str):
        self.str_code += str + "\n"
 
-    def add_assertion(self, pre, post, func = 'starts', params = ""):
+    def add_assertion(self, pre, post, func = 'starts', params = "", updateVars = ""):
         if func not in self.solvers:
             self.solvers[func] = []
 
@@ -102,15 +140,11 @@ class TempSolver(object):
 
         self.solvers[func].append({
             'sname': f'solver_{func}',
-            'snamePr': f'solver_{func}_pr',
-            'snamePo': f'solver_{func}_po',
-            'sinit': f'solver_{func} = z3.Solver()',
-            'sinitPr': f'solver_{func}_pr = z3.Solver()',
-            'sinitPo': f'solver_{func}_po = z3.Solver()',
+            'snameF': f'_{func}_{len(self.solvers[func])}',
             'sparams': self.convert_to_z3_declarations(params),
-            'spre': f"solver_{func}_pr.add({pre})",
-            'spost': f"solver_{func}_po.add({post})",
-            'sCore': f"solver_{func}.add(And(solver_{func}_pr.check() == z3.sat, solver_{func}_po.check() == z3.sat))"
+            'sVarUpdate': self.safe_variable_assignment(updateVars),
+            'spre': f"{pre}",
+            'spost': f"{post}"
         })
 
     def generate_solver_code(self, result_var):
@@ -121,19 +155,32 @@ class TempSolver(object):
         for role  in self.roles:
             self.append(self.roles[role]["declaration"])
             self.append("\n".join(self.roles[role]["list"]))
+            
+        deploy_vars = "\n    ".join(self.deploy_init_var_val)    
+        self.append(f"""
+def reset_deploy_vars():
+    {deploy_vars}
+""")
         
         checks = []
         for s in self.solvers:
            self.append("\n")
            for item in self.solvers[s]:
-                self.append(item["sinit"])
-                self.append(item["sinitPr"])
-                self.append(item["sinitPo"])
-                self.append(item["sparams"])
-                self.append(item["spre"])
-                self.append(item["spost"])
-                self.append(item["sCore"])
-                checks.append(f"{item['sname']}.check() == z3.sat")
+                self.append(f"""
+def {item['snameF']}(reset = True):
+    if reset:
+        reset_deploy_vars()
+    {item["sparams"]}
+    {item['sVarUpdate']}
+    solver_{item['snameF']} = z3.Solver()
+    solver_{item['snameF']}.push()
+    solver_{item['snameF']}.add({item['spre']})
+    _pre = solver_{item['snameF']}.check()
+    solver_{item['snameF']}.pop()
+    solver_{item['snameF']}.add(And(_pre == z3.sat, {item['spost']}))
+    return solver_{item['snameF']}.check() == z3.sat
+                            """)
+                checks.append(f"{item['snameF']}()")
         self.append(f"{result_var} = (" + " and ".join(checks) + ")")
         return self.str_code
 

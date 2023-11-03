@@ -3,7 +3,10 @@ from Z3.Extension import *
 
 price = Int('price')
 state = Bool('state')
+M = []
 M = [1,2,3,4,5]
+x = Int('x')
+x = 0
 
 
 
@@ -25,72 +28,131 @@ Store(role_B, 0, String('b'))
 role_D = Array('D',IntSort() , StringSort())
 Store(role_D, 0, String('d'))
 
+def reset_deploy_vars():
+    M = [1,2,3,4,5]
+    x = 0
 
 
 
-solver_start = z3.Solver()
-solver_start_pr = z3.Solver()
-solver_start_po = z3.Solver()
-
-solver_start_pr.add(True)
-solver_start_po.add(state==True)
-solver_start.add(And(solver_start_pr.check() == z3.sat, solver_start_po.check() == z3.sat))
 
 
-solver_makeoffer = z3.Solver()
-solver_makeoffer_pr = z3.Solver()
-solver_makeoffer_po = z3.Solver()
-_p = Int('_p')
 
-solver_makeoffer_pr.add(And(_p > 0, state == True))
-solver_makeoffer_po.add(price == _p)
-solver_makeoffer.add(And(solver_makeoffer_pr.check() == z3.sat, solver_makeoffer_po.check() == z3.sat))
-
-
-solver_acceptoffer = z3.Solver()
-solver_acceptoffer_pr = z3.Solver()
-solver_acceptoffer_po = z3.Solver()
-
-solver_acceptoffer_pr.add(state)
-solver_acceptoffer_po.add(Not(state))
-solver_acceptoffer.add(And(solver_acceptoffer_pr.check() == z3.sat, solver_acceptoffer_po.check() == z3.sat))
+def _start_0(reset = True):
+    if reset:
+        reset_deploy_vars()
+    
+    
+    solver__start_0 = z3.Solver()
+    solver__start_0.push()
+    solver__start_0.add(True)
+    _pre = solver__start_0.check()
+    solver__start_0.pop()
+    solver__start_0.add(And(_pre == z3.sat, state==True))
+    return solver__start_0.check() == z3.sat
+                            
 
 
-solver_OK = z3.Solver()
-solver_OK_pr = z3.Solver()
-solver_OK_po = z3.Solver()
 
-solver_OK_pr.add(True)
-solver_OK_po.add(And(Not(state), Or(forall_in_set(formula_0, M), exist_in_set(formula_1, M))))
-solver_OK.add(And(solver_OK_pr.check() == z3.sat, solver_OK_po.check() == z3.sat))
+def _makeoffer_0(reset = True):
+    if reset:
+        reset_deploy_vars()
+    _p = Int('_p')
+
+    
+    solver__makeoffer_0 = z3.Solver()
+    solver__makeoffer_0.push()
+    solver__makeoffer_0.add(And(_p > 0, state == True))
+    _pre = solver__makeoffer_0.check()
+    solver__makeoffer_0.pop()
+    solver__makeoffer_0.add(And(_pre == z3.sat, price == _p))
+    return solver__makeoffer_0.check() == z3.sat
+                            
 
 
-solver_NOK = z3.Solver()
-solver_NOK_pr = z3.Solver()
-solver_NOK_po = z3.Solver()
 
-solver_NOK_pr.add(True)
-solver_NOK_po.add(state)
-solver_NOK.add(And(solver_NOK_pr.check() == z3.sat, solver_NOK_po.check() == z3.sat))
+def _acceptoffer_0(reset = True):
+    if reset:
+        reset_deploy_vars()
+    
+    
+    solver__acceptoffer_0 = z3.Solver()
+    solver__acceptoffer_0.push()
+    solver__acceptoffer_0.add(state)
+    _pre = solver__acceptoffer_0.check()
+    solver__acceptoffer_0.pop()
+    solver__acceptoffer_0.add(And(_pre == z3.sat, Not(state)))
+    return solver__acceptoffer_0.check() == z3.sat
+                            
 
 
-solver_rejectoffer = z3.Solver()
-solver_rejectoffer_pr = z3.Solver()
-solver_rejectoffer_po = z3.Solver()
 
-solver_rejectoffer_pr.add(state)
-solver_rejectoffer_po.add(Not(state))
-solver_rejectoffer.add(And(solver_rejectoffer_pr.check() == z3.sat, solver_rejectoffer_po.check() == z3.sat))
-check_resut = (solver_start.check() == z3.sat and solver_makeoffer.check() == z3.sat and solver_acceptoffer.check() == z3.sat and solver_OK.check() == z3.sat and solver_NOK.check() == z3.sat and solver_rejectoffer.check() == z3.sat)
-print(solver_start_pr.model()) if solver_start_pr.check() == z3.sat else print('solver_start_pr')
-print(solver_start_po.model()) if solver_start_po.check() == z3.sat else print('solver_start_po')
-print(solver_makeoffer_pr.model()) if solver_makeoffer_pr.check() == z3.sat else print('solver_makeoffer_pr')
-print(solver_makeoffer_po.model()) if solver_makeoffer_po.check() == z3.sat else print('solver_makeoffer_po')
-print(solver_acceptoffer_pr.model()) if solver_acceptoffer_pr.check() == z3.sat else print('solver_acceptoffer_pr')
-print(solver_acceptoffer_po.model()) if solver_acceptoffer_po.check() == z3.sat else print('solver_acceptoffer_po')
-print(solver_OK_pr.model()) if solver_OK_pr.check() == z3.sat else print('solver_OK_pr')
-print(solver_OK_po.model()) if solver_OK_po.check() == z3.sat else print('solver_OK_po')
-print(solver_NOK_pr.model()) if solver_NOK_pr.check() == z3.sat else print('solver_NOK_pr')
-print(solver_NOK_po.model()) if solver_NOK_po.check() == z3.sat else print('solver_NOK_po')
-print(solver_rejectoffer_pr.model()) if solver_rejectoffer_pr.check() == z3.sat else print('solver_rejectoffer_pr')
-print(solver_rejectoffer_po.model()) if solver_rejectoffer_po.check() == z3.sat else print('solver_rejectoffer_po')
+def _OK_0(reset = True):
+    if reset:
+        reset_deploy_vars()
+    
+    
+    # Define a regular expression pattern to match variable names inside brackets or parentheses
+    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
+    # Use re.search to find the first match in the expression
+    match = re.search(pattern, "M[-1]")
+    
+    # Check if the variable exists in locals() or globals()
+    if match.group(0) in globals():
+        # If the variable exists, create a valid assignment
+        M[-1]  =  -5
+    else:
+        raise NameError(f"State Variable '{match.group(0)}' does not exist")
+
+    solver__OK_0 = z3.Solver()
+    solver__OK_0.push()
+    solver__OK_0.add(True)
+    _pre = solver__OK_0.check()
+    solver__OK_0.pop()
+    solver__OK_0.add(And(_pre == z3.sat, And(Not(state), And(forall_in_set(formula_0, M), exist_in_set(formula_1, M)))))
+    return solver__OK_0.check() == z3.sat
+                            
+
+
+
+def _NOK_0(reset = True):
+    if reset:
+        reset_deploy_vars()
+    
+    
+    # Define a regular expression pattern to match variable names inside brackets or parentheses
+    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
+    # Use re.search to find the first match in the expression
+    match = re.search(pattern, "x")
+    
+    # Check if the variable exists in locals() or globals()
+    if match.group(0) in globals():
+        # If the variable exists, create a valid assignment
+        x  =  0
+    else:
+        raise NameError(f"State Variable '{match.group(0)}' does not exist")
+
+    solver__NOK_0 = z3.Solver()
+    solver__NOK_0.push()
+    solver__NOK_0.add(True)
+    _pre = solver__NOK_0.check()
+    solver__NOK_0.pop()
+    solver__NOK_0.add(And(_pre == z3.sat, And(state, x <= 10)))
+    return solver__NOK_0.check() == z3.sat
+                            
+
+
+
+def _rejectoffer_0(reset = True):
+    if reset:
+        reset_deploy_vars()
+    
+    
+    solver__rejectoffer_0 = z3.Solver()
+    solver__rejectoffer_0.push()
+    solver__rejectoffer_0.add(state)
+    _pre = solver__rejectoffer_0.check()
+    solver__rejectoffer_0.pop()
+    solver__rejectoffer_0.add(And(_pre == z3.sat, Not(state)))
+    return solver__rejectoffer_0.check() == z3.sat
+                            
+check_resut = (_start_0() and _makeoffer_0() and _acceptoffer_0() and _OK_0() and _NOK_0() and _rejectoffer_0())
