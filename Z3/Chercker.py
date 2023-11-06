@@ -54,6 +54,9 @@ for key in grouped_transitions:
         inputs = [x for x in inputs if x != ""]
         temp.add_assertion(preC, postCs, actionL, inputs, varUpdate)
         
+        if to not in grouped_transitions and to not in fsm['finalStates']:
+            print(f"Warning: {to} is not a final state but has no trasitions from {to}")
+        
 str_code = temp.generate_solver_code("check_resut")
 
 #save before sexecute
