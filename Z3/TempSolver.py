@@ -70,7 +70,7 @@ class TempSolver(object):
         return result
     
     
-    def safe_variable_assignment(self, assignation_str):
+    def safe_variable_assignment(self, assignation_str, solver_name):
         # Split the input string into individual assignments
         assignments = assignation_str.split(';')
 
@@ -96,6 +96,7 @@ class TempSolver(object):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         {variable_name} = {value}
+        {solver_name}.add({variable_name} == {value})
     else:
         raise NameError(f"State Variable '{{match.group(0)}}' does not exist")
 """)
@@ -131,20 +132,21 @@ class TempSolver(object):
     def append(self, str):
        self.str_code += str + "\n"
 
-    def add_assertion(self, pre, post, func = 'starts', params = "", updateVars = ""):
+    def add_assertion(self, pre, postS, func = 'starts', inputs = [], updateVars = ""):
         if func not in self.solvers:
             self.solvers[func] = []
 
         pre = replace_assertion(pre)
-        post = replace_assertion(post)
+        postS = [replace_assertion(item) for item in postS]
+        postS = postS if len(postS) > 0 else ["True"]
 
         self.solvers[func].append({
             'sname': f'solver_{func}',
             'snameF': f'_{func}_{len(self.solvers[func])}',
-            'sparams': self.convert_to_z3_declarations(params),
-            'sVarUpdate': self.safe_variable_assignment(updateVars),
+            'sparams': self.convert_to_z3_declarations(";".join(inputs)),
+            'sVarUpdate': self.safe_variable_assignment(updateVars, f'solver_'+ f'_{func}_{len(self.solvers[func])}'),
             'spre': f"{pre}",
-            'spost': f"{post}"
+            'spost': f"Or({','.join(postS)})"
         })
 
     def generate_solver_code(self, result_var):
@@ -167,28 +169,36 @@ def reset_deploy_vars():
            self.append("\n")
            for item in self.solvers[s]:
                 self.append(f"""
-def {item['snameF']}(reset = True):
+def {item['snameF']}(reset = False):
+    #reset global var to execute functions independenly
     if reset:
         reset_deploy_vars()
+    # Declare variable before checking the precondition    
     {item["sparams"]}
-    {item['sVarUpdate']}
+    
+    #building the solver for the predancontion
     solver_{item['snameF']} = z3.Solver()
+    #set the stack init
     solver_{item['snameF']}.push()
     solver_{item['snameF']}.add({item['spre']})
+    #getting the check result of the precondition
     _pre = solver_{item['snameF']}.check()
+    
+    #update the states variable 
+    {item['sVarUpdate']}
+    
+    #remove the pre con to check the post or other precond
     solver_{item['snameF']}.pop()
     solver_{item['snameF']}.add(And(_pre == z3.sat, {item['spost']}))
     return solver_{item['snameF']}.check() == z3.sat
                             """)
-                checks.append(f"{item['snameF']}()")
+                checks.append(f"{item['snameF']}(True)")
         self.append(f"{result_var} = (" + " and ".join(checks) + ")")
         return self.str_code
 
     def dump_models(self):
         code = ""
         for s in self.solvers:
-           self.append("\n")
            for item in self.solvers[s]:
-                code += f"print({item['snamePr']}.model()) if {item['snamePr']}.check() == z3.sat else print('{item['snamePr']}')\n"
-                code += f"print({item['snamePo']}.model()) if {item['snamePo']}.check() == z3.sat else print('{item['snamePo']}')\n"
+                code += f"\n\nprint('{item['snameF']}: ',{item['snameF']}(True))"
         return code

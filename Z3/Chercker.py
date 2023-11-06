@@ -10,6 +10,18 @@ def save_infile(str_code):
     with open(file_name, "w") as file:
         file.write(f"from z3 import * \nfrom Z3.Extension import *\n\n{str_code}")
 
+def group_transactions(transitions):
+    # Create a dictionary to store transitions grouped by "to" state
+    transitions_by_to_state = {}
+    # Group transitions by "to" state
+    for transition in transitions:
+        to_state = transition["from"]
+        if to_state not in transitions_by_to_state:
+            transitions_by_to_state[to_state] = []
+        transitions_by_to_state[to_state].append(transition)
+    return transitions_by_to_state
+
+
 check_resut = None 
 
 input_path = "./examples/simplemarket_place.json"
@@ -28,11 +40,20 @@ temp = TempSolver()
 temp.add_participants(fsm['rPAssociation'])
 temp.append(temp.convert_to_z3_declarations(declarations_str))
 
-for transition in transitions:
-    preC = transition['preCondition']
-    postC = transition['postCondition']
-    temp.add_assertion(preC, postC, transition['actionLabel'], transition['input'], transition['varUpdate'])
+grouped_transitions = group_transactions(transitions)
 
+for key in grouped_transitions:
+    for transition in grouped_transitions[key]:
+        preC = transition['preCondition']
+        to = transition['to']
+        actionL = transition['actionLabel']
+        varUpdate = transition['varUpdate']
+        postCs = [item['preCondition'] for item in grouped_transitions.get(to, [])]
+        inputs = [item['input'] for item in grouped_transitions.get(to, [])]
+        inputs.append(transition['input'])
+        inputs = [x for x in inputs if x != ""]
+        temp.add_assertion(preC, postCs, actionL, inputs, varUpdate)
+        
 str_code = temp.generate_solver_code("check_resut")
 
 #save before sexecute
@@ -46,7 +67,6 @@ else:
 
 print("(Check the generated file str_code.py to fine the z3 code generated)")
 
-#str_code += temp.dump_models()
+str_code += temp.dump_models()
 #save with models in case it executes
-#save_infile(str_code)
-
+save_infile(str_code)
