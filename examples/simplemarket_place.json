@@ -22,9 +22,8 @@
       "existingParticipants": {},
       "actionLabel": "start",
       "preCondition": "True",
-      "postCondition": "state==True",
+      "postCondition": "state:=True",
       "input": "",
-      "varUpdate": "",
       "externalAction": false
     },
     {
@@ -40,9 +39,8 @@
       "existingParticipants": {},
       "actionLabel": "makeoffer",
       "preCondition": "And(_p > 0, state == True)",
-      "postCondition": "price == _p",
+      "postCondition": "price := _p",
       "input": "int _p",
-      "varUpdate": "",
       "externalAction": false
     },
     {
@@ -58,9 +56,8 @@
       },
       "actionLabel": "acceptoffer",
       "preCondition": "state",
-      "postCondition": "Not(state)",
+      "postCondition": "",
       "input": "",
-      "varUpdate": "",
       "externalAction": true,
       "externalActionList": [
         "I1 c>OK() S2",
@@ -77,10 +74,9 @@
         "c": ""
       },
       "actionLabel": "OK",
-      "preCondition": "True",
-      "postCondition": "And(Not(state), And(forall(M, item > 0), exist(M, item > 0)))",
+      "preCondition": "And(Not(state), And(forall(M, item > 0), exist(M, item > 0)))",
+      "postCondition": "M[-1] := -5",
       "input": "",
-      "varUpdate": "M[-1] := -5", 
       "externalAction": false,
       "Comment": "The model will fail because we update table with a value that will make the model having error"
     },
@@ -95,9 +91,8 @@
       },
       "actionLabel": "NOK",
       "preCondition": "True",
-      "postCondition": "And(state, x <= 10)",
+      "postCondition": "x := 0",
       "input": "",
-      "varUpdate": "x := 0",
       "externalAction": false
     },
     {
@@ -113,9 +108,8 @@
       },
       "actionLabel": "rejectoffer",
       "preCondition": "state",
-      "postCondition": "Not(state)",
+      "postCondition": "and()sjjd",
       "input": "",
-      "varUpdate": "",
       "externalAction": false
     }
   ],

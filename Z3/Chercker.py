@@ -2,6 +2,7 @@ import json
 from z3 import *
 from TempSolver import *
 
+
 def save_infile(str_code):
     # Specify the file name with a .py extension
     file_name = "str_code.py"
@@ -47,12 +48,12 @@ for key in grouped_transitions:
         preC = transition['preCondition']
         to = transition['to']
         actionL = transition['actionLabel']
-        varUpdate = transition['varUpdate']
-        postCs = [item['preCondition'] for item in grouped_transitions.get(to, [])]
+        postC = transition['postCondition']
+        otherPreC = [item['preCondition'] for item in grouped_transitions.get(to, [])]
         inputs = [item['input'] for item in grouped_transitions.get(to, [])]
         inputs.append(transition['input'])
         inputs = [x for x in inputs if x != ""]
-        temp.add_assertion(preC, postCs, actionL, inputs, varUpdate)
+        temp.add_assertion(preC, otherPreC, actionL, inputs, postC)
         
         if to not in grouped_transitions and to not in fsm['finalStates']:
             print(f"Warning: {to} is not a final state but has no trasitions from {to}")

@@ -1,5 +1,17 @@
 from Extension import *
 
+import re
+
+def follows_pattern(input_string):
+    input_string = input_string.strip()
+    if (input_string == ''):
+        return True
+    # Define the regular expression pattern
+    pattern = r'^[a-zA-Z_]\w*(\[\-?\d+\])?( )*:=( )*(?:[_a-zA-Z]\w*|"[^"]*"|-?\d+|\[[^\]]*\]|True|False|true|false)( & [a-zA-Z_]\w*(\[\-?\d+\])?( )*:=( )*(?:[_a-zA-Z]\w*|"[^"]*"|-?\d+|\[[^\]]*\]|True|False|true|false))*$'
+    
+    # Use re.match to check if the string matches the pattern
+    return bool(re.match(pattern, input_string))
+
 class TempSolver(object):
     str_code = """"""
     solvers = {}
@@ -71,10 +83,19 @@ class TempSolver(object):
     
     
     def safe_variable_assignment(self, assignation_str, solver_name):
+        result = []
+        if not follows_pattern(assignation_str):
+            print(f"/!\Error: {assignation_str} do not meet the assignations requirements")
+            result.append(f"""
+    #{assignation_str} do not meet the assignations requirements
+    {solver_name}.add(False)              
+            """)
+            return  "\n".join(result) 
+        
         # Split the input string into individual assignments
         assignments = assignation_str.split(';')
 
-        result = []
+        
 
         for assignment in assignments:
             # Split each assignment into variable name and value
@@ -101,9 +122,8 @@ class TempSolver(object):
         raise NameError(f"State Variable '{{match.group(0)}}' does not exist")
 """)
         # Join the generated assignments with newline characters
-        generated_code = "\n".join(result)
 
-        return generated_code 
+        return  "\n".join(result) 
     
     #add a participant
     def add_participant(self, role, participant, index):
@@ -132,21 +152,21 @@ class TempSolver(object):
     def append(self, str):
        self.str_code += str + "\n"
 
-    def add_assertion(self, pre, postS, func = 'starts', inputs = [], updateVars = ""):
+    def add_assertion(self, pre, otherPrecs, func = 'starts', inputs = [], postC = ""):
         if func not in self.solvers:
             self.solvers[func] = []
 
         pre = replace_assertion(pre)
-        postS = [replace_assertion(item) for item in postS]
-        postS = postS if len(postS) > 0 else ["True"]
+        otherPrecs = [replace_assertion(item) for item in otherPrecs]
+        otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
 
         self.solvers[func].append({
             'sname': f'solver_{func}',
             'snameF': f'_{func}_{len(self.solvers[func])}',
             'sparams': self.convert_to_z3_declarations(";".join(inputs)),
-            'sVarUpdate': self.safe_variable_assignment(updateVars, f'solver_'+ f'_{func}_{len(self.solvers[func])}'),
+            'sVarUpdate': self.safe_variable_assignment(postC, f'solver_'+ f'_{func}_{len(self.solvers[func])}'),
             'spre': f"{pre}",
-            'spost': f"Or({','.join(postS)})"
+            'spost': f"Or({','.join(otherPrecs)})"
         })
 
     def generate_solver_code(self, result_var):
@@ -184,14 +204,16 @@ def {item['snameF']}(reset = False):
     #getting the check result of the precondition
     _pre = solver_{item['snameF']}.check()
     
+    #remove the pre con to check the post or other precond
+    solver_{item['snameF']}.pop()
+    
     #update the states variable 
     {item['sVarUpdate']}
     
-    #remove the pre con to check the post or other precond
-    solver_{item['snameF']}.pop()
+    #check if precondition condition and the or of all direived preconditions id true 
     solver_{item['snameF']}.add(And(_pre == z3.sat, {item['spost']}))
     return solver_{item['snameF']}.check() == z3.sat
-                            """)
+    """)
                 checks.append(f"{item['snameF']}(True)")
         self.append(f"{result_var} = (" + " and ".join(checks) + ")")
         return self.str_code
