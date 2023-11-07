@@ -8,7 +8,7 @@
     "S2"
   ],
   "finalStates": [
-    "S1"
+    "S1","S2"
   ],
   "transitions": [
     {
@@ -22,93 +22,37 @@
       "existingParticipants": {},
       "actionLabel": "start",
       "preCondition": "True",
-      "postCondition": "state:=True",
+      "postCondition": "price := 0",
       "input": "",
       "externalAction": false
     },
     {
       "from": "S0",
       "to": "S1",
-      "initialStates": [
-        "S0"
-      ],
+      "initialStates": [],
       "finalStates": [],
       "newParticipants": {
-        "b": "B"
+        "c": "C"
       },
       "existingParticipants": {},
-      "actionLabel": "makeoffer",
-      "preCondition": "And(_p > 0, state == True)",
-      "postCondition": "price := _p",
-      "input": "int _p",
+      "actionLabel": "f1",
+      "preCondition": "x >= 0",
+      "postCondition": "price := 0",
+      "input": "",
       "externalAction": false
     },
     {
-      "from": "S1",
-      "to": "I1",
-      "initialStates": [],
-      "finalStates": [
-        "S2"
-      ],
-      "newParticipants": {},
-      "existingParticipants": {
-        "o": ""
-      },
-      "actionLabel": "acceptoffer",
-      "preCondition": "state",
-      "postCondition": "",
-      "input": "",
-      "externalAction": true,
-      "externalActionList": [
-        "I1 c>OK() S2",
-        "I1 c>NOK() S1"
-      ]
-    },
-    {
-      "from": "I1",
+      "from": "S0",
       "to": "S2",
       "initialStates": [],
       "finalStates": [],
-      "newParticipants": {},
-      "existingParticipants": {
-        "c": ""
+      "newParticipants": {
+        "c": "C"
       },
-      "actionLabel": "OK",
-      "preCondition": "And(Not(state), And(forall(M, item > 0), exist(M, item > 0)))",
-      "postCondition": "M[-1] := -5",
-      "input": "",
-      "externalAction": false,
-      "Comment": "The model will fail because we update table with a value that will make the model having error"
-    },
-    {
-      "from": "I1",
-      "to": "S1",
-      "initialStates": [],
-      "finalStates": [],
-      "newParticipants": {},
-      "existingParticipants": {
-        "c": ""
-      },
-      "actionLabel": "NOK",
+      "existingParticipants": {},
+      "actionLabel": "f2",
       "preCondition": "True",
-      "postCondition": "x := 0",
-      "input": "",
-      "externalAction": false
-    },
-    {
-      "from": "S1",
-      "to": "S3",
-      "initialStates": [],
-      "finalStates": [
-        "S3"
-      ],
-      "newParticipants": {},
-      "existingParticipants": {
-        "o": ""
-      },
-      "actionLabel": "rejectoffer",
-      "preCondition": "state",
-      "postCondition": "and()sjjd",
+      "postCondition": "price := 0",
       "input": "",
       "externalAction": false
     }

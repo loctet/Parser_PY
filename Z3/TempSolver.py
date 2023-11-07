@@ -19,7 +19,9 @@ class TempSolver(object):
     deploy_init_var_val = []
 
     def __init__(self):
+       self.solvers['start'] = []
        self.solvers['starts'] = []
+       False
     
     
     def convert_to_z3_declarations(self, declarations_str, deploy = True):
@@ -152,14 +154,16 @@ class TempSolver(object):
     def append(self, str):
        self.str_code += str + "\n"
 
-    def add_assertion(self, pre, otherPrecs, func = 'starts', inputs = [], postC = ""):
-        if func not in self.solvers:
+    def add_assertion(self, pre, otherPrecs, func = 'start', inputs = [], postC = ""):
+        
+        data = self.solvers.get(func, [])
+        if not data:
             self.solvers[func] = []
-
+        
         pre = replace_assertion(pre)
         otherPrecs = [replace_assertion(item) for item in otherPrecs]
         otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
-
+        
         self.solvers[func].append({
             'sname': f'solver_{func}',
             'snameF': f'_{func}_{len(self.solvers[func])}',
@@ -216,6 +220,13 @@ def {item['snameF']}(reset = False):
     """)
                 checks.append(f"{item['snameF']}(True)")
         self.append(f"{result_var} = (" + " and ".join(checks) + ")")
+        self.append(f"""
+if  check_resut == True:
+    print("satisfiable")
+else:
+    print("unSatisfiable")
+       
+        """)
         return self.str_code
 
     def dump_models(self):

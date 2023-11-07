@@ -46,7 +46,7 @@ def forall_in_set(formula, set):
   return solver.check() == z3.sat
 
 # Function to parse and replace assertions
-def replace_assertion(assertion):
+def replace_assertion(assertion): 
     # Define a replacement function for re.sub
 
     def replace(match):
