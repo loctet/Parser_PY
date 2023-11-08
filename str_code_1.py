@@ -9,18 +9,6 @@ x = Int('x')
 x = 0
 
 
-
-def formula_0(item):
-  solver = z3.Solver()
-  solver.add(item > 0)
-  return solver.check() == z3.sat
-  
-
-def formula_1(item):
-  solver = z3.Solver()
-  solver.add(len(M)
-  return solver.check() == z3.sat
-  
 role_O = Array('O',IntSort() , StringSort())
 Store(role_O, 0, String('o'))
 role_B = Array('B',IntSort() , StringSort())
@@ -36,6 +24,7 @@ def reset_deploy_vars():
 
 
 def _start_0(reset = False):
+    
     #reset global var to execute functions independenly
     if reset:
         reset_deploy_vars()
@@ -55,22 +44,9 @@ def _start_0(reset = False):
     
     #update the states variable 
     
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "price")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        price  =  0
-        solver__start_0.add(price  ==  0)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__start_0.add(And(_pre == z3.sat, Or(And(Not(state), And(forall_in_set(formula_0, M), exist_in_set(formula_1, M) > 4))),True)))
+    solver__start_0.add(And(_pre == z3.sat, Or(x >= 0,x > 0)))
     return solver__start_0.check() == z3.sat
     
 

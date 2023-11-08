@@ -22,7 +22,7 @@
       "existingParticipants": {},
       "actionLabel": "start",
       "preCondition": "True",
-      "postCondition": "price := 0",
+      "postCondition": "",
       "input": "",
       "externalAction": false
     },
@@ -37,7 +37,7 @@
       "existingParticipants": {},
       "actionLabel": "f1",
       "preCondition": "x >= 0",
-      "postCondition": "price := 0",
+      "postCondition": "price := 0 & x := x + 1",
       "input": "",
       "externalAction": false
     },
@@ -51,7 +51,7 @@
       },
       "existingParticipants": {},
       "actionLabel": "f2",
-      "preCondition": "True",
+      "preCondition": "x > 0",
       "postCondition": "price := 0",
       "input": "",
       "externalAction": false

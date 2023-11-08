@@ -7,7 +7,7 @@ def follows_pattern(input_string):
     if (input_string == ''):
         return True
     # Define the regular expression pattern
-    pattern = r'^[a-zA-Z_]\w*(\[\-?\d+\])?( )*:=( )*(?:[_a-zA-Z]\w*|"[^"]*"|-?\d+|\[[^\]]*\]|True|False|true|false)( & [a-zA-Z_]\w*(\[\-?\d+\])?( )*:=( )*(?:[_a-zA-Z]\w*|"[^"]*"|-?\d+|\[[^\]]*\]|True|False|true|false))*$'
+    pattern = r'^(\s*([a-zA-Z_]\w*|\w+\[\s*-?\d+\s*\])\s*:=\s*[^&|]+(&\s*([a-zA-Z_]\w*|\w+\[\s*-?\d+\s*\])\s*:=\s*[^&|]+)*)$'
     
     # Use re.match to check if the string matches the pattern
     return bool(re.match(pattern, input_string))
@@ -86,6 +86,7 @@ class TempSolver(object):
     
     def safe_variable_assignment(self, assignation_str, solver_name):
         result = []
+        global_vars = []
         if not follows_pattern(assignation_str):
             print(f"/!\Error: {assignation_str} do not meet the assignations requirements")
             result.append(f"""
@@ -95,7 +96,7 @@ class TempSolver(object):
             return  "\n".join(result) 
         
         # Split the input string into individual assignments
-        assignments = assignation_str.split(';')
+        assignments = assignation_str.split('&')
 
         
 
@@ -105,10 +106,12 @@ class TempSolver(object):
             
             # Ensure there are exactly two parts (variable name and value)
             if len(parts) != 2:
-                return ""
-
+                return ["",""]
+            
             variable_name, value = parts
             partern = "r'[^\[\]{}()]*[^\[\]{}()\s]'"
+            
+            global_vars.append(f"global {variable_name}")
             result.append(f"""
     # Define a regular expression pattern to match variable names inside brackets or parentheses
     pattern = {partern}
@@ -119,13 +122,13 @@ class TempSolver(object):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         {variable_name} = {value}
-        {solver_name}.add({variable_name} == {value})
+        {solver_name}.add({variable_name} == {variable_name})
     else:
         raise NameError(f"State Variable '{{match.group(0)}}' does not exist")
 """)
         # Join the generated assignments with newline characters
 
-        return  "\n".join(result) 
+        return  ["\n".join(result), "\n    ".join(global_vars)]
     
     #add a participant
     def add_participant(self, role, participant, index):
@@ -163,12 +166,13 @@ class TempSolver(object):
         pre = replace_assertion(pre)
         otherPrecs = [replace_assertion(item) for item in otherPrecs]
         otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
-        
+        sVarUpdate, global_vars  = self.safe_variable_assignment(postC, f'solver_'+ f'_{func}_{len(self.solvers[func])}')
         self.solvers[func].append({
             'sname': f'solver_{func}',
             'snameF': f'_{func}_{len(self.solvers[func])}',
             'sparams': self.convert_to_z3_declarations(";".join(inputs)),
-            'sVarUpdate': self.safe_variable_assignment(postC, f'solver_'+ f'_{func}_{len(self.solvers[func])}'),
+            'sVarUpdate': sVarUpdate,
+            'sglobalVars': global_vars,
             'spre': f"{pre}",
             'spost': f"Or({','.join(otherPrecs)})"
         })
@@ -194,6 +198,7 @@ def reset_deploy_vars():
            for item in self.solvers[s]:
                 self.append(f"""
 def {item['snameF']}(reset = False):
+    {item['sglobalVars']}
     #reset global var to execute functions independenly
     if reset:
         reset_deploy_vars()

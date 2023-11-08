@@ -9,42 +9,6 @@ x = Int('x')
 x = 0
 
 
-
-def formula_0(item):
-  solver = z3.Solver()
-  solver.add(item > 0)
-  return solver.check() == z3.sat
-  
-
-def formula_1(item):
-  solver = z3.Solver()
-  solver.add(len(M)
-  return solver.check() == z3.sat
-  
-
-def formula_2(item):
-  solver = z3.Solver()
-  solver.add(item > 0)
-  return solver.check() == z3.sat
-  
-
-def formula_3(item):
-  solver = z3.Solver()
-  solver.add(len(M)
-  return solver.check() == z3.sat
-  
-
-def formula_4(item):
-  solver = z3.Solver()
-  solver.add(item > 0)
-  return solver.check() == z3.sat
-  
-
-def formula_5(item):
-  solver = z3.Solver()
-  solver.add(len(M)
-  return solver.check() == z3.sat
-  
 role_O = Array('O',IntSort() , StringSort())
 Store(role_O, 0, String('o'))
 Store(role_O, 0, String('o'))
@@ -65,6 +29,7 @@ def reset_deploy_vars():
 
 
 def _start_0(reset = False):
+    
     #reset global var to execute functions independenly
     if reset:
         reset_deploy_vars()
@@ -84,22 +49,9 @@ def _start_0(reset = False):
     
     #update the states variable 
     
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "price")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        price  =  0
-        solver__start_0.add(price  ==  0)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__start_0.add(And(_pre == z3.sat, Or(And(Not(state), And(forall_in_set(formula_2, M), exist_in_set(formula_3, M) > 4))),True)))
+    solver__start_0.add(And(_pre == z3.sat, Or(x >= 0,x > 0)))
     return solver__start_0.check() == z3.sat
     
 
@@ -108,6 +60,8 @@ def _start_0(reset = False):
 
 
 def _f1_0(reset = False):
+    global price 
+    global x 
     #reset global var to execute functions independenly
     if reset:
         reset_deploy_vars()
@@ -118,7 +72,7 @@ def _f1_0(reset = False):
     solver__f1_0 = z3.Solver()
     #set the stack init
     solver__f1_0.push()
-    solver__f1_0.add(And(Not(state), And(forall_in_set(formula_4, M), exist_in_set(formula_5, M) > 4))))
+    solver__f1_0.add(x >= 0)
     #getting the check result of the precondition
     _pre = solver__f1_0.check()
     
@@ -136,7 +90,21 @@ def _f1_0(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         price  =  0
-        solver__f1_0.add(price  ==  0)
+        solver__f1_0.add(price  == price )
+    else:
+        raise NameError(f"State Variable '{match.group(0)}' does not exist")
+
+
+    # Define a regular expression pattern to match variable names inside brackets or parentheses
+    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
+    # Use re.search to find the first match in the expression
+    match = re.search(pattern, "x")
+    
+    # Check if the variable exists in locals() or globals()
+    if match.group(0) in globals():
+        # If the variable exists, create a valid assignment
+        x  =  x + 1
+        solver__f1_0.add(x  == x )
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -149,6 +117,7 @@ def _f1_0(reset = False):
 
 
 def _f2_0(reset = False):
+    global price 
     #reset global var to execute functions independenly
     if reset:
         reset_deploy_vars()
@@ -159,7 +128,7 @@ def _f2_0(reset = False):
     solver__f2_0 = z3.Solver()
     #set the stack init
     solver__f2_0.push()
-    solver__f2_0.add(True)
+    solver__f2_0.add(x > 0)
     #getting the check result of the precondition
     _pre = solver__f2_0.check()
     
@@ -177,7 +146,7 @@ def _f2_0(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         price  =  0
-        solver__f2_0.add(price  ==  0)
+        solver__f2_0.add(price  == price )
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
