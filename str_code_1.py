@@ -54,10 +54,9 @@ def _start_0(reset = False):
 check_resut = (_start_0(True))
 
 if  check_resut == True:
-    print("satisfiable")
+    print("satisfy")
 else:
-    print("unSatisfiable")
-       
+    print("unSatisfy")
         
 
 

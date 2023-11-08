@@ -74,7 +74,7 @@ def replace_assertion(assertion):
 
     return assertion
 
-def generateFormulas():
+def generateFuntionsFormulas():
   code = ""
   for name in formulas:
     code += f"""\n

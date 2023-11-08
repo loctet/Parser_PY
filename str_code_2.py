@@ -11,12 +11,9 @@ x = 0
 
 role_O = Array('O',IntSort() , StringSort())
 Store(role_O, 0, String('o'))
-Store(role_O, 0, String('o'))
 role_B = Array('B',IntSort() , StringSort())
 Store(role_B, 0, String('b'))
-Store(role_B, 0, String('b'))
 role_D = Array('D',IntSort() , StringSort())
-Store(role_D, 0, String('d'))
 Store(role_D, 0, String('d'))
 
 def reset_deploy_vars():
@@ -61,7 +58,6 @@ def _start_0(reset = False):
 
 def _f1_0(reset = False):
     global price 
-    global x 
     #reset global var to execute functions independenly
     if reset:
         reset_deploy_vars()
@@ -91,20 +87,6 @@ def _f1_0(reset = False):
         # If the variable exists, create a valid assignment
         price  =  0
         solver__f1_0.add(price  == price )
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
-
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "x")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        x  =  x + 1
-        solver__f1_0.add(x  == x )
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -158,10 +140,9 @@ def _f2_0(reset = False):
 check_resut = (_start_0(True) and _f1_0(True) and _f2_0(True))
 
 if  check_resut == True:
-    print("satisfiable")
+    print("satisfy")
 else:
-    print("unSatisfiable")
-       
+    print("unSatisfy")
         
 
 

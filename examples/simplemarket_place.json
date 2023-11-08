@@ -37,7 +37,7 @@
       "existingParticipants": {},
       "actionLabel": "f1",
       "preCondition": "x >= 0",
-      "postCondition": "price := 0 & x := x + 1",
+      "postCondition": "price := 0",
       "input": "",
       "externalAction": false
     },

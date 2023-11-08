@@ -1,6 +1,7 @@
 import json
 from z3 import *
-from TempSolver import *
+from SolverGenerator import SolverGenerator
+from VariableDeclarationConverter import VariableDeclarationConverter 
 
 
 def save_infile(str_code, file_name = "str_code"):
@@ -50,9 +51,11 @@ transitions = fsm['transitions']
 # Example usage
 declarations_str = fsm['statesDeclaration']
 
-temp = TempSolver()
-temp.add_participants(fsm['rPAssociation'])
-temp.append(temp.convert_to_z3_declarations(declarations_str))
+temp = SolverGenerator()
+temp.paticipants.add_participants(fsm['rPAssociation'])
+result, deploy_init_var_val = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val)
+setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
+temp.append(result)
 
 grouped_transitions = group_transactions(transitions)
 
@@ -82,9 +85,12 @@ print("Checking the well formness of the model\n")
 execute_model_and_save(temp, "str_code_1")
 
 
-temp2 = TempSolver()
-temp2.add_participants(fsm['rPAssociation'])
-temp2.append(temp2.convert_to_z3_declarations(declarations_str))
+temp2 = SolverGenerator()
+temp2.paticipants.add_participants(fsm['rPAssociation'])
+result, deploy_init_var_val = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val)
+setattr(temp2, 'deploy_init_var_val', deploy_init_var_val)
+temp2.append(result)
+
 ##print(grouped_transitions)
 for key in grouped_transitions:
     
