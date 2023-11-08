@@ -1,6 +1,6 @@
 class VariableDeclarationConverter:
     @staticmethod
-    def convert_to_z3_declarations(declarations_str, deploy_init_var_val = [], deploy=True):
+    def convert_to_z3_declarations(declarations_str, deploy_init_var_val = [], var_names = [],  deploy=True):
         declarations = declarations_str.split(';')  # Split input into separate variable declarations
         declarations = [declaration.strip() for declaration in declarations if declaration.strip()]  # Remove any empty declarations
         result = ""
@@ -11,10 +11,12 @@ class VariableDeclarationConverter:
                 var_type, var_name = parts[:2]
                 z3_var = None
                 z3_var_init = None
-
+                var_names.append(var_name)
+                
                 if len(parts) > 2:
                     initial_value = parts[3]  # Assuming the initial value is after ":="
 
+                    
                     # Create Z3 variables based on the declared type and assign the initial value
                     if var_type == 'int':
                         initial_value = int(initial_value)
@@ -26,8 +28,7 @@ class VariableDeclarationConverter:
                         z3_var = f"{var_name} = String('{var_name}')"
                         z3_var_init = f"{var_name} = \"{initial_value}\""
                     
-                    elif var_type == 'bool':
-                        initial_value = bool(initial_value)
+                    elif var_type == 'bool':                     
                         z3_var = f"{var_name} = Bool('{var_name}')"
                         z3_var_init = f"{var_name} = {initial_value}"
                         
@@ -58,4 +59,4 @@ class VariableDeclarationConverter:
                         result += f"{z3_var_init}\n"
                         deploy_init_var_val.append(z3_var_init)
                         
-        return [result, deploy_init_var_val]
+        return [result, deploy_init_var_val, var_names]

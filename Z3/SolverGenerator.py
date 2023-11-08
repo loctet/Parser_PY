@@ -10,6 +10,7 @@ class SolverGenerator:
         self.str_code = ""
         self.solvers = {}
         self.deploy_init_var_val = []
+        self.var_names = []
         self.solvers['start'] = []
         self.solvers['starts'] = [] 
         self.paticipants = ParticipantManager()
@@ -29,7 +30,7 @@ class SolverGenerator:
         otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
         sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{func}_{len(self.solvers[func])}')
         
-        sparams, self.deploy_init_var_val = VarDefConv.convert_to_z3_declarations(";".join(inputs), self.deploy_init_var_val)
+        sparams, self.deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join(inputs), self.deploy_init_var_val)
         
         self.solvers[func].append({
             'sname': f'solver_{func}',
@@ -50,7 +51,7 @@ class SolverGenerator:
             self.append(self.paticipants.roles[role]["declaration"])
             self.append("\n".join(self.paticipants.roles[role]["list"]))
           
-        self.append(MessagesTemplates.getResetGlobalFunction("\n    ".join(self.deploy_init_var_val) ))
+        self.append(MessagesTemplates.getResetGlobalFunction("\n    ".join(self.deploy_init_var_val), self.var_names))
         
         checks = []
         for s in self.solvers:

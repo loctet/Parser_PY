@@ -41,9 +41,11 @@ else:
         """
         
     @staticmethod
-    def getResetGlobalFunction(deploy_vars):
+    def getResetGlobalFunction(deploy_vars, var_names = []):
+        var_names = ", ".join(var_names)
         return f"""
 def reset_deploy_vars():
+    global {var_names}
     {deploy_vars}
 """
 

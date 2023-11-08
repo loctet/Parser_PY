@@ -53,13 +53,16 @@ declarations_str = fsm['statesDeclaration']
 
 temp = SolverGenerator()
 temp.paticipants.add_participants(fsm['rPAssociation'])
-result, deploy_init_var_val = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val)
+result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
 setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
+setattr(temp, 'var_names', var_names)
+
 temp.append(result)
 
 grouped_transitions = group_transactions(transitions)
 
 grouped_transitions_copy = grouped_transitions.copy()
+
 data = grouped_transitions_copy.pop("_", [])
 
 while data:
@@ -69,7 +72,8 @@ while data:
         actionL = transition['actionLabel']
         postC = transition['postCondition']
         data = grouped_transitions.get(to, [])
-        grouped_transitions_copy.pop(to)
+        if data :
+            grouped_transitions_copy.pop(to)
         otherPreC = [item['preCondition'] for item in data]
         inputs = [item['input'] for item in data]
         inputs.append(transition['input'])
@@ -79,7 +83,7 @@ while data:
         if to not in grouped_transitions and to not in fsm['finalStates']:
             print(f"Warning: {to} is not a final state but has no trasitions from {to}")
     
-    data = grouped_transitions_copy.popitem() if len(grouped_transitions_copy) > 0 else {}
+    key, data = grouped_transitions_copy.popitem() if len(grouped_transitions_copy) > 0 else ["", []]
 
 print("Checking the well formness of the model\n")
 execute_model_and_save(temp, "str_code_1")
@@ -87,8 +91,9 @@ execute_model_and_save(temp, "str_code_1")
 
 temp2 = SolverGenerator()
 temp2.paticipants.add_participants(fsm['rPAssociation'])
-result, deploy_init_var_val = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val)
+result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp2.deploy_init_var_val, temp2.var_names)
 setattr(temp2, 'deploy_init_var_val', deploy_init_var_val)
+setattr(temp2, 'var_names', var_names)
 temp2.append(result)
 
 ##print(grouped_transitions)
