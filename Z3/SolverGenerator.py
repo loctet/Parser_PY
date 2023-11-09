@@ -19,7 +19,7 @@ class SolverGenerator:
     def append(self, str):
        self.str_code += str + "\n"
 
-    def add_assertion(self, pre, otherPrecs, func = 'start', inputs = [], postC = ""):
+    def add_assertion(self, pre, otherPrecs, func = 'start', inputs = [], postC = "", add = True):
         
         data = self.solvers.get(func, [])
         if not data:
@@ -35,8 +35,7 @@ class SolverGenerator:
             self.deploy_init_var_val.append(VarDefConv.convert_to_z3_int_assignement(postC))
             self.append(VarDefConv.convert_to_z3_int_assignement(postC))
         
-        
-        self.solvers[func].append({
+        result = {
             'sname': f'solver_{func}',
             'snameF': f'_{func}_{len(self.solvers[func])}',
             'sparams': sparams,
@@ -44,7 +43,10 @@ class SolverGenerator:
             'sglobalVars': global_vars,
             'spre': f"{pre}",
             'spost': f"Or({','.join(otherPrecs)})"
-        })
+        }
+        if add :  
+            self.solvers[func].append(result)
+        return result
 
     def generate_solver_code(self, result_var):
         #create formulas functions

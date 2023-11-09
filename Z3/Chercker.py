@@ -1,5 +1,6 @@
 import json
 from z3 import *
+from PathGenerator import PathGenerator
 from SolverGenerator import SolverGenerator
 from VariableDeclarationConverter import VariableDeclarationConverter 
 
@@ -37,7 +38,7 @@ def execute_model_and_save(tempSolver, file_name):
     except FileNotFoundError:
         print(f"Error: The file '{file_name}' does not exist.")
         
-    print(f"\n(Check the generated file  {file_name}.py to fine the z3 code generated)\n\n") 
+    print(f"\n(Check the generated file  {file_name}.py to fine the z3 code generated)\n") 
 
 
 input_path = "./examples/simplemarket_place.json"
@@ -51,18 +52,16 @@ transitions = fsm['transitions']
 # Example usage
 declarations_str = fsm['statesDeclaration']
 
+print("----Checking the well formness of the model----\n")
 temp = SolverGenerator()
 temp.paticipants.add_participants(fsm['rPAssociation'])
 result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
 setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
 setattr(temp, 'var_names', var_names)
-
 temp.append(result)
 
 grouped_transitions = group_transactions(transitions)
-
 grouped_transitions_copy = grouped_transitions.copy()
-
 data = grouped_transitions_copy.pop("_", [])
 
 while data:
@@ -85,10 +84,12 @@ while data:
     
     key, data = grouped_transitions_copy.popitem() if len(grouped_transitions_copy) > 0 else ["", []]
 
-print("Checking the well formness of the model\n")
+
 execute_model_and_save(temp, "str_code_1")
+print("\n----End----\n\n")
 
 
+print("----Checking independent statisfiability of the model----\n\n")
 temp2 = SolverGenerator()
 temp2.paticipants.add_participants(fsm['rPAssociation'])
 result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp2.deploy_init_var_val, temp2.var_names)
@@ -116,5 +117,12 @@ for key in grouped_transitions:
             print(f"Warning: {to} is not a final state but has no trasitions from {to}")
        
 
-print("Checking independent statisfiability of the model\n")
+
+
 execute_model_and_save(temp2, "str_code_2")
+print("\n----End----\n\n")
+
+print("----Checking Path statisfiability of the model----\n\n")
+PathGenerator.check_path_satisfiability(fsm)
+
+print("\n----End----\n\n")
