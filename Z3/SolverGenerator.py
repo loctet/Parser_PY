@@ -29,8 +29,12 @@ class SolverGenerator:
         otherPrecs = [replace_assertion(item) for item in otherPrecs]
         otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
         sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{func}_{len(self.solvers[func])}')
+        sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join(inputs), self.deploy_init_var_val)
         
-        sparams, self.deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join(inputs), self.deploy_init_var_val)
+        if func == 'start':
+            self.deploy_init_var_val.append(VarDefConv.convert_to_z3_int_assignement(postC))
+            self.append(VarDefConv.convert_to_z3_int_assignement(postC))
+        
         
         self.solvers[func].append({
             'sname': f'solver_{func}',

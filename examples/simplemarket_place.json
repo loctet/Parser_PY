@@ -1,7 +1,7 @@
 {
   "id": "c",
   "initialState": "S0",
-  "statesDeclaration": "int price ; bool state = False; array M := [1,2,3,4,5]; int x := 0",
+  "statesDeclaration": "int price ; bool state; array M := [1,2,3,4,5]; int x := 0",
   "states": [
     "S0",
     "S1",
@@ -22,7 +22,7 @@
       "existingParticipants": {},
       "actionLabel": "start",
       "preCondition": "True",
-      "postCondition": "",
+      "postCondition": "x := 5",
       "input": "",
       "externalAction": false
     },
@@ -31,37 +31,28 @@
       "to": "S1",
       "initialStates": [],
       "finalStates": [],
-      "newParticipants": {},
+      "newParticipants": {
+        "c": "C"
+      },
       "existingParticipants": {},
-      "actionLabel": "makeoffer",
-      "preCondition": "And(state == False, _p >0)",
-      "postCondition": "price := _p",
-      "input": "int _p",
-      "externalAction": false
-    },
-    {
-      "from": "S1",
-      "to": "S2",
-      "initialStates": [],
-      "finalStates": [],
-      "newParticipants": {},
-      "existingParticipants": {},
-      "actionLabel": "acceptoffer",
-      "preCondition": "And(state == False)",
-      "postCondition": "state := True",
+      "actionLabel": "f1",
+      "preCondition": "x > 0",
+      "postCondition": "price := 0",
       "input": "",
       "externalAction": false
     },
     {
-      "from": "S1",
-      "to": "S3",
+      "from": "S0",
+      "to": "S2",
       "initialStates": [],
       "finalStates": [],
-      "newParticipants": [],
+      "newParticipants": {
+        "c": "C"
+      },
       "existingParticipants": {},
-      "actionLabel": "rejectoffer",
-      "preCondition": "And(state == False)",
-      "postCondition": "state := True",
+      "actionLabel": "f2",
+      "preCondition": "x > 0",
+      "postCondition": "price := 0",
       "input": "",
       "externalAction": false
     }
