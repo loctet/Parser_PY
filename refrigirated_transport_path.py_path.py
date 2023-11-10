@@ -8,6 +8,7 @@ MinHum = Int('MinHum')
 MaxTem = Int('MaxTem')
 MinTem = Int('MinTem')
 d = String('d')
+cp = String('cp')
 hum = Int('hum')
 tem = Int('tem')
 

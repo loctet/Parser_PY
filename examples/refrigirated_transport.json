@@ -1,0 +1,120 @@
+{
+  "id": "c",
+  "initialState": "S0",
+  "statesDeclaration": "int stage := 0; int MaxHum; int MinHum; int MaxTem; int MinTem; string d; string cp; int hum; int tem",
+  "states": [
+    "S0",
+    "S1",
+    "S2"
+  ],
+  "finalStates": [
+    "S2","S3", "S5"
+  ],
+  "transitions": [
+      {
+        "from": "_",
+        "to": "S0",
+        "initialStates": ["o"],
+        "finalStates": [],
+        "newParticipants": ["S0"],
+        "existingParticipants": {"o": "O"},
+        "actionLabel": "start",
+        "preCondition": "True",
+        "postCondition": "d := _d",
+        "input": "string _d",
+        "externalAction": false
+      },
+      {
+        "from": "S0",
+        "to": "S0",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": {},
+        "existingParticipants": {"d": "D"},
+        "actionLabel": "ingestTel",
+        "preCondition": "And(d != cp, stage == 0)",
+        "postCondition": "tem := _tem & hum := _hum & stage := 1",
+        "input": "int _hum; int _tem",
+        "externalAction": false
+      },
+      {
+        "from": "S0",
+        "to": "S2",
+        "initialStates": [],
+        "finalStates": ["S2"],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "ingestTel",
+        "preCondition": "And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))",
+        "postCondition": "hum := _hum & tem := _tem & stage := 3",
+        "input": "int _hum ; int _tem",
+        "externalAction": false
+      },
+      {
+        "from": "S0",
+        "to": "S1",
+        "initialStates": ["S0"],
+        "finalStates": [],
+        "newParticipants": ["S1"],
+        "existingParticipants": {},
+        "actionLabel": "transResp",
+        "preCondition": "Or(stage == 1, stage == 2)",
+        "postCondition": "stage := 1 & cp := _cp",
+        "input": " string _cp",
+        "externalAction": false
+      },
+      {
+        "from": "S1",
+        "to": "S1",
+        "initialStates": ["S1", "d"],
+        "finalStates": [],
+        "newParticipants": ["S1"],
+        "existingParticipants": {"d": "D"},
+        "actionLabel": "ingestTel_b_1",
+        "preCondition": "And(Or(stage == 1, stage == 2), And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))",
+        "postCondition": "tem := _tem & stage := 2 & hum := _hum",
+        "input": "int _hum; int _tem",
+        "externalAction": false
+      },
+      {
+        "from": "S1",
+        "to": "S1",
+        "initialStates": ["S1", "d"],
+        "finalStates": [],
+        "newParticipants": ["S1"],
+        "existingParticipants": {"d": "D"},
+        "actionLabel": "ingestTel_b_2",
+        "preCondition": "Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))",
+        "postCondition": "tem := _tem & stage := 3 & hum := _hum",
+        "input": "int _hum; int _tem",
+        "externalAction": false
+      },
+      {
+        "from": "S1",
+        "to": "S3",
+        "initialStates": ["S1", "o"],
+        "finalStates": ["S3"],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "complete",
+        "preCondition": "stage == 2",
+        "postCondition": "stage := 3",
+        "input": "",
+        "externalAction": false
+      }
+    ],
+  "rPAssociation": [
+    {
+      "role": "O",
+      "participants": [
+        "o"
+      ]
+    },
+    {
+      "role": "B",
+      "participants": [
+        "b"
+      ]
+    }
+  ]
+}

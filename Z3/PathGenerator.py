@@ -70,7 +70,7 @@ class PathGenerator :
         return formatted_transition
     
     @staticmethod
-    def check_path_satisfiability(fsm):
+    def check_path_satisfiability(fsm, file_name):
         result = PathGenerator.group_transactions(fsm)
         for path, transitions in result.items():
             print(f"Path: {path}")
@@ -92,7 +92,7 @@ class PathGenerator :
             temp.append("\nprint(f'=>{check}')\n\n")    
             temp.str_code = temp.str_code.replace("        ", "____").replace("    ",'').replace("____", "    ")
             # Specify the file name with a .py extension
-            file_name = f"temp_path.py"
+            file_name = f"{file_name}_path.py"
 
             # Open the file for writing and write the code
             with open(file_name, "w") as file:
@@ -102,6 +102,8 @@ class PathGenerator :
                 os.system(f'python {file_name}')
             except FileNotFoundError:
                 print(f"Error: The file '{file_name}' does not exist.")
+            
+        print(f"\n(Check the generated file  {file_name}_path.py to fine the z3 code generated)\n") 
             
             
 

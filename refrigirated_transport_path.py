@@ -8,6 +8,7 @@ MinHum = Int('MinHum')
 MaxTem = Int('MaxTem')
 MinTem = Int('MinTem')
 d = String('d')
+cp = String('cp')
 hum = Int('hum')
 tem = Int('tem')
 
@@ -37,12 +38,13 @@ if match.group(0) in globals():
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
-_cp = String('_cp')
+_hum = Int('_hum')
+_tem = Int('_tem')
 
 
-## transResp
+## ingestTel
 
-solver.add(Or(stage == 1, stage == 2))
+solver.add(And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))
 check = check and solver.check() == z3.sat
 solver.pop()
 solver.push()
@@ -50,13 +52,13 @@ solver.push()
 # Define a regular expression pattern to match variable names inside brackets or parentheses
 pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
 # Use re.search to find the first match in the expression
-match = re.search(pattern, "stage")
+match = re.search(pattern, "hum")
 
 # Check if the variable exists in locals() or globals()
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
-    stage  =  1
-    solver.add(stage  == stage )
+    hum  =  _hum
+    solver.add(hum  == hum )
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -64,24 +66,16 @@ else:
 # Define a regular expression pattern to match variable names inside brackets or parentheses
 pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
 # Use re.search to find the first match in the expression
-match = re.search(pattern, "cp")
+match = re.search(pattern, "tem")
 
 # Check if the variable exists in locals() or globals()
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
-    cp  =  _cp
-    solver.add(cp  == cp )
+    tem  =  _tem
+    solver.add(tem  == tem )
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
-
-
-## complete
-
-solver.add(stage == 2)
-check = check and solver.check() == z3.sat
-solver.pop()
-solver.push()
 
 # Define a regular expression pattern to match variable names inside brackets or parentheses
 pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'

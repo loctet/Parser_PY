@@ -33,12 +33,13 @@ class SolverGenerator:
         
         if func == 'start':
             self.deploy_init_var_val.append(VarDefConv.convert_to_z3_int_assignement(postC))
+            self.append(sparams)
             self.append(VarDefConv.convert_to_z3_int_assignement(postC))
         
         result = {
             'sname': f'solver_{func}',
             'snameF': f'_{func}_{len(self.solvers[func])}',
-            'sparams': sparams,
+            'sparams': "\n    ".join(sparams.split('\n')),
             'sVarUpdate': sVarUpdate,
             'sglobalVars': global_vars,
             'spre': f"{pre}",

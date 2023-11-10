@@ -1,29 +1,29 @@
 {
   "id": "c",
   "initialState": "S0",
-  "statesDeclaration": "int price ; bool state := False; array M := [1,2,3,4,5]; int x := 0",
+  "statesDeclaration": "int state := 0 ; int price := 0 ; array B := []",
   "states": [
     "S0",
     "S1",
     "S2"
   ],
   "finalStates": [
-    "S1","S2","S3"
+    "S2","S3"
   ],
   "transitions": [
     {
       "from": "_",
       "to": "S0",
-      "initialStates": [],
+      "initialStates": ["o"],
       "finalStates": [],
       "newParticipants": {
-        "c": "C"
+        "o" : "O"
       },
-      "existingParticipants": {},
+      "existingParticipants": {"o": "O"},
       "actionLabel": "start",
-      "preCondition": "True",
-      "postCondition": "",
-      "input": "",
+      "preCondition": "_price > 0",
+      "postCondition": "price := _price",
+      "input": "int _price",
       "externalAction": false
     },
     {
@@ -31,24 +31,24 @@
       "to": "S1",
       "initialStates": [],
       "finalStates": [],
-      "newParticipants": {},
-      "existingParticipants": {},
-      "actionLabel": "makeoffer",
-      "preCondition": "And(state == False, _p >0)",
-      "postCondition": "price := _p",
-      "input": "int _p",
+      "newParticipants": {"b": "B"},
+      "existingParticipants": [],
+      "actionLabel": "makeOffer",
+      "preCondition": "And(Or(state == 0, state == 1), _price >= price)",
+      "postCondition": "price := _price & state := 1",
+      "input": "int _price",
       "externalAction": false
     },
     {
       "from": "S1",
       "to": "S2",
       "initialStates": [],
-      "finalStates": [],
-      "newParticipants": {},
+      "finalStates": ["S2"],
+      "newParticipants": [],
       "existingParticipants": {},
-      "actionLabel": "acceptoffer",
-      "preCondition": "And(state == False)",
-      "postCondition": "state := True",
+      "actionLabel": "acceptOffer",
+      "preCondition": "state == 1",
+      "postCondition": "state := 2",
       "input": "",
       "externalAction": false
     },
@@ -56,12 +56,12 @@
       "from": "S1",
       "to": "S3",
       "initialStates": [],
-      "finalStates": [],
+      "finalStates": ["S3"],
       "newParticipants": [],
       "existingParticipants": {},
-      "actionLabel": "rejectoffer",
-      "preCondition": "state == False",
-      "postCondition": "state := True",
+      "actionLabel": "rejectOffer",
+      "preCondition": "state == 1",
+      "postCondition": "state := 0",
       "input": "",
       "externalAction": false
     }
@@ -77,12 +77,6 @@
       "role": "B",
       "participants": [
         "b"
-      ]
-    },
-    {
-      "role": "D",
-      "participants": [
-        "d"
       ]
     }
   ]
