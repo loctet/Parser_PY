@@ -2,7 +2,6 @@ from z3 import *
 from Z3.Extension import *
 
 stage = Int('stage')
-stage = 0
 MaxHum = Int('MaxHum')
 MinHum = Int('MinHum')
 MaxTem = Int('MaxTem')

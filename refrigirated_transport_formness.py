@@ -2,7 +2,6 @@ from z3 import *
 from Z3.Extension import *
 
 stage = Int('stage')
-stage = 0
 MaxHum = Int('MaxHum')
 MinHum = Int('MinHum')
 MaxTem = Int('MaxTem')
@@ -28,8 +27,18 @@ role_B = Array('B',IntSort() , StringSort())
 Store(role_B, 0, String('b'))
 
 def reset_deploy_vars():
-    global stage
-    stage = 0
+    
+    global stage , MaxHum , MinHum , MaxTem , MinTem , d , cp , hum , tem 
+    stage = Int('stage')
+    MaxHum = Int('MaxHum')
+    MinHum = Int('MinHum')
+    MaxTem = Int('MaxTem')
+    MinTem = Int('MinTem')
+    d = String('d')
+    cp = String('cp')
+    hum = Int('hum')
+    tem = Int('tem')
+    
     d =  _d
 
 
@@ -78,7 +87,7 @@ def _start_0(reset = False):
 
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__start_0.add(And(_pre == z3.sat, Or(And(d != cp, stage == 0),And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Or(stage == 1, stage == 2))))
+    solver__start_0.add(And(_pre == z3.sat, Or(And(d != cp, stage == 0),And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Or(stage == 0, stage == 1, stage == 2))))
     return solver__start_0.check() == z3.sat
     
 

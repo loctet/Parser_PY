@@ -2,7 +2,6 @@ from z3 import *
 from Z3.Extension import *
 
 stage = Int('stage')
-stage = 0
 MaxHum = Int('MaxHum')
 MinHum = Int('MinHum')
 MaxTem = Int('MaxTem')
@@ -28,8 +27,7 @@ role_B = Array('B',IntSort() , StringSort())
 Store(role_B, 0, String('b'))
 
 def reset_deploy_vars():
-    global stage
-    stage = 0
+    
     d =  _d
 
 
@@ -78,7 +76,7 @@ def _start_0(reset = False):
 
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__start_0.add(And(_pre == z3.sat, Or(And(d != cp, stage == 0),And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Or(stage == 1, stage == 2))))
+    solver__start_0.add(And(_pre == z3.sat, Or(And(d != cp, stage == 0),And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Or(stage == 0, stage == 1, stage == 2))))
     return solver__start_0.check() == z3.sat
     
 
@@ -159,7 +157,7 @@ def _ingestTel_0(reset = False):
 
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__ingestTel_0.add(And(_pre == z3.sat, Or(And(d != cp, stage == 0),And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Or(stage == 1, stage == 2))))
+    solver__ingestTel_0.add(And(_pre == z3.sat, Or(And(d != cp, stage == 0),And(stage == 0, Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Or(stage == 0, stage == 1, stage == 2))))
     return solver__ingestTel_0.check() == z3.sat
     
 
@@ -255,7 +253,7 @@ def _transResp_0(reset = False):
     solver__transResp_0 = z3.Solver()
     #set the stack init
     solver__transResp_0.push()
-    solver__transResp_0.add(Or(stage == 1, stage == 2))
+    solver__transResp_0.add(Or(stage == 0, stage == 1, stage == 2))
     #getting the check result of the precondition
     _pre = solver__transResp_0.check()
     

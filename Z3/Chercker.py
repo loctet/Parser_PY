@@ -47,7 +47,7 @@ def get_json_from_file(file_name = "simplemarket_place"):
         input_text = file.readlines()
     fsm = json.loads(''.join(input_text))
     
-    return fsm
+    return [fsm, input_text]
 
 def get_grouped_transaction(transitions):
     grouped_transitions = group_transactions(transitions)
@@ -62,6 +62,7 @@ def check_well_formness(fsm, file_name):
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
+    deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)
     temp.append(result)
@@ -102,6 +103,8 @@ def check_independant_sat(fsm, file_name):
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
+    deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
+    
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)
     temp.append(result)

@@ -2,7 +2,6 @@ from z3 import *
 from Z3.Extension import *
 
 stage = Int('stage')
-stage = 0
 MaxHum = Int('MaxHum')
 MinHum = Int('MinHum')
 MaxTem = Int('MaxTem')
@@ -43,7 +42,7 @@ _cp = String('_cp')
 
 ## transResp
 
-solver.add(Or(stage == 1, stage == 2))
+solver.add(Or(stage == 0, stage == 1, stage == 2))
 check = check and solver.check() == z3.sat
 solver.pop()
 solver.push()

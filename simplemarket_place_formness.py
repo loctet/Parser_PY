@@ -24,6 +24,14 @@ def reset_deploy_vars():
     state = 0
     price = 0
     B =  []
+    global state , state , price , price , B , B 
+    state = Int('state')
+    state = 0
+    price = Int('price')
+    price = 0
+    B = []
+    B =  []
+    
     price =  _price
 
 

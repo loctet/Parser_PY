@@ -1,7 +1,7 @@
 {
   "id": "c",
   "initialState": "S0",
-  "statesDeclaration": "int stage := 0; int MaxHum; int MinHum; int MaxTem; int MinTem; string d; string cp; int hum; int tem",
+  "statesDeclaration": "int stage; int MaxHum; int MinHum; int MaxTem; int MinTem; string d; string cp; int hum; int tem",
   "states": [
     "S0",
     "S1",
@@ -58,7 +58,7 @@
         "newParticipants": ["S1"],
         "existingParticipants": {},
         "actionLabel": "transResp",
-        "preCondition": "Or(stage == 1, stage == 2)",
+        "preCondition": "Or(stage == 0, stage == 1, stage == 2)",
         "postCondition": "stage := 1 & cp := _cp",
         "input": " string _cp",
         "externalAction": false
