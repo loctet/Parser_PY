@@ -62,7 +62,11 @@ def check_well_formness(fsm, file_name):
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
-    deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
+    
+    
+    if len(deploy_init_var_val) == 0:
+        deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
+    
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)
     temp.append(result)
@@ -103,7 +107,9 @@ def check_independant_sat(fsm, file_name):
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
-    deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
+    
+    if len(deploy_init_var_val) == 0:
+        deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
     
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)

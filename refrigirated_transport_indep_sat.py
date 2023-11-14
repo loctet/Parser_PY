@@ -28,6 +28,17 @@ Store(role_B, 0, String('b'))
 
 def reset_deploy_vars():
     
+    global stage , MaxHum , MinHum , MaxTem , MinTem , d , cp , hum , tem 
+    stage = Int('stage')
+    MaxHum = Int('MaxHum')
+    MinHum = Int('MinHum')
+    MaxTem = Int('MaxTem')
+    MinTem = Int('MinTem')
+    d = String('d')
+    cp = String('cp')
+    hum = Int('hum')
+    tem = Int('tem')
+    
     d =  _d
 
 
