@@ -1,0 +1,94 @@
+{
+    "id": "basicProvenance",
+    "initialState": "Created",
+    "statesDeclaration": "string currentOwner; string previousOwner; string Counterparty; string owner",
+    "states": [
+      "Created",
+      "InTransit",
+      "Completed"
+    ],
+    "finalStates": [
+      "Completed"
+    ],
+    "transitions": [
+        {
+            "from": "_",
+            "to": "Created",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": ["Created"],
+            "existingParticipants": {},
+            "actionLabel": "start",
+            "preCondition": "True",
+            "postCondition": "currentOwner := _currentOwner",
+            "input": "string _currentOwner",
+            "externalAction": false
+          },
+        {
+            "from": "Created",
+            "to": "InTransit",
+            "initialStates": [],
+            "finalStates": [],
+            "newParticipants": ["Created"],
+            "existingParticipants": {},
+            "actionLabel": "assignResponsibility",
+            "preCondition": "True",
+            "postCondition": "currentOwner := _counterparty & previousOwner := currentOwner",
+            "input": "string _counterparty",
+            "externalAction": false
+          },
+      {
+        "from": "InTransit",
+        "to": "InTransit",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "assignResponsibility",
+        "preCondition": "And(currentOwner == _counterparty, currentOwner != owner)",
+        "postCondition": "currentOwner := _counterparty & previousOwner := currentOwner",
+        "input": "string _counterparty",
+        "externalAction": false
+      },
+      {
+        "from": "InTransit",
+        "to": "Completed",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "reachDestination",
+        "preCondition": "currentOwner == owner",
+        "postCondition": "previousOwner := currentOwner & currentOwner := owner",
+        "input": "",
+        "externalAction": false
+      }
+    ],
+    "rPAssociation": [
+      {
+        "role": "InitiatingCounterParty",
+        "participants": [
+          "InitiatingCounterParty"
+        ]
+      },
+      {
+        "role": "Counterparty",
+        "participants": [
+          "Counterparty"
+        ]
+      },
+      {
+        "role": "Owner",
+        "participants": [
+          "Owner"
+        ]
+      },
+      {
+        "role": "Observer",
+        "participants": [
+          "Observer"
+        ]
+      }
+    ]
+  }
+  

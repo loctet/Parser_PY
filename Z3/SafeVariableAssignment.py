@@ -24,7 +24,9 @@ class SafeVariableAssignment:
             
             variable_name, value = parts
             
-            global_vars.append(f"global {variable_name}")
+            if variable_name != "":
+                global_vars.append(f"global {variable_name}")
+            
             result.append(MessagesTemplates.getFunctionVariableDeclaration(variable_name, value,  solver_name))
         # Join the generated assignments with newline characters
         return  ["\n".join(result), "\n    ".join(global_vars)]

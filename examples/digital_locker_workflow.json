@@ -1,0 +1,200 @@
+{
+    "id": "DigitalLockerWorkflow",
+    "initialState": "Created",
+    "statesDeclaration": "int locked; int requestedL;",
+    "states": [
+      "Created",
+      "Requested",
+      "DocRev",
+      "AvToSh",
+      "ShW3Par",
+      "ShRqPend",
+      "Term"
+    ],
+    "finalStates": ["Term"],
+    "transitions": [
+        {
+            "from": "_",
+            "to": "Created",
+            "initialStates": ["Owner"],
+            "finalStates": [],
+            "newParticipants": [],
+            "existingParticipants": {"Owner": "Owner"},
+            "actionLabel": "start",
+            "preCondition": "True",
+            "postCondition": "",
+            "input": "",
+            "externalAction": false
+          },
+      {
+        "from": "Created",
+        "to": "Requested",
+        "initialStates": ["Owner"],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "requestAvailability",
+        "preCondition": "True",
+        "postCondition": "",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "Requested",
+        "to": "DocRev",
+        "initialStates": ["BankAgent"],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {"BankAgent": "BankAgent"},
+        "actionLabel": "reviewRequest",
+        "preCondition": "True",
+        "postCondition": "",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "DocRev",
+        "to": "AvToSh",
+        "initialStates": ["BankAgent"],
+        "finalStates": ["AvToSh"],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "uploadDigitalAsset",
+        "preCondition": "True",
+        "postCondition": "",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "AvToSh",
+        "to": "ShW3Par",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "ShareThirdPartyRequest",
+        "preCondition": "True",
+        "postCondition": "locked := True",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "ShW3Par",
+        "to": "AvToSh",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "revokeThirdPartyRequest",
+        "preCondition": "locked == True",
+        "postCondition": "locked := False",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "AvToSh",
+        "to": "ShRqPend",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "requestAccessLocker",
+        "preCondition": "locked == False",
+        "postCondition": "locked := False",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "ShRqPend",
+        "to": "AvToSh",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "revokeGrantAccessLocker",
+        "preCondition": "locked == False",
+        "postCondition": "locked := False",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "ShRqPend",
+        "to": "ShW3Par",
+        "initialStates": [],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "grantAccessLocker",
+        "preCondition": "locked == False",
+        "postCondition": "locked := True",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "ShW3Par",
+        "to": "Term",
+        "initialStates": ["Owner", "CurrentAuthorizedUser"],
+        "finalStates": ["Term"],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "terminateSharing",
+        "preCondition": "True",
+        "postCondition": "",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "ShRqPend",
+        "to": "Term",
+        "initialStates": ["Owner", "CurrentAuthorizedUser"],
+        "finalStates": ["Term"],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "terminateSharing",
+        "preCondition": "True",
+        "postCondition": "",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "AvToSh",
+        "to": "Term",
+        "initialStates": ["Owner", "CurrentAuthorizedUser"],
+        "finalStates": ["Term"],
+        "newParticipants": [],
+        "existingParticipants": {},
+        "actionLabel": "terminateSharing",
+        "preCondition": "True",
+        "postCondition": "",
+        "input": "",
+        "externalAction": false
+      }
+    ],
+    "rPAssociation": [
+      {
+        "role": "Owner",
+        "participants": [
+          "Owner"
+        ]
+      },
+      {
+        "role": "BankAgent",
+        "participants": [
+          "BankAgent"
+        ]
+      },
+      {
+        "role": "ThirdPartyRequestor",
+        "participants": [
+          "ThirdPartyRequestor"
+        ]
+      },
+      {
+        "role": "CurrentAuthorizedUser",
+        "participants": [
+          "CurrentAuthorizedUser"
+        ]
+      }
+    ]
+  }
+  

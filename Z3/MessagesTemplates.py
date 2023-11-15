@@ -45,6 +45,7 @@ else:
         var_names = ("global " + ", ".join(var_names)) if len(var_names) > 0 else ""
         return f"""
 def reset_deploy_vars():
+    1 == 1
     {var_names}
     {deploy_vars}
 """

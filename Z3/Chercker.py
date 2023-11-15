@@ -64,7 +64,7 @@ def check_well_formness(fsm, file_name):
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
     
     
-    if len(deploy_init_var_val) == 0:
+    if len(deploy_init_var_val) == 0 and result != "":
         deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
     
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
@@ -80,9 +80,10 @@ def check_well_formness(fsm, file_name):
             actionL = transition['actionLabel']
             postC = transition['postCondition']
             data = grouped_transitions.get(to, [])
-            if data :
+            
+            """if data :
                 if len(grouped_transitions_copy.get(to, [])) > 0:
-                    grouped_transitions_copy.pop(to)
+                    grouped_transitions_copy.pop(to)"""
             otherPreC = [item['preCondition'] for item in data]
             inputs = [item['input'] for item in data]
             inputs.append(transition['input'])
@@ -108,7 +109,7 @@ def check_independant_sat(fsm, file_name):
     temp.paticipants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
     
-    if len(deploy_init_var_val) == 0:
+    if len(deploy_init_var_val) == 0 and result != "":
         deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
     
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
