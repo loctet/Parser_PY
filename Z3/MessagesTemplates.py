@@ -27,7 +27,8 @@ def {item['snameF']}(reset = False):
     {item['sVarUpdate']}
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver_{item['snameF']}.add(And(_pre == z3.sat, {item['spost']}))
+    #solver_{item['snameF']}.add(And(_pre == z3.sat, {item['spost']}))
+    {item['spost_imply']}
     return solver_{item['snameF']}.check() == z3.sat
     """
     
@@ -63,7 +64,8 @@ def reset_deploy_vars():
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         {variable_name} = {value}
-        {solver_name}.add({variable_name} == {variable_name})
+        _tmp_ = {value}
+        {solver_name}.add({variable_name} == _tmp_)
     else:
         raise NameError(f"State Variable '{{match.group(0)}}' does not exist")
 """

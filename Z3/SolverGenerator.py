@@ -36,14 +36,16 @@ class SolverGenerator:
             self.append(sparams)
             self.append(VarDefConv.convert_to_z3_int_assignement(postC))
         
+        name_func = f'_{func}_{len(self.solvers[func])}'
         result = {
             'sname': f'solver_{func}',
-            'snameF': f'_{func}_{len(self.solvers[func])}',
+            'snameF': name_func,
             'sparams': "\n    ".join(sparams.split('\n')),
             'sVarUpdate': sVarUpdate,
             'sglobalVars': global_vars,
             'spre': f"{pre}",
-            'spost': f"Or({','.join(otherPrecs)})"
+            'spost': f"solver_{name_func}.add(And(_pre == z3.sat, Or({','.join(otherPrecs)}))",
+            'spost_imply': f"_otherPrecs = [{', '.join(otherPrecs)}]\n    s_check = True if len(_otherPrecs) == 0 else False \n    for _prec in _otherPrecs: \n        solver_{name_func}.push()\n        solver_{name_func}.add(Implies({pre}, _prec))\n        s_check = s_check and solver_{name_func}.check() == z3.sat\n        solver_{name_func}.pop()\n    solver_{name_func}.add(s_check)",
         }
         if add :  
             self.solvers[func].append(result)
