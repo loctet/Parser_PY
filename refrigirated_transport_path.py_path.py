@@ -33,7 +33,8 @@ match = re.search(pattern, "d")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     d  =  _d
-    solver.add(d  == d )
+    _tmp_ =  _d
+    solver.add(d  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -56,7 +57,8 @@ match = re.search(pattern, "stage")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     stage  =  1
-    solver.add(stage  == stage )
+    _tmp_ =  1
+    solver.add(stage  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -70,7 +72,8 @@ match = re.search(pattern, "cp")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     cp  =  _cp
-    solver.add(cp  == cp )
+    _tmp_ =  _cp
+    solver.add(cp  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -92,7 +95,8 @@ match = re.search(pattern, "stage")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     stage  =  3
-    solver.add(stage  == stage )
+    _tmp_ =  3
+    solver.add(stage  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 

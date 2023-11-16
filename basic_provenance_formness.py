@@ -23,7 +23,7 @@ Store(role_Observer, 0, String('Observer'))
 
 def reset_deploy_vars():
     1 == 1
-    
+    global currentOwner, previousOwner, Counterparty, owner
     global currentOwner , previousOwner , Counterparty , owner 
     currentOwner = String('currentOwner')
     previousOwner = String('previousOwner')
@@ -49,7 +49,7 @@ def _start_0(reset = False):
     #building the solver for the predancontion
     solver__start_0 = z3.Solver()
     #set the stack init
-    solver__start_0.push()
+    """solver__start_0.push()
     solver__start_0.add(True)
     #getting the check result of the precondition
     _pre = solver__start_0.check()
@@ -68,13 +68,15 @@ def _start_0(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         currentOwner  =  _currentOwner
-        solver__start_0.add(currentOwner  == currentOwner )
+        _tmp_ =  _currentOwner
+        solver__start_0.add(currentOwner  == _tmp_)
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
+"""
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__start_0.add(And(_pre == z3.sat, Or(True)))
+    
+    solver__start_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner], And(currentOwner  ==  _currentOwner)), Or(Exists([_counterparty,_currentOwner,_counterparty], True)))))
     return solver__start_0.check() == z3.sat
     
 
@@ -96,8 +98,8 @@ def _assignResponsibility_0(reset = False):
     #building the solver for the predancontion
     solver__assignResponsibility_0 = z3.Solver()
     #set the stack init
-    solver__assignResponsibility_0.push()
-    solver__assignResponsibility_0.add(And(currentOwner == _counterparty, currentOwner == owner))
+    """solver__assignResponsibility_0.push()
+    solver__assignResponsibility_0.add(And(currentOwner == _counterparty, currentOwner != owner))
     #getting the check result of the precondition
     _pre = solver__assignResponsibility_0.check()
     
@@ -115,7 +117,8 @@ def _assignResponsibility_0(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         currentOwner  =  _counterparty
-        solver__assignResponsibility_0.add(currentOwner  == currentOwner )
+        _tmp_ =  _counterparty
+        solver__assignResponsibility_0.add(currentOwner  == _tmp_)
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -129,13 +132,15 @@ def _assignResponsibility_0(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         previousOwner  =  currentOwner
-        solver__assignResponsibility_0.add(previousOwner  == previousOwner )
+        _tmp_ =  currentOwner
+        solver__assignResponsibility_0.add(previousOwner  == _tmp_)
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
+"""
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__assignResponsibility_0.add(And(_pre == z3.sat, Or(And(currentOwner == _counterparty, currentOwner == owner),currentOwner == owner)))
+    
+    solver__assignResponsibility_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty], And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner)), Or(Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty], currentOwner == owner)))))
     return solver__assignResponsibility_0.check() == z3.sat
     
 
@@ -153,7 +158,7 @@ def _assignResponsibility_1(reset = False):
     #building the solver for the predancontion
     solver__assignResponsibility_1 = z3.Solver()
     #set the stack init
-    solver__assignResponsibility_1.push()
+    """solver__assignResponsibility_1.push()
     solver__assignResponsibility_1.add(True)
     #getting the check result of the precondition
     _pre = solver__assignResponsibility_1.check()
@@ -172,7 +177,8 @@ def _assignResponsibility_1(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         currentOwner  =  _counterparty
-        solver__assignResponsibility_1.add(currentOwner  == currentOwner )
+        _tmp_ =  _counterparty
+        solver__assignResponsibility_1.add(currentOwner  == _tmp_)
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -186,13 +192,15 @@ def _assignResponsibility_1(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         previousOwner  =  currentOwner
-        solver__assignResponsibility_1.add(previousOwner  == previousOwner )
+        _tmp_ =  currentOwner
+        solver__assignResponsibility_1.add(previousOwner  == _tmp_)
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
+"""
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__assignResponsibility_1.add(And(_pre == z3.sat, Or(And(currentOwner == _counterparty, currentOwner == owner),currentOwner == owner)))
+    
+    solver__assignResponsibility_1.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner)), Or(Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], currentOwner == owner)))))
     return solver__assignResponsibility_1.check() == z3.sat
     
 
@@ -210,7 +218,7 @@ def _reachDestination_0(reset = False):
     #building the solver for the predancontion
     solver__reachDestination_0 = z3.Solver()
     #set the stack init
-    solver__reachDestination_0.push()
+    """solver__reachDestination_0.push()
     solver__reachDestination_0.add(currentOwner == owner)
     #getting the check result of the precondition
     _pre = solver__reachDestination_0.check()
@@ -229,7 +237,8 @@ def _reachDestination_0(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         previousOwner  =  currentOwner
-        solver__reachDestination_0.add(previousOwner  == previousOwner )
+        _tmp_ =  currentOwner
+        solver__reachDestination_0.add(previousOwner  == _tmp_)
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -243,13 +252,15 @@ def _reachDestination_0(reset = False):
     if match.group(0) in globals():
         # If the variable exists, create a valid assignment
         currentOwner  =  owner
-        solver__reachDestination_0.add(currentOwner  == currentOwner )
+        _tmp_ =  owner
+        solver__reachDestination_0.add(currentOwner  == _tmp_)
     else:
         raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
+"""
     
     #check if precondition condition and the or of all direived preconditions id true 
-    solver__reachDestination_0.add(And(_pre == z3.sat, Or(True)))
+    
+    solver__reachDestination_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty], And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner)), Or(Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty], True)))))
     return solver__reachDestination_0.check() == z3.sat
     
 check_resut = (_start_0(True) and _assignResponsibility_0(True) and _assignResponsibility_1(True) and _reachDestination_0(True))

@@ -18,7 +18,18 @@ class SolverGenerator:
     #Append to the global Code Model
     def append(self, str):
        self.str_code += str + "\n"
-
+       
+    def quantifier_closure(self, formula, variables = [], quantifier = "ForAll"):
+        return f"{quantifier}([{','.join(variables)}], {formula})" if len(variables) > 0 else formula
+    
+    def z3_post_condition(self, postC):
+        formula = ", ".join(postC.replace(':=', ' == ').split("&"))
+        return "True" if postC.strip() == "" else (f"And({formula})")
+    
+    def get_vars_names_from_input(self, input_c = ""):
+        resuls  = VarDefConv.convert_to_z3_declarations(input_c, [])
+        return resuls[2]
+    
     def add_assertion(self, pre, otherPrecs, func = 'start', inputs = [], postC = "", add = True):
         
         data = self.solvers.get(func, [])
@@ -29,10 +40,14 @@ class SolverGenerator:
         otherPrecs = [replace_assertion(item) for item in otherPrecs]
         otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
         sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{func}_{len(self.solvers[func])}')
-        sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join(inputs), self.deploy_init_var_val)
+        sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in inputs if x != ""]), self.deploy_init_var_val)
         
+        
+        hypothesis = self.quantifier_closure(self.z3_post_condition(postC), self.var_names + var_names)
+        thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
+       
         if func == 'start':
-            self.deploy_init_var_val.append(VarDefConv.convert_to_z3_int_assignement(postC))
+            #self.deploy_init_var_val.append(VarDefConv.convert_to_z3_int_assignement(postC))
             self.append(sparams)
             self.append(VarDefConv.convert_to_z3_int_assignement(postC))
         
@@ -45,7 +60,7 @@ class SolverGenerator:
             'sglobalVars': global_vars,
             'spre': f"{pre}",
             'spost': f"solver_{name_func}.add(And(_pre == z3.sat, Or({','.join(otherPrecs)}))",
-            'spost_imply': f"_otherPrecs = [{', '.join(otherPrecs)}]\n    s_check = True if len(_otherPrecs) == 0 else False \n    for _prec in _otherPrecs: \n        solver_{name_func}.push()\n        solver_{name_func}.add(Implies({pre}, _prec))\n        s_check = s_check and solver_{name_func}.check() == z3.sat\n        solver_{name_func}.pop()\n    solver_{name_func}.add(s_check)",
+            'spost_imply': f"solver_{name_func}.add({self.quantifier_closure(f'Implies({hypothesis}, {thesis})', self.var_names)})"
         }
         if add :  
             self.solvers[func].append(result)

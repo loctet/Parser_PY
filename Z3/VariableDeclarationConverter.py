@@ -9,12 +9,12 @@ class VariableDeclarationConverter:
                 # Split each declaration into type, variable name, and optional initial value
                 parts = declaration.split(":=") # Assuming the initial value is after ":="
                 var_type, var_name = [s.strip() for s in parts[0].split()]
+                var_names.append(var_name)
                 
                 z3_var = None
                 z3_var_init = None
                 if len(parts) == 2:
                     initial_value = parts[1]
-                    var_names.append(var_name)
                     # Create Z3 variables based on the declared type and assign the initial value
                     if var_type == 'int':
                         initial_value = int(initial_value)
@@ -49,7 +49,7 @@ class VariableDeclarationConverter:
                     elif var_type == 'set':
                         z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
                     elif var_type == 'array':
-                        z3_var = f"{var_name} = []"
+                        z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
 
                 if z3_var is not None:
                     result += f"{z3_var}\n"
@@ -58,7 +58,7 @@ class VariableDeclarationConverter:
                         deploy_init_var_val.append(z3_var_init)
             except Exception:
                 print(f"{declaration} is not correcly written")
-                        
+                       
         return [result, deploy_init_var_val, var_names]
     
     def convert_to_z3_int_assignement(declarations_str):

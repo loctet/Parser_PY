@@ -1,8 +1,8 @@
 from z3 import * 
 from Z3.Extension import *
 
-locked = Int('locked')
-requestedL = Int('requestedL')
+locked = Bool('locked')
+requestedL = Bool('requestedL')
 
 solver = z3.Solver()
 check = True

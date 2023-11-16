@@ -1,8 +1,8 @@
 from z3 import * 
 from Z3.Extension import *
 
-locked = Int('locked')
-requestedL = Int('requestedL')
+locked = Bool('locked')
+requestedL = Bool('requestedL')
 
 solver = z3.Solver()
 check = True
@@ -61,7 +61,8 @@ match = re.search(pattern, "locked")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     locked  =  False
-    solver.add(locked  == locked )
+    _tmp_ =  False
+    solver.add(locked  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -83,7 +84,8 @@ match = re.search(pattern, "locked")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     locked  =  True
-    solver.add(locked  == locked )
+    _tmp_ =  True
+    solver.add(locked  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 

@@ -1,7 +1,7 @@
 {
     "id": "DigitalLockerWorkflow",
     "initialState": "Created",
-    "statesDeclaration": "int locked; int requestedL;",
+    "statesDeclaration": "bool locked; bool requestedL;",
     "states": [
       "Created",
       "Requested",

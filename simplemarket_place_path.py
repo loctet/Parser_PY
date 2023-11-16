@@ -2,11 +2,8 @@ from z3 import *
 from Z3.Extension import *
 
 state = Int('state')
-state = 0
 offer = Int('offer')
-offer = 0
-B = []
-B =  []
+B = Array('B', IntSort(), IntSort())
 
 solver = z3.Solver()
 check = True

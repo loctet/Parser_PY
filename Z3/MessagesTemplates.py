@@ -14,20 +14,10 @@ def {item['snameF']}(reset = False):
     
     #building the solver for the predancontion
     solver_{item['snameF']} = z3.Solver()
-    #set the stack init
-    solver_{item['snameF']}.push()
-    solver_{item['snameF']}.add({item['spre']})
-    #getting the check result of the precondition
-    _pre = solver_{item['snameF']}.check()
     
-    #remove the pre con to check the post or other precond
-    solver_{item['snameF']}.pop()
     
-    #update the states variable 
-    {item['sVarUpdate']}
+    #check if post condition implies any pre precondition
     
-    #check if precondition condition and the or of all direived preconditions id true 
-    #solver_{item['snameF']}.add(And(_pre == z3.sat, {item['spost']}))
     {item['spost_imply']}
     return solver_{item['snameF']}.check() == z3.sat
     """

@@ -87,7 +87,6 @@ def check_well_formness(fsm, file_name):
             otherPreC = [item['preCondition'] for item in data]
             inputs = [item['input'] for item in data]
             inputs.append(transition['input'])
-            inputs = [x for x in inputs if x != ""]
             temp.add_assertion(preC, otherPreC, actionL, inputs, postC)
             
             if to not in grouped_transitions and to not in fsm['finalStates']:
@@ -130,7 +129,6 @@ def check_independant_sat(fsm, file_name):
             otherPreC = [item['preCondition'] for item in data_]
             inputs = [item['input'] for item in data_]
             inputs.append(transition['input'])
-            inputs = [x for x in inputs if x != ""]
             temp.add_assertion(preC, otherPreC, actionL, inputs, postC)
             
             if to not in grouped_transitions and to not in fsm['finalStates']:

@@ -2,11 +2,8 @@ from z3 import *
 from Z3.Extension import *
 
 state = Int('state')
-state = 0
 offer = Int('offer')
-offer = 0
-B = []
-B =  []
+B = Array('B', IntSort(), IntSort())
 
 _offer = Int('_offer')
 
@@ -20,9 +17,11 @@ Store(role_B, 0, String('b'))
 def reset_deploy_vars():
     1 == 1
     global state, offer, B
-    state = 0
-    offer = 0
-    B =  []
+    global state , offer , B 
+    state = Int('state')
+    offer = Int('offer')
+    B = Array('B', IntSort(), IntSort())
+    
     
 
 
@@ -52,15 +51,8 @@ def _start_0(reset = False):
     
     
     #check if precondition condition and the or of all direived preconditions id true 
-    #solver__start_0.add(And(_pre == z3.sat, solver__start_0.add(And(_pre == z3.sat, Or(_offer  > 0))))
-    s_check = False 
-    _otherPrecs = [_offer  > 0]
-    for _prec in _otherPrecs: 
-        solver__start_0.push()
-        solver__start_0.add(Implies(True, _prec))
-        s_check = s_check and solver__start_0.check() == z3.sat
-        solver__start_0.pop()
-    solver__start_0.add(s_check)
+    
+    solver__start_0.add(ForAll([state,offer,B], Implies(ForAll([state,offer,B,_offer], True), Or(Exists([_offer,_offer], _offer  > 0)))))
     return solver__start_0.check() == z3.sat
     
 
@@ -91,15 +83,8 @@ def _acceptOffer_0(reset = False):
     
     
     #check if precondition condition and the or of all direived preconditions id true 
-    #solver__acceptOffer_0.add(And(_pre == z3.sat, solver__acceptOffer_0.add(And(_pre == z3.sat, Or(True))))
-    s_check = False 
-    _otherPrecs = [True]
-    for _prec in _otherPrecs: 
-        solver__acceptOffer_0.push()
-        solver__acceptOffer_0.add(Implies(True, _prec))
-        s_check = s_check and solver__acceptOffer_0.check() == z3.sat
-        solver__acceptOffer_0.pop()
-    solver__acceptOffer_0.add(s_check)
+    
+    solver__acceptOffer_0.add(ForAll([state,offer,B], Implies(ForAll([state,offer,B,_offer,_offer], True), Or(Exists([_offer,_offer], True)))))
     return solver__acceptOffer_0.check() == z3.sat
     
 
@@ -129,15 +114,8 @@ def _rejectOffer_0(reset = False):
     
     
     #check if precondition condition and the or of all direived preconditions id true 
-    #solver__rejectOffer_0.add(And(_pre == z3.sat, solver__rejectOffer_0.add(And(_pre == z3.sat, Or(_offer  > 0))))
-    s_check = False 
-    _otherPrecs = [_offer  > 0]
-    for _prec in _otherPrecs: 
-        solver__rejectOffer_0.push()
-        solver__rejectOffer_0.add(Implies(True, _prec))
-        s_check = s_check and solver__rejectOffer_0.check() == z3.sat
-        solver__rejectOffer_0.pop()
-    solver__rejectOffer_0.add(s_check)
+    
+    solver__rejectOffer_0.add(ForAll([state,offer,B], Implies(ForAll([state,offer,B,_offer,_offer,_offer], True), Or(Exists([_offer,_offer,_offer,_offer], _offer  > 0)))))
     return solver__rejectOffer_0.check() == z3.sat
     
 
@@ -181,15 +159,8 @@ def _makeOffer_0(reset = False):
 
     
     #check if precondition condition and the or of all direived preconditions id true 
-    #solver__makeOffer_0.add(And(_pre == z3.sat, solver__makeOffer_0.add(And(_pre == z3.sat, Or(True,True))))
-    s_check = False 
-    _otherPrecs = [True, True]
-    for _prec in _otherPrecs: 
-        solver__makeOffer_0.push()
-        solver__makeOffer_0.add(Implies(_offer  > 0, _prec))
-        s_check = s_check and solver__makeOffer_0.check() == z3.sat
-        solver__makeOffer_0.pop()
-    solver__makeOffer_0.add(s_check)
+    
+    solver__makeOffer_0.add(ForAll([state,offer,B], Implies(ForAll([state,offer,B,_offer,_offer,_offer,_offer,_offer], And(offer   ==  _offer)), Or(Exists([_offer,_offer,_offer,_offer,_offer], True),Exists([_offer,_offer,_offer,_offer,_offer], True)))))
     return solver__makeOffer_0.check() == z3.sat
     
 check_resut = (_start_0(True) and _acceptOffer_0(True) and _rejectOffer_0(True) and _makeOffer_0(True))

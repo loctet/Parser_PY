@@ -28,7 +28,8 @@ match = re.search(pattern, "currentOwner")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     currentOwner  =  _currentOwner
-    solver.add(currentOwner  == currentOwner )
+    _tmp_ =  _currentOwner
+    solver.add(currentOwner  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -51,7 +52,8 @@ match = re.search(pattern, "currentOwner")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     currentOwner  =  _counterparty
-    solver.add(currentOwner  == currentOwner )
+    _tmp_ =  _counterparty
+    solver.add(currentOwner  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -65,7 +67,8 @@ match = re.search(pattern, "previousOwner")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     previousOwner  =  currentOwner
-    solver.add(previousOwner  == previousOwner )
+    _tmp_ =  currentOwner
+    solver.add(previousOwner  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -87,7 +90,8 @@ match = re.search(pattern, "previousOwner")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     previousOwner  =  currentOwner
-    solver.add(previousOwner  == previousOwner )
+    _tmp_ =  currentOwner
+    solver.add(previousOwner  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
@@ -101,7 +105,8 @@ match = re.search(pattern, "currentOwner")
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
     currentOwner  =  owner
-    solver.add(currentOwner  == currentOwner )
+    _tmp_ =  owner
+    solver.add(currentOwner  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 

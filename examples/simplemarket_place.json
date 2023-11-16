@@ -1,7 +1,7 @@
 {
   "id": "c",
   "initialState": "S0",
-  "statesDeclaration": "int state := 0 ; int offer  := 0 ; array B := []",
+  "statesDeclaration": "int state; int offer; array B",
   "states": [
     "S0",
     "S1",
