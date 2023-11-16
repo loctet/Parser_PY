@@ -30,40 +30,36 @@ class SolverGenerator:
         resuls  = VarDefConv.convert_to_z3_declarations(input_c, [])
         return resuls[2]
     
-    def add_assertion(self, pre, otherPrecs, func = 'start', inputs = [], postC = "", add = True):
+    def add_assertion(self, pre, otherPrecs, action = 'start', inputs = [], postC = "", add = True):
         
-        data = self.solvers.get(func, [])
+        data = self.solvers.get(action, [])
         if not data:
-            self.solvers[func] = []
+            self.solvers[action] = []
         
         pre = replace_assertion(pre)
         otherPrecs = [replace_assertion(item) for item in otherPrecs]
         otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
-        sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{func}_{len(self.solvers[func])}')
+        sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{action}_{len(self.solvers[action])}')
         sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in inputs if x != ""]), self.deploy_init_var_val)
         
         
         hypothesis = self.quantifier_closure(self.z3_post_condition(postC), self.var_names + var_names)
         thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
        
-        if func == 'start':
-            #self.deploy_init_var_val.append(VarDefConv.convert_to_z3_int_assignement(postC))
+        if action == 'start':
             self.append(sparams)
             self.append(VarDefConv.convert_to_z3_int_assignement(postC))
         
-        name_func = f'_{func}_{len(self.solvers[func])}'
+        name_func = f'_{action}_{len(self.solvers[action])}'
         result = {
-            'sname': f'solver_{func}',
+            'sname': f'solver_{action}',
             'snameF': name_func,
             'sparams': "\n    ".join(sparams.split('\n')),
-            'sVarUpdate': sVarUpdate,
             'sglobalVars': global_vars,
-            'spre': f"{pre}",
-            'spost': f"solver_{name_func}.add(And(_pre == z3.sat, Or({','.join(otherPrecs)}))",
             'spost_imply': f"solver_{name_func}.add({self.quantifier_closure(f'Implies({hypothesis}, {thesis})', self.var_names)})"
         }
         if add :  
-            self.solvers[func].append(result)
+            self.solvers[action].append(result)
         return result
 
     def generate_solver_code(self, result_var):
