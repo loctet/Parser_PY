@@ -30,21 +30,21 @@ class SolverGenerator:
         resuls  = VarDefConv.convert_to_z3_declarations(input_c, [])
         return resuls[2]
     
-    def add_assertion(self, pre, otherPrecs, action = 'start', inputs = [], postC = "", add = True):
-        
+    def add_assertion(self, pre, otherPrecs,inputs, action = 'start', postC = "", add = True):
+    	
         data = self.solvers.get(action, [])
         if not data:
             self.solvers[action] = []
         
         pre = replace_assertion(pre)
-        otherPrecs = [replace_assertion(item) for item in otherPrecs]
-        otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
+#        otherPrecs = [replace_assertion(item) for item in otherPrecs]
+#        otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
         sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{action}_{len(self.solvers[action])}')
-        sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in inputs if x != ""]), self.deploy_init_var_val)
+        sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in inputs[1] if x != ""]))
         
         
-        hypothesis = self.quantifier_closure(self.z3_post_condition(postC), self.var_names + var_names)
-        thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
+        hypothesis = self.z3_post_condition(postC)
+        thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[1][i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
        
         if action == 'start':
             self.append(sparams)
@@ -56,7 +56,7 @@ class SolverGenerator:
             'snameF': name_func,
             'sparams': "\n    ".join(sparams.split('\n')),
             'sglobalVars': global_vars,
-            'spost_imply': f"solver_{name_func}.add({self.quantifier_closure(f'Implies({hypothesis}, {thesis})', self.var_names)})"
+            'spost_imply': f"solver_{name_func}.add({self.quantifier_closure(f'Implies({hypothesis}, {thesis})', self.var_names + self.get_vars_names_from_input(inputs[0]))})"
         }
         if add :  
             self.solvers[action].append(result)

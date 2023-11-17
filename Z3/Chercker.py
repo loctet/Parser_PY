@@ -86,8 +86,8 @@ def check_well_formness(fsm, file_name):
                     grouped_transitions_copy.pop(to)"""
             otherPreC = [item['preCondition'] for item in data]
             inputs = [item['input'] for item in data]
-            inputs.append(transition['input'])
-            temp.add_assertion(preC, otherPreC, actionL, inputs, postC)
+            
+            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), actionL, postC)
             
             if to not in grouped_transitions and to not in fsm['finalStates']:
                 print(f"Warning: {to} is not a final state but has no trasitions from {to}")
