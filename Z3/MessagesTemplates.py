@@ -4,22 +4,26 @@ class MessagesTemplates:
     def getFunctionActionDefinition(funtionData):
         item = funtionData
         return f"""
-def {item['snameF']}(reset = False):
+def {item['snameF']}(minimize = False):
     {item['sglobalVars']}
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     {item["sparams"]}
     
     #building the solver for the predancontion
-    solver_{item['snameF']} = z3.Solver()
-    
-    
+    solver_{item['snameF']} = z3.Solver() 
+    solver_{item['snameF']}2 = z3.Solver() 
     #check if post condition implies any pre precondition
-    
-    {item['spost_imply']}
-    return solver_{item['snameF']}.check() == z3.sat
+    solver_{item['snameF']}.add({item['sformula']})
+    result = solver_{item['snameF']}.check() == z3.sat
+    if minimize :
+        print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
+        if not result: 
+            solver_{item['snameF']}2.add(Not({item['sformula']}))
+            print("\\nMinify of the Not Formula: ", simplify(Not({item['sformula']})), " :: ", solver_{item['snameF']}2.check() == z3.sat)
+            if solver_{item['snameF']}2.check() == z3.sat :
+                print("\\nNot Formula Model: ",solver_{item['snameF']}2.model() , "\\n")
+                
+    return result
     """
     
     @staticmethod

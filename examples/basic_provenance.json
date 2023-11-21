@@ -1,35 +1,35 @@
 {
     "id": "basicProvenance",
-    "initialState": "Created",
+    "initialState": "CR",
     "statesDeclaration": "string currentOwner; string previousOwner; string Counterparty; string owner",
     "states": [
-      "Created",
-      "InTransit",
-      "Completed"
+      "CR",
+      "ITS",
+      "CPL"
     ],
     "finalStates": [
-      "Completed"
+      "CPL"
     ],
     "transitions": [
         {
             "from": "_",
-            "to": "Created",
+            "to": "CR",
             "initialStates": [],
             "finalStates": [],
-            "newParticipants": ["Created"],
+            "newParticipants": {},
             "existingParticipants": {},
             "actionLabel": "start",
             "preCondition": "True",
-            "postCondition": "currentOwner := _currentOwner",
-            "input": "string _currentOwner",
+            "postCondition": "currentOwner := _currentOwner & owner := _owner",
+            "input": "string _currentOwner; string _owner",
             "externalAction": false
           },
         {
-            "from": "Created",
-            "to": "InTransit",
+            "from": "CR",
+            "to": "ITS",
             "initialStates": [],
             "finalStates": [],
-            "newParticipants": ["Created"],
+            "newParticipants": {},
             "existingParticipants": {},
             "actionLabel": "assignResponsibility",
             "preCondition": "True",
@@ -38,8 +38,8 @@
             "externalAction": false
           },
       {
-        "from": "InTransit",
-        "to": "InTransit",
+        "from": "ITS",
+        "to": "ITS",
         "initialStates": [],
         "finalStates": [],
         "newParticipants": [],
@@ -51,8 +51,8 @@
         "externalAction": false
       },
       {
-        "from": "InTransit",
-        "to": "Completed",
+        "from": "ITS",
+        "to": "CPL",
         "initialStates": [],
         "finalStates": [],
         "newParticipants": [],

@@ -6,11 +6,6 @@ previousOwner = String('previousOwner')
 Counterparty = String('Counterparty')
 owner = String('owner')
 
-_counterparty = String('_counterparty')
-_currentOwner = String('_currentOwner')
-
-currentOwner =  _currentOwner
-
 
 role_InitiatingCounterParty = Array('InitiatingCounterParty',IntSort() , StringSort())
 Store(role_InitiatingCounterParty, 0, String('InitiatingCounterParty'))
@@ -21,261 +16,125 @@ Store(role_Owner, 0, String('Owner'))
 role_Observer = Array('Observer',IntSort() , StringSort())
 Store(role_Observer, 0, String('Observer'))
 
-def reset_deploy_vars():
-    1 == 1
-    global currentOwner, previousOwner, Counterparty, owner
-    global currentOwner , previousOwner , Counterparty , owner 
-    currentOwner = String('currentOwner')
-    previousOwner = String('previousOwner')
-    Counterparty = String('Counterparty')
-    owner = String('owner')
-    
-    currentOwner =  _currentOwner
 
 
-
-
-
-def _start_0(reset = False):
+def _start_0(minimize = False):
     global currentOwner 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    global owner 
+    # Declare variable before   
     _counterparty = String('_counterparty')
     _currentOwner = String('_currentOwner')
+    _owner = String('_owner')
     
     
     #building the solver for the predancontion
-    solver__start_0 = z3.Solver()
-    #set the stack init
-    """solver__start_0.push()
-    solver__start_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__start_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__start_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "currentOwner")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        currentOwner  =  _currentOwner
-        _tmp_ =  _currentOwner
-        solver__start_0.add(currentOwner  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__start_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner], And(currentOwner  ==  _currentOwner)), Or(Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty], True)))))
-    return solver__start_0.check() == z3.sat
+    solver__start_0 = z3.Solver() 
+    solver__start_02 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__start_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True)))))
+    result = solver__start_0.check() == z3.sat
+    if minimize :
+        print("--For _start_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True))))), " :: ", result)
+        if not result: 
+            solver__start_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True))))))
+            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True)))))), " :: ", solver__start_02.check() == z3.sat)
+            if solver__start_02.check() == z3.sat :
+                print("\nNot Formula Model: ",solver__start_02.model() , "\n")
+                
+    return result
     
 
 
 
 
 
-def _assignResponsibility_0(reset = False):
+def _assignResponsibility_0(minimize = False):
     global currentOwner 
     global previousOwner 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     _counterparty = String('_counterparty')
     _counterparty = String('_counterparty')
     
     
     #building the solver for the predancontion
-    solver__assignResponsibility_0 = z3.Solver()
-    #set the stack init
-    """solver__assignResponsibility_0.push()
-    solver__assignResponsibility_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__assignResponsibility_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__assignResponsibility_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "currentOwner")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        currentOwner  =  _counterparty
-        _tmp_ =  _counterparty
-        solver__assignResponsibility_0.add(currentOwner  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
-
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "previousOwner")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        previousOwner  =  currentOwner
-        _tmp_ =  currentOwner
-        solver__assignResponsibility_0.add(previousOwner  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__assignResponsibility_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty], And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner)), Or(Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty], currentOwner == owner)))))
-    return solver__assignResponsibility_0.check() == z3.sat
+    solver__assignResponsibility_0 = z3.Solver() 
+    solver__assignResponsibility_02 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__assignResponsibility_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))
+    result = solver__assignResponsibility_0.check() == z3.sat
+    if minimize :
+        print("--For _assignResponsibility_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))), " :: ", result)
+        if not result: 
+            solver__assignResponsibility_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))))
+            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))), " :: ", solver__assignResponsibility_02.check() == z3.sat)
+            if solver__assignResponsibility_02.check() == z3.sat :
+                print("\nNot Formula Model: ",solver__assignResponsibility_02.model() , "\n")
+                
+    return result
     
 
-def _assignResponsibility_1(reset = False):
+def _assignResponsibility_1(minimize = False):
     global currentOwner 
     global previousOwner 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     _counterparty = String('_counterparty')
     _counterparty = String('_counterparty')
     
     
     #building the solver for the predancontion
-    solver__assignResponsibility_1 = z3.Solver()
-    #set the stack init
-    """solver__assignResponsibility_1.push()
-    solver__assignResponsibility_1.add(And(currentOwner == _counterparty, currentOwner != owner))
-    #getting the check result of the precondition
-    _pre = solver__assignResponsibility_1.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__assignResponsibility_1.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "currentOwner")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        currentOwner  =  _counterparty
-        _tmp_ =  _counterparty
-        solver__assignResponsibility_1.add(currentOwner  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
-
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "previousOwner")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        previousOwner  =  currentOwner
-        _tmp_ =  currentOwner
-        solver__assignResponsibility_1.add(previousOwner  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__assignResponsibility_1.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner)), Or(Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], currentOwner == owner)))))
-    return solver__assignResponsibility_1.check() == z3.sat
+    solver__assignResponsibility_1 = z3.Solver() 
+    solver__assignResponsibility_12 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__assignResponsibility_1.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))
+    result = solver__assignResponsibility_1.check() == z3.sat
+    if minimize :
+        print("--For _assignResponsibility_1: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))), " :: ", result)
+        if not result: 
+            solver__assignResponsibility_12.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))))
+            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))), " :: ", solver__assignResponsibility_12.check() == z3.sat)
+            if solver__assignResponsibility_12.check() == z3.sat :
+                print("\nNot Formula Model: ",solver__assignResponsibility_12.model() , "\n")
+                
+    return result
     
 
 
 
-def _reachDestination_0(reset = False):
+def _reachDestination_0(minimize = False):
     global previousOwner 
     global currentOwner 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__reachDestination_0 = z3.Solver()
-    #set the stack init
-    """solver__reachDestination_0.push()
-    solver__reachDestination_0.add(currentOwner == owner)
-    #getting the check result of the precondition
-    _pre = solver__reachDestination_0.check()
+    solver__reachDestination_0 = z3.Solver() 
+    solver__reachDestination_02 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__reachDestination_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True)))
+    result = solver__reachDestination_0.check() == z3.sat
+    if minimize :
+        print("--For _reachDestination_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True))), " :: ", result)
+        if not result: 
+            solver__reachDestination_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True))))
+            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True)))), " :: ", solver__reachDestination_02.check() == z3.sat)
+            if solver__reachDestination_02.check() == z3.sat :
+                print("\nNot Formula Model: ",solver__reachDestination_02.model() , "\n")
+                
+    return result
     
-    #remove the pre con to check the post or other precond
-    solver__reachDestination_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "previousOwner")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        previousOwner  =  currentOwner
-        _tmp_ =  currentOwner
-        solver__reachDestination_0.add(previousOwner  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
-
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "currentOwner")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        currentOwner  =  owner
-        _tmp_ =  owner
-        solver__reachDestination_0.add(currentOwner  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__reachDestination_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner)), Or(Exists([_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_currentOwner,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty,_counterparty], True)))))
-    return solver__reachDestination_0.check() == z3.sat
-    
-check_resut = (_start_0(True) and _assignResponsibility_0(True) and _assignResponsibility_1(True) and _reachDestination_0(True))
+check_resut = (_start_0() and _assignResponsibility_0() and _assignResponsibility_1() and _reachDestination_0())
 
 if  check_resut == True:
     print("satisfy")
 else:
     print("unSatisfy")
         
+print('\nFuntions minimized formula and satisfiability result :')
 
+_start_0(True)
 
-print('_start_0: ',_start_0(True))
+_assignResponsibility_0(True)
 
-print('_assignResponsibility_0: ',_assignResponsibility_0(True))
+_assignResponsibility_1(True)
 
-print('_assignResponsibility_1: ',_assignResponsibility_1(True))
-
-print('_reachDestination_0: ',_reachDestination_0(True))
+_reachDestination_0(True)

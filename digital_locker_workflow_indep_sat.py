@@ -5,8 +5,6 @@ locked = Bool('locked')
 requestedL = Bool('requestedL')
 
 
-
-
 role_Owner = Array('Owner',IntSort() , StringSort())
 Store(role_Owner, 0, String('Owner'))
 role_BankAgent = Array('BankAgent',IntSort() , StringSort())
@@ -16,472 +14,236 @@ Store(role_ThirdPartyRequestor, 0, String('ThirdPartyRequestor'))
 role_CurrentAuthorizedUser = Array('CurrentAuthorizedUser',IntSort() , StringSort())
 Store(role_CurrentAuthorizedUser, 0, String('CurrentAuthorizedUser'))
 
-def reset_deploy_vars():
-    1 == 1
-    global locked, requestedL
-    global locked , requestedL 
-    locked = Bool('locked')
-    requestedL = Bool('requestedL')
+
+
+def _start_0(minimize = False):
     
-    
-
-
-
-
-def _start_0(reset = False):
-    
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__start_0 = z3.Solver()
-    #set the stack init
-    """solver__start_0.push()
-    solver__start_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__start_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__start_0.pop()
-    
-    #update the states variable 
-    """
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__start_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], True), Or(True))))
-    return solver__start_0.check() == z3.sat
+    solver__start_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__start_0.add(ForAll([locked,requestedL], Implies(True, Or(True))))
+    result = solver__start_0.check() == z3.sat
+    if minimize :
+        print("--For _start_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True)))), ":", result)
+    return result
     
 
 
 
 
 
-def _requestAvailability_0(reset = False):
+def _requestAvailability_0(minimize = False):
     
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__requestAvailability_0 = z3.Solver()
-    #set the stack init
-    """solver__requestAvailability_0.push()
-    solver__requestAvailability_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__requestAvailability_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__requestAvailability_0.pop()
-    
-    #update the states variable 
-    """
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__requestAvailability_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], True), Or(True))))
-    return solver__requestAvailability_0.check() == z3.sat
+    solver__requestAvailability_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__requestAvailability_0.add(ForAll([locked,requestedL], Implies(True, Or(True))))
+    result = solver__requestAvailability_0.check() == z3.sat
+    if minimize :
+        print("--For _requestAvailability_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True)))), ":", result)
+    return result
     
 
 
 
-def _reviewRequest_0(reset = False):
+def _reviewRequest_0(minimize = False):
     
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__reviewRequest_0 = z3.Solver()
-    #set the stack init
-    """solver__reviewRequest_0.push()
-    solver__reviewRequest_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__reviewRequest_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__reviewRequest_0.pop()
-    
-    #update the states variable 
-    """
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__reviewRequest_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], True), Or(True))))
-    return solver__reviewRequest_0.check() == z3.sat
+    solver__reviewRequest_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__reviewRequest_0.add(ForAll([locked,requestedL], Implies(True, Or(True))))
+    result = solver__reviewRequest_0.check() == z3.sat
+    if minimize :
+        print("--For _reviewRequest_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True)))), ":", result)
+    return result
     
 
 
 
-def _uploadDigitalAsset_0(reset = False):
+def _uploadDigitalAsset_0(minimize = False):
     
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__uploadDigitalAsset_0 = z3.Solver()
-    #set the stack init
-    """solver__uploadDigitalAsset_0.push()
-    solver__uploadDigitalAsset_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__uploadDigitalAsset_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__uploadDigitalAsset_0.pop()
-    
-    #update the states variable 
-    """
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__uploadDigitalAsset_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], True), Or(True,locked == False,True))))
-    return solver__uploadDigitalAsset_0.check() == z3.sat
+    solver__uploadDigitalAsset_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__uploadDigitalAsset_0.add(ForAll([locked,requestedL], Implies(True, Or(True,locked == False,True))))
+    result = solver__uploadDigitalAsset_0.check() == z3.sat
+    if minimize :
+        print("--For _uploadDigitalAsset_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True,locked == False,True)))), ":", result)
+    return result
     
 
 
 
-def _ShareThirdPartyRequest_0(reset = False):
+def _ShareThirdPartyRequest_0(minimize = False):
     global locked 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__ShareThirdPartyRequest_0 = z3.Solver()
-    #set the stack init
-    """solver__ShareThirdPartyRequest_0.push()
-    solver__ShareThirdPartyRequest_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__ShareThirdPartyRequest_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__ShareThirdPartyRequest_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "locked")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        locked  =  True
-        _tmp_ =  True
-        solver__ShareThirdPartyRequest_0.add(locked  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__ShareThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], And(locked  ==  True)), Or(locked == True,True))))
-    return solver__ShareThirdPartyRequest_0.check() == z3.sat
+    solver__ShareThirdPartyRequest_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__ShareThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(And(locked  ==  True), Or(locked == True,True))))
+    result = solver__ShareThirdPartyRequest_0.check() == z3.sat
+    if minimize :
+        print("--For _ShareThirdPartyRequest_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked  ==  True), Or(locked == True,True)))), ":", result)
+    return result
     
 
 
 
-def _requestAccessLocker_0(reset = False):
+def _requestAccessLocker_0(minimize = False):
     global locked 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__requestAccessLocker_0 = z3.Solver()
-    #set the stack init
-    """solver__requestAccessLocker_0.push()
-    solver__requestAccessLocker_0.add(locked == False)
-    #getting the check result of the precondition
-    _pre = solver__requestAccessLocker_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__requestAccessLocker_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "locked")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        locked  =  False
-        _tmp_ =  False
-        solver__requestAccessLocker_0.add(locked  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__requestAccessLocker_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], And(locked  ==  False)), Or(locked == False,locked == False,True))))
-    return solver__requestAccessLocker_0.check() == z3.sat
+    solver__requestAccessLocker_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__requestAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked  ==  False), Or(locked == False,locked == False,True))))
+    result = solver__requestAccessLocker_0.check() == z3.sat
+    if minimize :
+        print("--For _requestAccessLocker_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked  ==  False), Or(locked == False,locked == False,True)))), ":", result)
+    return result
     
 
 
 
-def _terminateSharing_0(reset = False):
+def _terminateSharing_0(minimize = False):
     
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__terminateSharing_0 = z3.Solver()
-    #set the stack init
-    """solver__terminateSharing_0.push()
-    solver__terminateSharing_0.add(True)
-    #getting the check result of the precondition
-    _pre = solver__terminateSharing_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__terminateSharing_0.pop()
-    
-    #update the states variable 
-    """
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__terminateSharing_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], True), Or(True))))
-    return solver__terminateSharing_0.check() == z3.sat
+    solver__terminateSharing_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__terminateSharing_0.add(ForAll([locked,requestedL], Implies(True, True)))
+    result = solver__terminateSharing_0.check() == z3.sat
+    if minimize :
+        print("--For _terminateSharing_0: ", simplify(ForAll([locked,requestedL], Implies(True, True))), ":", result)
+    return result
     
 
-def _terminateSharing_1(reset = False):
+def _terminateSharing_1(minimize = False):
     
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__terminateSharing_1 = z3.Solver()
-    #set the stack init
-    """solver__terminateSharing_1.push()
-    solver__terminateSharing_1.add(True)
-    #getting the check result of the precondition
-    _pre = solver__terminateSharing_1.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__terminateSharing_1.pop()
-    
-    #update the states variable 
-    """
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__terminateSharing_1.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], True), Or(True))))
-    return solver__terminateSharing_1.check() == z3.sat
+    solver__terminateSharing_1 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__terminateSharing_1.add(ForAll([locked,requestedL], Implies(True, True)))
+    result = solver__terminateSharing_1.check() == z3.sat
+    if minimize :
+        print("--For _terminateSharing_1: ", simplify(ForAll([locked,requestedL], Implies(True, True))), ":", result)
+    return result
     
 
-def _terminateSharing_2(reset = False):
+def _terminateSharing_2(minimize = False):
     
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__terminateSharing_2 = z3.Solver()
-    #set the stack init
-    """solver__terminateSharing_2.push()
-    solver__terminateSharing_2.add(True)
-    #getting the check result of the precondition
-    _pre = solver__terminateSharing_2.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__terminateSharing_2.pop()
-    
-    #update the states variable 
-    """
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__terminateSharing_2.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], True), Or(True))))
-    return solver__terminateSharing_2.check() == z3.sat
+    solver__terminateSharing_2 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__terminateSharing_2.add(ForAll([locked,requestedL], Implies(True, True)))
+    result = solver__terminateSharing_2.check() == z3.sat
+    if minimize :
+        print("--For _terminateSharing_2: ", simplify(ForAll([locked,requestedL], Implies(True, True))), ":", result)
+    return result
     
 
 
 
-def _revokeThirdPartyRequest_0(reset = False):
+def _revokeThirdPartyRequest_0(minimize = False):
     global locked 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__revokeThirdPartyRequest_0 = z3.Solver()
-    #set the stack init
-    """solver__revokeThirdPartyRequest_0.push()
-    solver__revokeThirdPartyRequest_0.add(locked == True)
-    #getting the check result of the precondition
-    _pre = solver__revokeThirdPartyRequest_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__revokeThirdPartyRequest_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "locked")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        locked  =  False
-        _tmp_ =  False
-        solver__revokeThirdPartyRequest_0.add(locked  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__revokeThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], And(locked  ==  False)), Or(True,locked == False,True))))
-    return solver__revokeThirdPartyRequest_0.check() == z3.sat
+    solver__revokeThirdPartyRequest_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__revokeThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(And(locked  ==  False), Or(True,locked == False,True))))
+    result = solver__revokeThirdPartyRequest_0.check() == z3.sat
+    if minimize :
+        print("--For _revokeThirdPartyRequest_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked  ==  False), Or(True,locked == False,True)))), ":", result)
+    return result
     
 
 
 
-def _revokeGrantAccessLocker_0(reset = False):
+def _revokeGrantAccessLocker_0(minimize = False):
     global locked 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__revokeGrantAccessLocker_0 = z3.Solver()
-    #set the stack init
-    """solver__revokeGrantAccessLocker_0.push()
-    solver__revokeGrantAccessLocker_0.add(locked == False)
-    #getting the check result of the precondition
-    _pre = solver__revokeGrantAccessLocker_0.check()
-    
-    #remove the pre con to check the post or other precond
-    solver__revokeGrantAccessLocker_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "locked")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        locked  =  False
-        _tmp_ =  False
-        solver__revokeGrantAccessLocker_0.add(locked  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__revokeGrantAccessLocker_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], And(locked  ==  False)), Or(True,locked == False,True))))
-    return solver__revokeGrantAccessLocker_0.check() == z3.sat
+    solver__revokeGrantAccessLocker_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__revokeGrantAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked  ==  False), Or(True,locked == False,True))))
+    result = solver__revokeGrantAccessLocker_0.check() == z3.sat
+    if minimize :
+        print("--For _revokeGrantAccessLocker_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked  ==  False), Or(True,locked == False,True)))), ":", result)
+    return result
     
 
 
 
-def _grantAccessLocker_0(reset = False):
+def _grantAccessLocker_0(minimize = False):
     global locked 
-    #reset global var to execute functions independenly
-    if reset:
-        reset_deploy_vars()
-    # Declare variable before checking the precondition    
+    # Declare variable before   
     
     
     #building the solver for the predancontion
-    solver__grantAccessLocker_0 = z3.Solver()
-    #set the stack init
-    """solver__grantAccessLocker_0.push()
-    solver__grantAccessLocker_0.add(locked == False)
-    #getting the check result of the precondition
-    _pre = solver__grantAccessLocker_0.check()
+    solver__grantAccessLocker_0 = z3.Solver() 
+    #check if post condition implies any pre precondition
+    solver__grantAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked  ==  True), Or(locked == True,True))))
+    result = solver__grantAccessLocker_0.check() == z3.sat
+    if minimize :
+        print("--For _grantAccessLocker_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked  ==  True), Or(locked == True,True)))), ":", result)
+    return result
     
-    #remove the pre con to check the post or other precond
-    solver__grantAccessLocker_0.pop()
-    
-    #update the states variable 
-    
-    # Define a regular expression pattern to match variable names inside brackets or parentheses
-    pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
-    # Use re.search to find the first match in the expression
-    match = re.search(pattern, "locked")
-    
-    # Check if the variable exists in locals() or globals()
-    if match.group(0) in globals():
-        # If the variable exists, create a valid assignment
-        locked  =  True
-        _tmp_ =  True
-        solver__grantAccessLocker_0.add(locked  == _tmp_)
-    else:
-        raise NameError(f"State Variable '{match.group(0)}' does not exist")
-"""
-    
-    #check if precondition condition and the or of all direived preconditions id true 
-    
-    solver__grantAccessLocker_0.add(ForAll([locked,requestedL], Implies(ForAll([locked,requestedL], And(locked  ==  True)), Or(locked == True,True))))
-    return solver__grantAccessLocker_0.check() == z3.sat
-    
-check_resut = (_start_0(True) and _requestAvailability_0(True) and _reviewRequest_0(True) and _uploadDigitalAsset_0(True) and _ShareThirdPartyRequest_0(True) and _requestAccessLocker_0(True) and _terminateSharing_0(True) and _terminateSharing_1(True) and _terminateSharing_2(True) and _revokeThirdPartyRequest_0(True) and _revokeGrantAccessLocker_0(True) and _grantAccessLocker_0(True))
+check_resut = (_start_0() and _requestAvailability_0() and _reviewRequest_0() and _uploadDigitalAsset_0() and _ShareThirdPartyRequest_0() and _requestAccessLocker_0() and _terminateSharing_0() and _terminateSharing_1() and _terminateSharing_2() and _revokeThirdPartyRequest_0() and _revokeGrantAccessLocker_0() and _grantAccessLocker_0())
 
 if  check_resut == True:
     print("satisfy")
 else:
     print("unSatisfy")
         
+print('\nFuntions minimized formula and satisfiability result :')
 
+_start_0(True)
 
-print('_start_0: ',_start_0(True))
+_requestAvailability_0(True)
 
-print('_requestAvailability_0: ',_requestAvailability_0(True))
+_reviewRequest_0(True)
 
-print('_reviewRequest_0: ',_reviewRequest_0(True))
+_uploadDigitalAsset_0(True)
 
-print('_uploadDigitalAsset_0: ',_uploadDigitalAsset_0(True))
+_ShareThirdPartyRequest_0(True)
 
-print('_ShareThirdPartyRequest_0: ',_ShareThirdPartyRequest_0(True))
+_requestAccessLocker_0(True)
 
-print('_requestAccessLocker_0: ',_requestAccessLocker_0(True))
+_terminateSharing_0(True)
 
-print('_terminateSharing_0: ',_terminateSharing_0(True))
+_terminateSharing_1(True)
 
-print('_terminateSharing_1: ',_terminateSharing_1(True))
+_terminateSharing_2(True)
 
-print('_terminateSharing_2: ',_terminateSharing_2(True))
+_revokeThirdPartyRequest_0(True)
 
-print('_revokeThirdPartyRequest_0: ',_revokeThirdPartyRequest_0(True))
+_revokeGrantAccessLocker_0(True)
 
-print('_revokeGrantAccessLocker_0: ',_revokeGrantAccessLocker_0(True))
-
-print('_grantAccessLocker_0: ',_grantAccessLocker_0(True))
+_grantAccessLocker_0(True)

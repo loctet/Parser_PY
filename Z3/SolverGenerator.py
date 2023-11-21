@@ -26,7 +26,7 @@ class SolverGenerator:
         formula = ", ".join(postC.replace(':=', ' == ').split("&"))
         return "True" if postC.strip() == "" else (f"And({formula})")
     
-    def get_vars_names_from_input(self, input_c = ""):
+    def get_vars_names_from_input(self, input_c):
         resuls  = VarDefConv.convert_to_z3_declarations(input_c, [])
         return resuls[2]
     
@@ -40,23 +40,19 @@ class SolverGenerator:
 #        otherPrecs = [replace_assertion(item) for item in otherPrecs]
 #        otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
         sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{action}_{len(self.solvers[action])}')
-        sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in inputs[1] if x != ""]))
-        
+        sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in (inputs[1]+[inputs[0]]) if x != ""]))
         
         hypothesis = self.z3_post_condition(postC)
         thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[1][i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
        
-        if action == 'start':
-            self.append(sparams)
-            self.append(VarDefConv.convert_to_z3_int_assignement(postC))
-        
         name_func = f'_{action}_{len(self.solvers[action])}'
+        
         result = {
             'sname': f'solver_{action}',
             'snameF': name_func,
             'sparams': "\n    ".join(sparams.split('\n')),
             'sglobalVars': global_vars,
-            'spost_imply': f"solver_{name_func}.add({self.quantifier_closure(f'Implies({hypothesis}, {thesis})', self.var_names + self.get_vars_names_from_input(inputs[0]))})"
+            'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', self.var_names + self.get_vars_names_from_input(inputs[0]))
         }
         if add :  
             self.solvers[action].append(result)
@@ -71,14 +67,14 @@ class SolverGenerator:
             self.append(self.paticipants.roles[role]["declaration"])
             self.append("\n".join(self.paticipants.roles[role]["list"]))
           
-        self.append(MessagesTemplates.getResetGlobalFunction("\n    ".join(self.deploy_init_var_val), self.var_names))
+        #self.append(MessagesTemplates.getResetGlobalFunction("\n    ".join(self.deploy_init_var_val), self.var_names))
         
         checks = []
         for s in self.solvers:
            self.append("\n")
            for item in self.solvers[s]:
                 self.append(MessagesTemplates.getFunctionActionDefinition(item))
-                checks.append(f"{item['snameF']}(True)")
+                checks.append(f"{item['snameF']}()")
                 
                 
         self.append(f"{result_var} = (" + " and ".join(checks) + ")")
@@ -86,8 +82,8 @@ class SolverGenerator:
         return self.str_code
 
     def dump_models(self):
-        code = ""
+        code = "print('\\nFuntions minimized formula and satisfiability result :')"
         for s in self.solvers:
            for item in self.solvers[s]:
-                code += f"\n\nprint('{item['snameF']}: ',{item['snameF']}(True))"
+                code += f"\n\n{item['snameF']}(True)"
         return code 

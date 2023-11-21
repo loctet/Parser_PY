@@ -10,6 +10,7 @@ solver = z3.Solver()
 check = True
 solver.push()
 _currentOwner = String('_currentOwner')
+_owner = String('_owner')
 
 
 ## start
@@ -30,6 +31,21 @@ if match.group(0) in globals():
     currentOwner  =  _currentOwner
     _tmp_ =  _currentOwner
     solver.add(currentOwner  == _tmp_)
+else:
+    raise NameError(f"State Variable '{match.group(0)}' does not exist")
+
+
+# Define a regular expression pattern to match variable names inside brackets or parentheses
+pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
+# Use re.search to find the first match in the expression
+match = re.search(pattern, "owner")
+
+# Check if the variable exists in locals() or globals()
+if match.group(0) in globals():
+    # If the variable exists, create a valid assignment
+    owner  =  _owner
+    _tmp_ =  _owner
+    solver.add(owner  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 

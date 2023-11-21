@@ -2,7 +2,7 @@ class VariableDeclarationConverter:
     @staticmethod
     def convert_to_z3_declarations(declarations_str, deploy_init_var_val = [], var_names = [],  deploy=True):
         declarations = [declaration.strip() for declaration in declarations_str.split(';') if declaration.strip()]  # Split input into separate variable declarations and # Remove any empty declarations
-        
+        var_names = []
         result = ""
         for declaration in declarations:
             try:

@@ -58,17 +58,14 @@ def check_well_formness(fsm, file_name):
     transitions = fsm['transitions']
     # Example usage
     declarations_str = fsm['statesDeclaration']
-    print("----Checking the well formness of the model----\n")
+    print("Checking the well formness of the model----\n")
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
     
-    
-    if len(deploy_init_var_val) == 0 and result != "":
-        deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
-    
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)
+    
     temp.append(result)
     grouped_transitions, grouped_transitions_copy = get_grouped_transaction(transitions)
     data = grouped_transitions_copy.pop("_", [])
@@ -80,10 +77,6 @@ def check_well_formness(fsm, file_name):
             actionL = transition['actionLabel']
             postC = transition['postCondition']
             data = grouped_transitions.get(to, [])
-            
-            """if data :
-                if len(grouped_transitions_copy.get(to, [])) > 0:
-                    grouped_transitions_copy.pop(to)"""
             otherPreC = [item['preCondition'] for item in data]
             inputs = [item['input'] for item in data]
             
@@ -96,49 +89,44 @@ def check_well_formness(fsm, file_name):
 
 
     execute_model_and_save(temp, f"{file_name}_formness")
-    print("\n----End----\n\n")
+    print("End----\n\n")
 
 
 def check_independant_sat(fsm, file_name):
     transitions = fsm['transitions']
     # Example usage
     declarations_str = fsm['statesDeclaration']
-    print("----Checking independent statisfiability of the model----\n\n")
+    print("Checking independent statisfiability of the model----\n\n")
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
-    
-    if len(deploy_init_var_val) == 0 and result != "":
-        deploy_init_var_val.append("global "+ ", ".join([i[0] for i in [item.split("=") for item in result.split("\n")] if i[0] != ""]) + "\n    " + result.replace("\n", "\n    " ))
-    
+
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)
     temp.append(result)
     
     grouped_transitions, grouped_transitions_copy = get_grouped_transaction(transitions)
-    ##print(grouped_transitions)
+    
     for key in grouped_transitions:
         
         for transition in grouped_transitions[key]:
             preC = transition['preCondition']
             to = transition['to']
-            ###print(transition['actionLabel'])
             actionL = transition['actionLabel']
             postC = transition['postCondition']
             data_ = grouped_transitions.get(to, [])
             otherPreC = [item['preCondition'] for item in data_]
             inputs = [item['input'] for item in data_]
-            inputs.append(transition['input'])
-            temp.add_assertion(preC, otherPreC, actionL, inputs, postC)
+            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), actionL, postC)
             
             if to not in grouped_transitions and to not in fsm['finalStates']:
                 print(f"Warning: {to} is not a final state but has no trasitions from {to}")
                 
     execute_model_and_save(temp, f"{file_name}_indep_sat")
-    print("\n----End----\n\n")
+    print("End----\n\n")
 
 def check_path_sat(fsm, file_name = ""):
-    print("----Checking Path statisfiability of the model----\n\n")
+    print("Checking Path statisfiability of the model----\n\n")
     PathGenerator.check_path_satisfiability(fsm, file_name)
 
-    print("\n----End----\n\n")
+    print("End----\n\n")
