@@ -11,7 +11,7 @@ def save_infile(str_code, file_name = "str_code"):
 
     # Open the file for writing and write the code
     with open(file_name, "w") as file:
-        file.write(f"from z3 import * \nfrom Z3.Extension import *\n\n{str_code}")
+        file.write(f"from z3 import * \n# setting path\nsys.path.append('../') \nfrom Parser_PY.Z3.Extension import *\n\n{str_code}")
 
 def group_transactions(transitions):
     # Create a dictionary to store transitions grouped by "to" state
@@ -25,7 +25,7 @@ def group_transactions(transitions):
     return transitions_by_to_state
 
 def execute_model_and_save(tempSolver, file_name):  
-                  
+    file_name = f".\Z3_models\{file_name}"              
     str_code = tempSolver.generate_solver_code("check_resut")
 
     
@@ -99,7 +99,7 @@ def check_independant_sat(fsm, file_name):
     print("Checking independent statisfiability of the model----\n\n")
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
-    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
+    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, {}, temp.var_names)
 
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)

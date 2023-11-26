@@ -9,8 +9,8 @@ class SolverGenerator:
     def __init__(self):
         self.str_code = ""
         self.solvers = {}
-        self.deploy_init_var_val = []
-        self.var_names = []
+        self.deploy_init_var_val = {}
+        self.var_names = {}
         self.solvers['start'] = []
         self.solvers['starts'] = [] 
         self.paticipants = ParticipantManager()
@@ -23,11 +23,27 @@ class SolverGenerator:
         return f"{quantifier}([{','.join(variables)}], {formula})" if len(variables) > 0 else formula
     
     def z3_post_condition(self, postC):
-        formula = ", ".join(postC.replace(':=', ' == ').split("&"))
-        return "True" if postC.strip() == "" else (f"And({formula})")
+        if  postC.strip() == "" :
+            return "True"
+        
+        _list = postC.split("&")
+        parts = []
+        for item in _list:
+            if item.strip() == "":
+                print(f"{postC} in not correct")
+                exit()
+                
+            _varname, _assign = [a.strip() for a in item.split(":=")]
+            if _varname in self.var_names and self.var_names[_varname] == 'string':
+                parts.append(f"{_varname}.eq({_assign})")
+            else:
+                parts.append(f"{_varname} == {_assign}")
+        formula = ", ".join(parts)
+    
+        return  f"And({formula})"
     
     def get_vars_names_from_input(self, input_c):
-        resuls  = VarDefConv.convert_to_z3_declarations(input_c, [])
+        resuls  = VarDefConv.convert_to_z3_declarations(input_c)
         return resuls[2]
     
     def add_assertion(self, pre, otherPrecs,inputs, action = 'start', postC = "", add = True):
@@ -37,9 +53,7 @@ class SolverGenerator:
             self.solvers[action] = []
         
         pre = replace_assertion(pre)
-#        otherPrecs = [replace_assertion(item) for item in otherPrecs]
-#        otherPrecs = otherPrecs if len(otherPrecs) > 0 else ["True"]
-        sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver_'+ f'_{action}_{len(self.solvers[action])}')
+        sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver__{action}_{len(self.solvers[action])}')
         sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in (inputs[1]+[inputs[0]]) if x != ""]))
         
         hypothesis = self.z3_post_condition(postC)
@@ -52,7 +66,7 @@ class SolverGenerator:
             'snameF': name_func,
             'sparams': "\n    ".join(sparams.split('\n')),
             'sglobalVars': global_vars,
-            'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', self.var_names + self.get_vars_names_from_input(inputs[0]))
+            'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys()))
         }
         if add :  
             self.solvers[action].append(result)
@@ -67,8 +81,6 @@ class SolverGenerator:
             self.append(self.paticipants.roles[role]["declaration"])
             self.append("\n".join(self.paticipants.roles[role]["list"]))
           
-        #self.append(MessagesTemplates.getResetGlobalFunction("\n    ".join(self.deploy_init_var_val), self.var_names))
-        
         checks = []
         for s in self.solvers:
            self.append("\n")

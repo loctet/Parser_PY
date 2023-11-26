@@ -1,5 +1,7 @@
 from z3 import * 
-from Z3.Extension import *
+# setting path
+sys.path.append('../') 
+from Parser_PY.Z3.Extension import *
 
 currentOwner = String('currentOwner')
 previousOwner = String('previousOwner')

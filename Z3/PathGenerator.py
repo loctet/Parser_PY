@@ -71,10 +71,10 @@ class PathGenerator :
     
     @staticmethod
     def check_path_satisfiability(fsm, file_name):
+        file_name = f".\Z3_models\{file_name}"
         result = PathGenerator.group_transactions(fsm)
         for path, transitions in result.items():
             print(f"Path: {path}")
-            code = "from z3 import * \nfrom Z3.Extension import *\n\n "
             temp = SolverGenerator()
             temp.paticipants.add_participants(fsm['rPAssociation'])
             result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(fsm['statesDeclaration'], temp.deploy_init_var_val, temp.var_names)
@@ -96,7 +96,7 @@ class PathGenerator :
 
             # Open the file for writing and write the code
             with open(file_name, "w") as file:
-                file.write(f"from z3 import * \nfrom Z3.Extension import *\n\n{temp.str_code}")
+                file.write(f"from z3 import *\n# setting path\nsys.path.append('../') \nfrom Parser_PY.Z3.Extension import *\n\n{temp.str_code}")
             #exec
             try:
                 os.system(f'python {file_name}')

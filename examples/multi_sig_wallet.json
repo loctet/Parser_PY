@@ -1,0 +1,103 @@
+{
+    "id": "multiSigWallet",
+    "initialState": "Init",
+    "statesDeclaration": "array String owners; array String pendingTransactions; array String approvedOwners; string executedTransaction; array String empty",
+    "states": [
+      "Init",
+      "TrSub",
+      "AprPen",
+      "TrExc"
+    ],
+    "finalStates": [
+      "TrExc"
+    ],
+    "transitions": [
+      {
+        "from": "_",
+        "to": "Init",
+        "initialStates": ["Owner"],
+        "finalStates": [],
+        "newParticipants": ["Init"],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "initializeWallet",
+        "preCondition": "True",
+        "postCondition": "pendingTransactions := empty & approvedOwners := empty & executedTransaction := None",
+        "input": "string _owner",
+        "externalAction": false
+      },
+      {
+        "from": "Init",
+        "to": "TrSub",
+        "initialStates": ["Owner"],
+        "finalStates": [],
+        "newParticipants": ["TrSub"],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "submitTransaction",
+        "preCondition": "True",
+        "postCondition": "pendingTransactions := pendingTransactions& approvedOwners := empty",
+        "input": "string _transaction",
+        "externalAction": false
+      },
+      {
+        "from": "TrSub",
+        "to": "AprPen",
+        "initialStates": ["Owner"],
+        "finalStates": [],
+        "newParticipants": ["AprPen"],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "approveTransaction",
+        "preCondition": "_owner not in approvedOwners",
+        "postCondition": "approvedOwners := approvedOwners",
+        "input": "string _owner",
+        "externalAction": false
+      },
+      {
+        "from": "TrSub",
+        "to": "TrExc",
+        "initialStates": ["Owner"],
+        "finalStates": ["TrExc"],
+        "newParticipants": [],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "executeTransaction",
+        "preCondition": "len(approvedOwners) >= 2",
+        "postCondition": "executedTransaction := _transaction",
+        "input": "string _transaction",
+        "externalAction": false
+      },
+      {
+        "from": "AprPen",
+        "to": "TrExc",
+        "initialStates": ["Owner"],
+        "finalStates": ["TrExc"],
+        "newParticipants": [],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "executeTransaction",
+        "preCondition": "len(approvedOwners) >= 2",
+        "postCondition": "executedTransaction := pendingTransactions[-1]",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "TrExc",
+        "to": "Init",
+        "initialStates": ["Owner"],
+        "finalStates": [],
+        "newParticipants": ["Init"],
+        "existingParticipants": {"Owner": "Owner"},
+        "actionLabel": "resetWallet",
+        "preCondition": "True",
+        "postCondition": "pendingTransactions := empty & approvedOwners := empty & executedTransaction := None",
+        "input": "string _owner",
+        "externalAction": false
+      }
+    ],
+    "rPAssociation": [
+      {
+        "role": "Owner",
+        "participants": [
+          "Owner"
+        ]
+      }
+    ]
+  }
+  

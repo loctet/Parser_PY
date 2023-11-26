@@ -1,15 +1,20 @@
 class VariableDeclarationConverter:
     @staticmethod
-    def convert_to_z3_declarations(declarations_str, deploy_init_var_val = [], var_names = [],  deploy=True):
+    def convert_to_z3_declarations(declarations_str, deploy_init_var_val = [], var_names = {},  deploy=True):
+        #print("---",declarations_str)
         declarations = [declaration.strip() for declaration in declarations_str.split(';') if declaration.strip()]  # Split input into separate variable declarations and # Remove any empty declarations
-        var_names = []
+        var_names = {}
         result = ""
         for declaration in declarations:
             try:
                 # Split each declaration into type, variable name, and optional initial value
                 parts = declaration.split(":=") # Assuming the initial value is after ":="
-                var_type, var_name = [s.strip() for s in parts[0].split()]
-                var_names.append(var_name)
+                splited = [s.strip() for s in parts[0].split()]
+                #print(splited)
+
+                var_type, var_name = [splited[0], splited[1]] if len(splited) == 2 else [splited[0], splited[2]]
+                
+                #print("-- ",var_type, var_name)
                 
                 z3_var = None
                 z3_var_init = None
@@ -31,11 +36,17 @@ class VariableDeclarationConverter:
                         z3_var_init = f"{var_name} = {initial_value}"
                         
                     elif var_type == 'set':
-                        z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+                        if len(splited) == 3 :
+                            z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
+                        else: 
+                            z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
 
                     elif var_type == 'array':
-                        z3_var = f"{var_name} = []"
-                        z3_var_init = f"{var_name} = {initial_value}"
+                        if len(splited) == 3 :
+                            z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
+                        else:
+                            z3_var = f"{var_name} =  Array('{var_name}', IntSort(), IntSort())"
+                            
                 else:
                     # Create Z3 variables without initial values
                     if var_type == 'int':
@@ -47,18 +58,27 @@ class VariableDeclarationConverter:
                     elif var_type == 'bool':
                         z3_var = f"{var_name} = Bool('{var_name}')"
                     elif var_type == 'set':
-                        z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+                        if len(splited) == 3 :
+                            z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
+                        else:
+                            z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
                     elif var_type == 'array':
-                        z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+                        if len(splited) == 3 :
+                            z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
+                        else:
+                            z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
 
                 if z3_var is not None:
                     result += f"{z3_var}\n"
+                    
+                    if var_name not in var_names:
+                        var_names[var_name] = var_type
+                    
                     if z3_var_init is not None:
                         result += f"{z3_var_init}\n"
                         deploy_init_var_val.append(z3_var_init)
             except Exception:
-                print(f"{declaration} is not correcly written")
-                       
+                print(f"{declaration} is not correcly written")             
         return [result, deploy_init_var_val, var_names]
     
     def convert_to_z3_int_assignement(declarations_str):

@@ -1,0 +1,76 @@
+{
+    "id": "binaryCounter",
+    "initialState": "Stage1",
+    "statesDeclaration": "int currentStage; int currentNumber",
+    "states": [
+      "Stage1",
+      "Stage2",
+      "Stage3"
+    ],
+    "finalStates": [
+      "Stage3"
+    ],
+    "transitions": [
+      {
+        "from": "_",
+        "to": "Stage1",
+        "initialStates": ["Counter"],
+        "finalStates": [],
+        "newParticipants": ["Stage1"],
+        "existingParticipants": {"Counter": "Counter"},
+        "actionLabel": "initializeCounter",
+        "preCondition": "True",
+        "postCondition": "currentNumber := 0",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "Stage1",
+        "to": "Stage2",
+        "initialStates": ["Counter"],
+        "finalStates": [],
+        "newParticipants": ["Stage2"],
+        "existingParticipants": {"Counter": "Counter"},
+        "actionLabel": "incrementCounter",
+        "preCondition": "True",
+        "postCondition": "currentNumber := _old + 1",
+        "input": "int _old",
+        "externalAction": false
+      },
+      {
+        "from": "Stage2",
+        "to": "Stage3",
+        "initialStates": ["Counter"],
+        "finalStates": ["Stage3"],
+        "newParticipants": [],
+        "existingParticipants": {"Counter": "Counter"},
+        "actionLabel": "finalizeCounter",
+        "preCondition": "True",
+        "postCondition": "currentNumber := _old + 1",
+        "input": "int _old",
+        "externalAction": false
+      },
+      {
+        "from": "Stage3",
+        "to": "Stage1",
+        "initialStates": ["Counter"],
+        "finalStates": [],
+        "newParticipants": ["Stage1"],
+        "existingParticipants": {"Counter": "Counter"},
+        "actionLabel": "resetCounter",
+        "preCondition": "True",
+        "postCondition": "currentNumber := 0",
+        "input": "",
+        "externalAction": false
+      }
+    ],
+    "rPAssociation": [
+      {
+        "role": "Counter",
+        "participants": [
+          "Counter"
+        ]
+      }
+    ]
+  }
+  

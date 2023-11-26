@@ -1,53 +1,20 @@
-from z3 import * 
-from Z3.Extension import *
+from z3 import *
+# setting path
+sys.path.append('../') 
+from Parser_PY.Z3.Extension import *
 
-locked = Bool('locked')
-requestedL = Bool('requestedL')
+secret = String('secret')
+gameWon = Bool('gameWon')
 
 solver = z3.Solver()
 check = True
 solver.push()
+_secret = String('_secret')
 
 
-## start
-
-solver.add(True)
-check = check and solver.check() == z3.sat
-solver.pop()
-solver.push()
-
-
-
-## requestAvailability
+## initializeGame
 
 solver.add(True)
-check = check and solver.check() == z3.sat
-solver.pop()
-solver.push()
-
-
-
-## reviewRequest
-
-solver.add(True)
-check = check and solver.check() == z3.sat
-solver.pop()
-solver.push()
-
-
-
-## uploadDigitalAsset
-
-solver.add(True)
-check = check and solver.check() == z3.sat
-solver.pop()
-solver.push()
-
-
-
-## requestAccessLocker
-
-solver.add(locked == False)
 check = check and solver.check() == z3.sat
 solver.pop()
 solver.push()
@@ -55,22 +22,38 @@ solver.push()
 # Define a regular expression pattern to match variable names inside brackets or parentheses
 pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
 # Use re.search to find the first match in the expression
-match = re.search(pattern, "locked")
+match = re.search(pattern, "secret")
 
 # Check if the variable exists in locals() or globals()
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
-    locked  =  False
+    secret  =  _secret
+    _tmp_ =  _secret
+    solver.add(secret  == _tmp_)
+else:
+    raise NameError(f"State Variable '{match.group(0)}' does not exist")
+
+
+# Define a regular expression pattern to match variable names inside brackets or parentheses
+pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
+# Use re.search to find the first match in the expression
+match = re.search(pattern, "gameWon")
+
+# Check if the variable exists in locals() or globals()
+if match.group(0) in globals():
+    # If the variable exists, create a valid assignment
+    gameWon  =  False
     _tmp_ =  False
-    solver.add(locked  == _tmp_)
+    solver.add(gameWon  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
 
+_guess = String('_guess')
 
 
-## grantAccessLocker
+## makeGuess
 
-solver.add(locked == False)
+solver.add(And(Not(gameWon), _guess.eq(secret)))
 check = check and solver.check() == z3.sat
 solver.pop()
 solver.push()
@@ -78,25 +61,16 @@ solver.push()
 # Define a regular expression pattern to match variable names inside brackets or parentheses
 pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
 # Use re.search to find the first match in the expression
-match = re.search(pattern, "locked")
+match = re.search(pattern, "gameWon")
 
 # Check if the variable exists in locals() or globals()
 if match.group(0) in globals():
     # If the variable exists, create a valid assignment
-    locked  =  True
+    gameWon  =  True
     _tmp_ =  True
-    solver.add(locked  == _tmp_)
+    solver.add(gameWon  == _tmp_)
 else:
     raise NameError(f"State Variable '{match.group(0)}' does not exist")
-
-
-
-## terminateSharing
-
-solver.add(True)
-check = check and solver.check() == z3.sat
-solver.pop()
-solver.push()
 
 
 print(f'=>{check}')

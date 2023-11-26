@@ -19,9 +19,8 @@ def {item['snameF']}(minimize = False):
         print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
         if not result: 
             solver_{item['snameF']}2.add(Not({item['sformula']}))
-            print("\\nMinify of the Not Formula: ", simplify(Not({item['sformula']})), " :: ", solver_{item['snameF']}2.check() == z3.sat)
-            if solver_{item['snameF']}2.check() == z3.sat :
-                print("\\nNot Formula Model: ",solver_{item['snameF']}2.model() , "\\n")
+            print("\\nSimplify of the Not Formula: ", simplify(Not({item['sformula']})), " :: ", solver_{item['snameF']}2.check() == z3.sat)
+            
                 
     return result
     """
