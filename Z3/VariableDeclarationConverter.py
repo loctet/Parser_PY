@@ -1,6 +1,8 @@
+import PatternChecker
+
 class VariableDeclarationConverter:
     @staticmethod
-    def convert_to_z3_declarations(declarations_str, deploy_init_var_val = [], var_names = {},  deploy=True):
+    def convert_to_z3_declarations(declarations_str, deploy_init_var_val = [], var_names = {},  deploy=False):
         #print("---",declarations_str)
         declarations = [declaration.strip() for declaration in declarations_str.split(';') if declaration.strip()]  # Split input into separate variable declarations and # Remove any empty declarations
         var_names = {}
@@ -14,6 +16,9 @@ class VariableDeclarationConverter:
 
                 var_type, var_name = [splited[0], splited[1]] if len(splited) == 2 else [splited[0], splited[2]]
                 
+                if len(PatternChecker.PatternChecker.get_all_old_variables(var_name)) >= 1 and deploy:
+                    print(f"{var_name} not correct")
+                    exit()
                 #print("-- ",var_type, var_name)
                 
                 z3_var = None

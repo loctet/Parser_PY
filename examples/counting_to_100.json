@@ -1,7 +1,7 @@
 {
     "id": "countingMachine",
     "initialState": "Counting",
-    "statesDeclaration": "int count",
+    "statesDeclaration": "int count; int count_old_1",
     "states": [
       "Counting",
       "Terminated"

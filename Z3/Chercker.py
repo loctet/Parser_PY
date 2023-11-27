@@ -61,7 +61,7 @@ def check_well_formness(fsm, file_name):
     print("Checking the well formness of the model----\n")
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
-    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
+    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names, True)
     
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)
@@ -99,7 +99,7 @@ def check_independant_sat(fsm, file_name):
     print("Checking independent statisfiability of the model----\n\n")
     temp = SolverGenerator()
     temp.paticipants.add_participants(fsm['rPAssociation'])
-    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, {}, temp.var_names)
+    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
 
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
     setattr(temp, 'var_names', var_names)

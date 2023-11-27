@@ -7,10 +7,10 @@ class SafeVariableAssignment:
         result = []
         global_vars = []
         if not PatternChecker.follows_pattern(assignation_str):
-            print(f"/!\Error: {assignation_str} do not meet the assignations requirements")
+            raise Exception(f"/!\Error: {assignation_str} do not meet the assignations requirements")
             #result.append(MessagesTemplates.getMessageWhenVarNotGlobal(assignation_str, solver_name))
             #return  "\n".join(result) 
-            exit() 
+            
         
         # Split the input string into individual assignments
         assignments = assignation_str.split('&')
@@ -23,8 +23,7 @@ class SafeVariableAssignment:
             
             # Ensure there are exactly two parts (variable name and value)
             if len(parts) != 2 and assignment.strip() != "":
-                print(f"{assignment} not correct")
-                exit()
+                raise Exception(f"{assignment} not correct")
              
             
             variable_name, value = parts
