@@ -1,0 +1,62 @@
+{
+    "id": "countingMachine",
+    "initialState": "Counting",
+    "statesDeclaration": "int count",
+    "states": [
+      "Counting",
+      "Terminated"
+    ],
+    "finalStates": [
+      "Terminated"
+    ],
+    "transitions": [
+      {
+        "from": "_",
+        "to": "Counting",
+        "initialStates": ["Operator"],
+        "finalStates": [],
+        "newParticipants": ["Counting"],
+        "existingParticipants": {"Operator": "Operator"},
+        "actionLabel": "startCounting",
+        "preCondition": "True",
+        "postCondition": "count := 0",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "Counting",
+        "to": "Counting",
+        "initialStates": ["Operator"],
+        "finalStates": [],
+        "newParticipants": [],
+        "existingParticipants": {"Operator": "Operator"},
+        "actionLabel": "incrementCounter",
+        "preCondition": "count < 100",
+        "postCondition": "count := count_old + 1",
+        "input": "",
+        "externalAction": false
+      },
+      {
+        "from": "Counting",
+        "to": "Terminated",
+        "initialStates": ["Operator"],
+        "finalStates": ["Terminated"],
+        "newParticipants": [],
+        "existingParticipants": {"Operator": "Operator"},
+        "actionLabel": "terminateCounting",
+        "preCondition": "count >= 100",
+        "postCondition": "",
+        "input": "",
+        "externalAction": false
+      }
+    ],
+    "rPAssociation": [
+      {
+        "role": "Operator",
+        "participants": [
+          "Operator"
+        ]
+      }
+    ]
+  }
+  

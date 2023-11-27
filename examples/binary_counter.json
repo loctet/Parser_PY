@@ -33,8 +33,8 @@
         "existingParticipants": {"Counter": "Counter"},
         "actionLabel": "incrementCounter",
         "preCondition": "True",
-        "postCondition": "currentNumber := _old + 1",
-        "input": "int _old",
+        "postCondition": "currentNumber := currentNumber_old + 1",
+        "input": "",
         "externalAction": false
       },
       {
@@ -46,8 +46,8 @@
         "existingParticipants": {"Counter": "Counter"},
         "actionLabel": "finalizeCounter",
         "preCondition": "True",
-        "postCondition": "currentNumber := _old + 1",
-        "input": "int _old",
+        "postCondition": "currentNumber := currentNumber_old + 1",
+        "input": "",
         "externalAction": false
       },
       {

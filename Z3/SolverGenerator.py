@@ -1,4 +1,5 @@
 import z3
+from PatternChecker import *
 from Extension import generateFuntionsFormulas, replace_assertion
 from SafeVariableAssignment import SafeVariableAssignment as SafeVars
 from VariableDeclarationConverter import VariableDeclarationConverter as VarDefConv
@@ -46,8 +47,16 @@ class SolverGenerator:
         resuls  = VarDefConv.convert_to_z3_declarations(input_c)
         return resuls[2]
     
+    def preprocess_precs_and_inputs(self, otherPrecs, inputs): 
+        
+        for i in range(len(otherPrecs)):
+            inputs[i] = ";".join([ item for item in inputs[i].split(";") if item.strip() != ""] + [ f"{self.var_names[item.replace('_old', '')]} {item}"  for item in PatternChecker.get_all_old_variables(otherPrecs[i])])
+        
+        return inputs
+    
     def add_assertion(self, pre, otherPrecs,inputs, action = 'start', postC = "", add = True):
-    	
+        
+        inputs = (self.preprocess_precs_and_inputs([postC], [inputs[0]])[0], self.preprocess_precs_and_inputs(otherPrecs, inputs[1]))
         data = self.solvers.get(action, [])
         if not data:
             self.solvers[action] = []
