@@ -19,19 +19,20 @@ Store(role_Counter, 0, String('Counter'))
 def _initializeCounter_0(minimize = False):
     global currentNumber 
     # Declare variable before   
+    currentNumber_old = Int('currentNumber_old')
     
     
     #building the solver for the predancontion
     solver__initializeCounter_0 = z3.Solver() 
     solver__initializeCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
-    solver__initializeCounter_0.add(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True))))
+    solver__initializeCounter_0.add(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))
     result = solver__initializeCounter_0.check() == z3.sat
     if minimize :
-        print("--For _initializeCounter_0: ", simplify(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True)))), " :: ", result)
+        print("--For _initializeCounter_0: ", simplify(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))), " :: ", result)
         if not result: 
-            solver__initializeCounter_02.add(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True))))), " :: ", solver__initializeCounter_02.check() == z3.sat)
+            solver__initializeCounter_02.add(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))), " :: ", solver__initializeCounter_02.check() == z3.sat)
             
                 
     return result
@@ -42,19 +43,20 @@ def _initializeCounter_0(minimize = False):
 def _resetCounter_0(minimize = False):
     global currentNumber 
     # Declare variable before   
+    currentNumber_old = Int('currentNumber_old')
     
     
     #building the solver for the predancontion
     solver__resetCounter_0 = z3.Solver() 
     solver__resetCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
-    solver__resetCounter_0.add(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True))))
+    solver__resetCounter_0.add(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))
     result = solver__resetCounter_0.check() == z3.sat
     if minimize :
-        print("--For _resetCounter_0: ", simplify(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True)))), " :: ", result)
+        print("--For _resetCounter_0: ", simplify(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))), " :: ", result)
         if not result: 
-            solver__resetCounter_02.add(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(True))))), " :: ", solver__resetCounter_02.check() == z3.sat)
+            solver__resetCounter_02.add(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))), " :: ", solver__resetCounter_02.check() == z3.sat)
             
                 
     return result
@@ -66,19 +68,20 @@ def _finalizeCounter_0(minimize = False):
     global currentNumber 
     # Declare variable before   
     currentNumber_old = Int('currentNumber_old')
+    currentNumber_old = Int('currentNumber_old')
     
     
     #building the solver for the predancontion
     solver__finalizeCounter_0 = z3.Solver() 
     solver__finalizeCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
-    solver__finalizeCounter_0.add(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True))))
+    solver__finalizeCounter_0.add(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))
     result = solver__finalizeCounter_0.check() == z3.sat
     if minimize :
-        print("--For _finalizeCounter_0: ", simplify(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True)))), " :: ", result)
+        print("--For _finalizeCounter_0: ", simplify(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))), " :: ", result)
         if not result: 
-            solver__finalizeCounter_02.add(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True))))), " :: ", solver__finalizeCounter_02.check() == z3.sat)
+            solver__finalizeCounter_02.add(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))), " :: ", solver__finalizeCounter_02.check() == z3.sat)
             
                 
     return result

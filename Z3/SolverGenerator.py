@@ -50,8 +50,12 @@ class SolverGenerator:
     def preprocess_precs_and_inputs(self, otherPrecs, inputs): 
         
         for i in range(len(otherPrecs)):
-            inputs[i] = ";".join([ item for item in inputs[i].split(";") if item.strip() != ""] + [ f"{self.var_names[item.replace('_old', '')]} {item}"  for item in PatternChecker.get_all_old_variables(otherPrecs[i])])
-        
+            try:
+                inputs[i] = ";".join([ item for item in inputs[i].split(";") if item.strip() != ""] + [ f"{self.var_names[item.replace('_old', '')]} {item}"  for item in PatternChecker.get_all_old_variables(otherPrecs[i])])
+            except Exception as e:
+                print(f"KeyError: {e}")
+                exit()
+                
         return inputs
     
     def add_assertion(self, pre, otherPrecs,inputs, action = 'start', postC = "", add = True):

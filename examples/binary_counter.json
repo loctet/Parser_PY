@@ -32,7 +32,7 @@
         "newParticipants": ["Stage2"],
         "existingParticipants": {"Counter": "Counter"},
         "actionLabel": "incrementCounter",
-        "preCondition": "True",
+        "preCondition": "currentNumber == currentNumber_old",
         "postCondition": "currentNumber := currentNumber_old + 1",
         "input": "",
         "externalAction": false
@@ -58,7 +58,7 @@
         "newParticipants": ["Stage1"],
         "existingParticipants": {"Counter": "Counter"},
         "actionLabel": "resetCounter",
-        "preCondition": "True",
+        "preCondition": "currentNumber == currentNumber_old",
         "postCondition": "currentNumber := 0",
         "input": "",
         "externalAction": false
