@@ -20,7 +20,7 @@ Store(role_Observer, 0, String('Observer'))
 
 
 
-def _start_0(minimize = False):
+def _start_0(infos = False):
     global currentOwner 
     global owner 
     # Declare variable before   
@@ -33,16 +33,25 @@ def _start_0(minimize = False):
     solver__start_0 = z3.Solver() 
     solver__start_02 = z3.Solver() 
     #check if post condition implies any pre precondition
-    solver__start_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True)))))
+    solver__start_0.push()
+    solver__start_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner.eq(_currentOwner), owner.eq(_owner)), Or(Exists([_counterparty], True)))))
     result = solver__start_0.check() == z3.sat
-    if minimize :
-        print("--For _start_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True))))), " :: ", result)
+    
+    
+    if infos :
+        print("--For _start_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner.eq(_currentOwner), owner.eq(_owner)), Or(Exists([_counterparty], True))))), " :: ", result)
+        
+        solver__start_0.pop()
+        solver__start_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner.eq(_currentOwner), owner.eq(_owner)), True))) 
+        if  solver__start_0.check() != z3.sat :
+            print ("Non deterministic: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner.eq(_currentOwner), owner.eq(_owner)), True)))) 
+            
         if not result: 
-            solver__start_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True))))))
-            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner  ==  _currentOwner ,  owner  ==  _owner), Or(Exists([_counterparty], True)))))), " :: ", solver__start_02.check() == z3.sat)
-            if solver__start_02.check() == z3.sat :
-                print("\nNot Formula Model: ",solver__start_02.model() , "\n")
-                
+            solver__start_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner.eq(_currentOwner), owner.eq(_owner)), Or(Exists([_counterparty], True))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_currentOwner,_owner], Implies(And(currentOwner.eq(_currentOwner), owner.eq(_owner)), Or(Exists([_counterparty], True)))))), " :: ", solver__start_02.check() == z3.sat)
+            
+          
+                   
     return result
     
 
@@ -50,7 +59,7 @@ def _start_0(minimize = False):
 
 
 
-def _assignResponsibility_0(minimize = False):
+def _assignResponsibility_0(infos = False):
     global currentOwner 
     global previousOwner 
     # Declare variable before   
@@ -62,20 +71,29 @@ def _assignResponsibility_0(minimize = False):
     solver__assignResponsibility_0 = z3.Solver() 
     solver__assignResponsibility_02 = z3.Solver() 
     #check if post condition implies any pre precondition
-    solver__assignResponsibility_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))
+    solver__assignResponsibility_0.push()
+    solver__assignResponsibility_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))
     result = solver__assignResponsibility_0.check() == z3.sat
-    if minimize :
-        print("--For _assignResponsibility_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))), " :: ", result)
+    
+    
+    if infos :
+        print("--For _assignResponsibility_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))), " :: ", result)
+        
+        solver__assignResponsibility_0.pop()
+        solver__assignResponsibility_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), True))) 
+        if  solver__assignResponsibility_0.check() != z3.sat :
+            print ("Non deterministic: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), True)))) 
+            
         if not result: 
-            solver__assignResponsibility_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))))
-            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))), " :: ", solver__assignResponsibility_02.check() == z3.sat)
-            if solver__assignResponsibility_02.check() == z3.sat :
-                print("\nNot Formula Model: ",solver__assignResponsibility_02.model() , "\n")
-                
+            solver__assignResponsibility_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))), " :: ", solver__assignResponsibility_02.check() == z3.sat)
+            
+          
+                   
     return result
     
 
-def _assignResponsibility_1(minimize = False):
+def _assignResponsibility_1(infos = False):
     global currentOwner 
     global previousOwner 
     # Declare variable before   
@@ -87,22 +105,31 @@ def _assignResponsibility_1(minimize = False):
     solver__assignResponsibility_1 = z3.Solver() 
     solver__assignResponsibility_12 = z3.Solver() 
     #check if post condition implies any pre precondition
-    solver__assignResponsibility_1.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))
+    solver__assignResponsibility_1.push()
+    solver__assignResponsibility_1.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))
     result = solver__assignResponsibility_1.check() == z3.sat
-    if minimize :
-        print("--For _assignResponsibility_1: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))), " :: ", result)
+    
+    
+    if infos :
+        print("--For _assignResponsibility_1: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))), " :: ", result)
+        
+        solver__assignResponsibility_1.pop()
+        solver__assignResponsibility_1.add(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), True))) 
+        if  solver__assignResponsibility_1.check() != z3.sat :
+            print ("Non deterministic: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), True)))) 
+            
         if not result: 
-            solver__assignResponsibility_12.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))))
-            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner  ==  _counterparty ,  previousOwner  ==  currentOwner), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))), " :: ", solver__assignResponsibility_12.check() == z3.sat)
-            if solver__assignResponsibility_12.check() == z3.sat :
-                print("\nNot Formula Model: ",solver__assignResponsibility_12.model() , "\n")
-                
+            solver__assignResponsibility_12.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner)))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner,_counterparty], Implies(And(currentOwner.eq(_counterparty), previousOwner.eq(currentOwner)), Or(Exists([_counterparty], And(currentOwner == _counterparty, currentOwner != owner)),currentOwner == owner))))), " :: ", solver__assignResponsibility_12.check() == z3.sat)
+            
+          
+                   
     return result
     
 
 
 
-def _reachDestination_0(minimize = False):
+def _reachDestination_0(infos = False):
     global previousOwner 
     global currentOwner 
     # Declare variable before   
@@ -112,16 +139,25 @@ def _reachDestination_0(minimize = False):
     solver__reachDestination_0 = z3.Solver() 
     solver__reachDestination_02 = z3.Solver() 
     #check if post condition implies any pre precondition
-    solver__reachDestination_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True)))
+    solver__reachDestination_0.push()
+    solver__reachDestination_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner.eq(currentOwner), currentOwner.eq(owner)), True)))
     result = solver__reachDestination_0.check() == z3.sat
-    if minimize :
-        print("--For _reachDestination_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True))), " :: ", result)
+    
+    
+    if infos :
+        print("--For _reachDestination_0: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner.eq(currentOwner), currentOwner.eq(owner)), True))), " :: ", result)
+        
+        solver__reachDestination_0.pop()
+        solver__reachDestination_0.add(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner.eq(currentOwner), currentOwner.eq(owner)), True))) 
+        if  solver__reachDestination_0.check() != z3.sat :
+            print ("Non deterministic: ", simplify(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner.eq(currentOwner), currentOwner.eq(owner)), True)))) 
+            
         if not result: 
-            solver__reachDestination_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True))))
-            print("\nMinify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner  ==  currentOwner ,  currentOwner  ==  owner), True)))), " :: ", solver__reachDestination_02.check() == z3.sat)
-            if solver__reachDestination_02.check() == z3.sat :
-                print("\nNot Formula Model: ",solver__reachDestination_02.model() , "\n")
-                
+            solver__reachDestination_02.add(Not(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner.eq(currentOwner), currentOwner.eq(owner)), True))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentOwner,previousOwner,Counterparty,owner], Implies(And(previousOwner.eq(currentOwner), currentOwner.eq(owner)), True)))), " :: ", solver__reachDestination_02.check() == z3.sat)
+            
+          
+                   
     return result
     
 check_resut = (_start_0() and _assignResponsibility_0() and _assignResponsibility_1() and _reachDestination_0())

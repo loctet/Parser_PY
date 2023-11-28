@@ -47,9 +47,32 @@ solver.push()
 
 
 
-## ShareThirdPartyRequest
+## requestAccessLocker
 
-solver.add(True)
+solver.add(locked == False)
+check = check and solver.check() == z3.sat
+solver.pop()
+solver.push()
+
+# Define a regular expression pattern to match variable names inside brackets or parentheses
+pattern = r'[^\[\]{}()]*[^\[\]{}()\s]'
+# Use re.search to find the first match in the expression
+match = re.search(pattern, "locked")
+
+# Check if the variable exists in locals() or globals()
+if match.group(0) in globals():
+    # If the variable exists, create a valid assignment
+    locked  =  False
+    _tmp_ =  False
+    solver.add(locked  == _tmp_)
+else:
+    raise NameError(f"State Variable '{match.group(0)}' does not exist")
+
+
+
+## grantAccessLocker
+
+solver.add(locked == False)
 check = check and solver.check() == z3.sat
 solver.pop()
 solver.push()

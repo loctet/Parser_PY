@@ -79,8 +79,9 @@ def check_well_formness(fsm, file_name):
             data = grouped_transitions.get(to, [])
             otherPreC = [item['preCondition'] for item in data]
             inputs = [item['input'] for item in data]
+            actions = [item['actionLabel'] for item in data]
             
-            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), actionL, postC)
+            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC)
             
             if to not in grouped_transitions and to not in fsm['finalStates']:
                 print(f"Warning: {to} is not a final state but has no trasitions from {to}")
@@ -108,7 +109,6 @@ def check_independant_sat(fsm, file_name):
     grouped_transitions, grouped_transitions_copy = get_grouped_transaction(transitions)
     
     for key in grouped_transitions:
-        
         for transition in grouped_transitions[key]:
             preC = transition['preCondition']
             to = transition['to']
@@ -117,7 +117,9 @@ def check_independant_sat(fsm, file_name):
             data_ = grouped_transitions.get(to, [])
             otherPreC = [item['preCondition'] for item in data_]
             inputs = [item['input'] for item in data_]
-            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), actionL, postC)
+            actions = [item['actionLabel'] for item in data_]
+            
+            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC)
             
             if to not in grouped_transitions and to not in fsm['finalStates']:
                 print(f"Warning: {to} is not a final state but has no trasitions from {to}")

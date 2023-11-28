@@ -31,7 +31,7 @@
         "newParticipants": [],
         "existingParticipants": {"Operator": "Operator"},
         "actionLabel": "incrementCounter",
-        "preCondition": "count < 100",
+        "preCondition": "count_old < 100",
         "postCondition": "count := count_old + 1",
         "input": "",
         "externalAction": false

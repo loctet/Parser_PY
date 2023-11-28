@@ -4,7 +4,7 @@ class MessagesTemplates:
     def getFunctionActionDefinition(funtionData):
         item = funtionData
         return f"""
-def {item['snameF']}(minimize = False):
+def {item['snameF']}(infos = False):
     {item['sglobalVars']}
     # Declare variable before   
     {item["sparams"]}
@@ -13,15 +13,25 @@ def {item['snameF']}(minimize = False):
     solver_{item['snameF']} = z3.Solver() 
     solver_{item['snameF']}2 = z3.Solver() 
     #check if post condition implies any pre precondition
+    solver_{item['snameF']}.push()
     solver_{item['snameF']}.add({item['sformula']})
     result = solver_{item['snameF']}.check() == z3.sat
-    if minimize :
+    
+    
+    if infos :
         print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
+        
+        solver_{item['snameF']}.pop()
+        solver_{item['snameF']}.add({item['epsformula']}) 
+        if  solver_{item['snameF']}.check() != z3.sat :
+            print ("Non deterministic: ", simplify({item['epsformula']})) 
+            
         if not result: 
             solver_{item['snameF']}2.add(Not({item['sformula']}))
             print("\\nSimplify of the Not Formula: ", simplify(Not({item['sformula']})), " :: ", solver_{item['snameF']}2.check() == z3.sat)
             
-                
+          
+                   
     return result
     """
     

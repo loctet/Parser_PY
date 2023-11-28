@@ -5,6 +5,7 @@ from SafeVariableAssignment import SafeVariableAssignment as SafeVars
 from VariableDeclarationConverter import VariableDeclarationConverter as VarDefConv
 from ParticipantManager import ParticipantManager
 from MessagesTemplates import MessagesTemplates
+from collections import defaultdict
 
 class SolverGenerator:
     def __init__(self):
@@ -47,20 +48,32 @@ class SolverGenerator:
         resuls  = VarDefConv.convert_to_z3_declarations(input_c)
         return resuls[2]
     
-    def preprocess_precs_and_inputs(self, otherPrecs, inputs): 
-        
+    def add_old_var_from_precs_and_inputs(self, otherPrecs, inputs): 
         for i in range(len(otherPrecs)):
             try:
                 inputs[i] = ";".join([ item for item in inputs[i].split(";") if item.strip() != ""] + [ f"{self.var_names[item.replace('_old', '')]} {item}"  for item in PatternChecker.get_all_old_variables(otherPrecs[i])])
             except Exception as e:
                 print(f"KeyError: {e}")
                 exit()
-                
         return inputs
+
+    def get_formula_for_determinism_at_stage(self, other_precs, inputs, actions):
+        indexes = defaultdict(list)
+
+        for i, action in enumerate(actions):
+            indexes[action].append(i)
+
+        result = [
+            f'Xor({",".join([self.quantifier_closure(other_precs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in indexes[action]])})'
+            for action in indexes if len(indexes[action]) > 1
+        ]
+
+        return f'And({",".join(result)})' if result else "True"
+
     
-    def add_assertion(self, pre, otherPrecs,inputs, action = 'start', postC = "", add = True):
-        
-        inputs = (self.preprocess_precs_and_inputs([postC], [inputs[0]])[0], self.preprocess_precs_and_inputs(otherPrecs, inputs[1]))
+    def add_assertion(self, pre, otherPrecs,inputs, actions, postC = "", add = True):
+        action = actions[0]
+        inputs = (self.add_old_var_from_precs_and_inputs([postC], [inputs[0]])[0], self.add_old_var_from_precs_and_inputs(otherPrecs, inputs[1]))
         data = self.solvers.get(action, [])
         if not data:
             self.solvers[action] = []
@@ -71,7 +84,8 @@ class SolverGenerator:
         
         hypothesis = self.z3_post_condition(postC)
         thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[1][i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
-       
+        thesis_non_eps = self.get_formula_for_determinism_at_stage(otherPrecs, inputs[1], actions[1])
+        
         name_func = f'_{action}_{len(self.solvers[action])}'
         
         result = {
@@ -79,7 +93,8 @@ class SolverGenerator:
             'snameF': name_func,
             'sparams': "\n    ".join(sparams.split('\n')),
             'sglobalVars': global_vars,
-            'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys()))
+            'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
+            'epsformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis_non_eps})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys()))
         }
         if add :  
             self.solvers[action].append(result)
