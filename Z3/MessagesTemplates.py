@@ -15,16 +15,19 @@ def {item['snameF']}(infos = False):
     #check if post condition implies any pre precondition
     solver_{item['snameF']}.push()
     solver_{item['snameF']}.add({item['sformula']})
-    result = solver_{item['snameF']}.check() == z3.sat
+    post_result = solver_{item['snameF']}.check() == z3.sat
     
+    solver_{item['snameF']}.pop()
+    solver_{item['snameF']}.add(Or({item['epsformula']}, {item['epsAndformula']})) 
+    eps_result = solver_{item['snameF']}.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
-        
-        solver_{item['snameF']}.pop()
-        solver_{item['snameF']}.add({item['epsformula']}) 
-        if  solver_{item['snameF']}.check() != z3.sat :
-            print ("Non deterministic: ", simplify({item['epsformula']})) 
+
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or({item['epsformula']}, {item['epsAndformula']}))) 
             
         if not result: 
             solver_{item['snameF']}2.add(Not({item['sformula']}))

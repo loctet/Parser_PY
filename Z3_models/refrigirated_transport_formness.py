@@ -38,16 +38,19 @@ def _start_0(infos = False):
     #check if post condition implies any pre precondition
     solver__start_0.push()
     solver__start_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), Or(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Exists([_cp], True)))))
-    result = solver__start_0.check() == z3.sat
+    post_result = solver__start_0.check() == z3.sat
     
+    solver__start_0.pop()
+    solver__start_0.add(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), And(And(Not(Exists([_hum,_tem], d != cp)), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))))) 
+    eps_result = solver__start_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _start_0: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), Or(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Exists([_cp], True))))), " :: ", result)
         
-        solver__start_0.pop()
-        solver__start_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))) 
-        if  solver__start_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), And(And(Not(Exists([_hum,_tem], d != cp)), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))))) 
             
         if not result: 
             solver__start_02.add(Not(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_d], Implies(And(d.eq(_d)), Or(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Exists([_cp], True))))))
@@ -80,16 +83,19 @@ def _ingestTel_b_0(infos = False):
     #check if post condition implies any pre precondition
     solver__ingestTel_b_0.push()
     solver__ingestTel_b_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True))))
-    result = solver__ingestTel_b_0.check() == z3.sat
+    post_result = solver__ingestTel_b_0.check() == z3.sat
     
+    solver__ingestTel_b_0.pop()
+    solver__ingestTel_b_0.add(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(And(Not(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))))) 
+    eps_result = solver__ingestTel_b_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _ingestTel_b_0: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True)))), " :: ", result)
         
-        solver__ingestTel_b_0.pop()
-        solver__ingestTel_b_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))) 
-        if  solver__ingestTel_b_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(And(Not(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))))) 
             
         if not result: 
             solver__ingestTel_b_02.add(Not(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True)))))
@@ -118,16 +124,19 @@ def _ingestTel_b_1(infos = False):
     #check if post condition implies any pre precondition
     solver__ingestTel_b_1.push()
     solver__ingestTel_b_1.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True))))
-    result = solver__ingestTel_b_1.check() == z3.sat
+    post_result = solver__ingestTel_b_1.check() == z3.sat
     
+    solver__ingestTel_b_1.pop()
+    solver__ingestTel_b_1.add(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(And(Not(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))))) 
+    eps_result = solver__ingestTel_b_1.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _ingestTel_b_1: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True)))), " :: ", result)
         
-        solver__ingestTel_b_1.pop()
-        solver__ingestTel_b_1.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))) 
-        if  solver__ingestTel_b_1.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(And(Not(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))))) 
             
         if not result: 
             solver__ingestTel_b_12.add(Not(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True)))))
@@ -151,16 +160,19 @@ def _complete_0(infos = False):
     #check if post condition implies any pre precondition
     solver__complete_0.push()
     solver__complete_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True)))
-    result = solver__complete_0.check() == z3.sat
+    post_result = solver__complete_0.check() == z3.sat
     
+    solver__complete_0.pop()
+    solver__complete_0.add(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True)), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True)))) 
+    eps_result = solver__complete_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _complete_0: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True))), " :: ", result)
         
-        solver__complete_0.pop()
-        solver__complete_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True))) 
-        if  solver__complete_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True)), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True))))) 
             
         if not result: 
             solver__complete_02.add(Not(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem], Implies(True, True))))
@@ -192,16 +204,19 @@ def _ingestTel_0(infos = False):
     #check if post condition implies any pre precondition
     solver__ingestTel_0.push()
     solver__ingestTel_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Exists([_cp], True)))))
-    result = solver__ingestTel_0.check() == z3.sat
+    post_result = solver__ingestTel_0.check() == z3.sat
     
+    solver__ingestTel_0.pop()
+    solver__ingestTel_0.add(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(And(Not(Exists([_hum,_tem], d != cp)), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))))) 
+    eps_result = solver__ingestTel_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _ingestTel_0: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Exists([_cp], True))))), " :: ", result)
         
-        solver__ingestTel_0.pop()
-        solver__ingestTel_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))) 
-        if  solver__ingestTel_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(Xor(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), And(And(Not(Exists([_hum,_tem], d != cp)), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))))) 
             
         if not result: 
             solver__ingestTel_02.add(Not(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(tem == _tem, hum == _hum), Or(Exists([_hum,_tem], d != cp),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),Exists([_cp], True))))))
@@ -226,16 +241,19 @@ def _ingestTel_1(infos = False):
     #check if post condition implies any pre precondition
     solver__ingestTel_1.push()
     solver__ingestTel_1.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True)))
-    result = solver__ingestTel_1.check() == z3.sat
+    post_result = solver__ingestTel_1.check() == z3.sat
     
+    solver__ingestTel_1.pop()
+    solver__ingestTel_1.add(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True)), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True)))) 
+    eps_result = solver__ingestTel_1.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _ingestTel_1: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True))), " :: ", result)
         
-        solver__ingestTel_1.pop()
-        solver__ingestTel_1.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True))) 
-        if  solver__ingestTel_1.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True)), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True))))) 
             
         if not result: 
             solver__ingestTel_12.add(Not(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_hum,_tem], Implies(And(hum == _hum, tem == _tem), True))))
@@ -264,16 +282,19 @@ def _transResp_0(infos = False):
     #check if post condition implies any pre precondition
     solver__transResp_0.push()
     solver__transResp_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True))))
-    result = solver__transResp_0.check() == z3.sat
+    post_result = solver__transResp_0.check() == z3.sat
     
+    solver__transResp_0.pop()
+    solver__transResp_0.add(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), And(And(Not(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))))) 
+    eps_result = solver__transResp_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _transResp_0: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True)))), " :: ", result)
         
-        solver__transResp_0.pop()
-        solver__transResp_0.add(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)))))))) 
-        if  solver__transResp_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), And(Xor(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))), ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), And(And(Not(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))), Not(Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))))))))))) 
             
         if not result: 
             solver__transResp_02.add(Not(ForAll([stage,MaxHum,MinHum,MaxTem,MinTem,d,cp,hum,tem,_cp], Implies(And(cp.eq(_cp)), Or(Exists([_hum,_tem], And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem)),Exists([_hum,_tem], Not(And(_hum <= MaxHum, _hum >= MinHum, _tem <= MaxTem, _tem >= MinTem))),True)))))

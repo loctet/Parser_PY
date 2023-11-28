@@ -29,16 +29,19 @@ def _start_0(infos = False):
     #check if post condition implies any pre precondition
     solver__start_0.push()
     solver__start_0.add(ForAll([locked,requestedL], Implies(True, Or(True))))
-    result = solver__start_0.check() == z3.sat
+    post_result = solver__start_0.check() == z3.sat
     
+    solver__start_0.pop()
+    solver__start_0.add(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True)))) 
+    eps_result = solver__start_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _start_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True)))), " :: ", result)
         
-        solver__start_0.pop()
-        solver__start_0.add(ForAll([locked,requestedL], Implies(True, True))) 
-        if  solver__start_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True))))) 
             
         if not result: 
             solver__start_02.add(Not(ForAll([locked,requestedL], Implies(True, Or(True)))))
@@ -64,16 +67,19 @@ def _requestAvailability_0(infos = False):
     #check if post condition implies any pre precondition
     solver__requestAvailability_0.push()
     solver__requestAvailability_0.add(ForAll([locked,requestedL], Implies(True, Or(True))))
-    result = solver__requestAvailability_0.check() == z3.sat
+    post_result = solver__requestAvailability_0.check() == z3.sat
     
+    solver__requestAvailability_0.pop()
+    solver__requestAvailability_0.add(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True)))) 
+    eps_result = solver__requestAvailability_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _requestAvailability_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True)))), " :: ", result)
         
-        solver__requestAvailability_0.pop()
-        solver__requestAvailability_0.add(ForAll([locked,requestedL], Implies(True, True))) 
-        if  solver__requestAvailability_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True))))) 
             
         if not result: 
             solver__requestAvailability_02.add(Not(ForAll([locked,requestedL], Implies(True, Or(True)))))
@@ -97,16 +103,19 @@ def _reviewRequest_0(infos = False):
     #check if post condition implies any pre precondition
     solver__reviewRequest_0.push()
     solver__reviewRequest_0.add(ForAll([locked,requestedL], Implies(True, Or(True))))
-    result = solver__reviewRequest_0.check() == z3.sat
+    post_result = solver__reviewRequest_0.check() == z3.sat
     
+    solver__reviewRequest_0.pop()
+    solver__reviewRequest_0.add(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True)))) 
+    eps_result = solver__reviewRequest_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _reviewRequest_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True)))), " :: ", result)
         
-        solver__reviewRequest_0.pop()
-        solver__reviewRequest_0.add(ForAll([locked,requestedL], Implies(True, True))) 
-        if  solver__reviewRequest_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True))))) 
             
         if not result: 
             solver__reviewRequest_02.add(Not(ForAll([locked,requestedL], Implies(True, Or(True)))))
@@ -130,16 +139,19 @@ def _uploadDigitalAsset_0(infos = False):
     #check if post condition implies any pre precondition
     solver__uploadDigitalAsset_0.push()
     solver__uploadDigitalAsset_0.add(ForAll([locked,requestedL], Implies(True, Or(True,locked == False,True))))
-    result = solver__uploadDigitalAsset_0.check() == z3.sat
+    post_result = solver__uploadDigitalAsset_0.check() == z3.sat
     
+    solver__uploadDigitalAsset_0.pop()
+    solver__uploadDigitalAsset_0.add(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True)))) 
+    eps_result = solver__uploadDigitalAsset_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _uploadDigitalAsset_0: ", simplify(ForAll([locked,requestedL], Implies(True, Or(True,locked == False,True)))), " :: ", result)
         
-        solver__uploadDigitalAsset_0.pop()
-        solver__uploadDigitalAsset_0.add(ForAll([locked,requestedL], Implies(True, True))) 
-        if  solver__uploadDigitalAsset_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True))))) 
             
         if not result: 
             solver__uploadDigitalAsset_02.add(Not(ForAll([locked,requestedL], Implies(True, Or(True,locked == False,True)))))
@@ -163,16 +175,19 @@ def _ShareThirdPartyRequest_0(infos = False):
     #check if post condition implies any pre precondition
     solver__ShareThirdPartyRequest_0.push()
     solver__ShareThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(And(locked == True), Or(locked == True,True))))
-    result = solver__ShareThirdPartyRequest_0.check() == z3.sat
+    post_result = solver__ShareThirdPartyRequest_0.check() == z3.sat
     
+    solver__ShareThirdPartyRequest_0.pop()
+    solver__ShareThirdPartyRequest_0.add(Or(ForAll([locked,requestedL], Implies(And(locked == True), True)), ForAll([locked,requestedL], Implies(And(locked == True), True)))) 
+    eps_result = solver__ShareThirdPartyRequest_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _ShareThirdPartyRequest_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked == True), Or(locked == True,True)))), " :: ", result)
         
-        solver__ShareThirdPartyRequest_0.pop()
-        solver__ShareThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(And(locked == True), True))) 
-        if  solver__ShareThirdPartyRequest_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(And(locked == True), True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(And(locked == True), True)), ForAll([locked,requestedL], Implies(And(locked == True), True))))) 
             
         if not result: 
             solver__ShareThirdPartyRequest_02.add(Not(ForAll([locked,requestedL], Implies(And(locked == True), Or(locked == True,True)))))
@@ -196,16 +211,19 @@ def _requestAccessLocker_0(infos = False):
     #check if post condition implies any pre precondition
     solver__requestAccessLocker_0.push()
     solver__requestAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked == False), Or(locked == False,locked == False,True))))
-    result = solver__requestAccessLocker_0.check() == z3.sat
+    post_result = solver__requestAccessLocker_0.check() == z3.sat
     
+    solver__requestAccessLocker_0.pop()
+    solver__requestAccessLocker_0.add(Or(ForAll([locked,requestedL], Implies(And(locked == False), True)), ForAll([locked,requestedL], Implies(And(locked == False), True)))) 
+    eps_result = solver__requestAccessLocker_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _requestAccessLocker_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked == False), Or(locked == False,locked == False,True)))), " :: ", result)
         
-        solver__requestAccessLocker_0.pop()
-        solver__requestAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked == False), True))) 
-        if  solver__requestAccessLocker_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(And(locked == False), True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(And(locked == False), True)), ForAll([locked,requestedL], Implies(And(locked == False), True))))) 
             
         if not result: 
             solver__requestAccessLocker_02.add(Not(ForAll([locked,requestedL], Implies(And(locked == False), Or(locked == False,locked == False,True)))))
@@ -229,16 +247,19 @@ def _terminateSharing_0(infos = False):
     #check if post condition implies any pre precondition
     solver__terminateSharing_0.push()
     solver__terminateSharing_0.add(ForAll([locked,requestedL], Implies(True, True)))
-    result = solver__terminateSharing_0.check() == z3.sat
+    post_result = solver__terminateSharing_0.check() == z3.sat
     
+    solver__terminateSharing_0.pop()
+    solver__terminateSharing_0.add(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True)))) 
+    eps_result = solver__terminateSharing_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _terminateSharing_0: ", simplify(ForAll([locked,requestedL], Implies(True, True))), " :: ", result)
         
-        solver__terminateSharing_0.pop()
-        solver__terminateSharing_0.add(ForAll([locked,requestedL], Implies(True, True))) 
-        if  solver__terminateSharing_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True))))) 
             
         if not result: 
             solver__terminateSharing_02.add(Not(ForAll([locked,requestedL], Implies(True, True))))
@@ -260,16 +281,19 @@ def _terminateSharing_1(infos = False):
     #check if post condition implies any pre precondition
     solver__terminateSharing_1.push()
     solver__terminateSharing_1.add(ForAll([locked,requestedL], Implies(True, True)))
-    result = solver__terminateSharing_1.check() == z3.sat
+    post_result = solver__terminateSharing_1.check() == z3.sat
     
+    solver__terminateSharing_1.pop()
+    solver__terminateSharing_1.add(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True)))) 
+    eps_result = solver__terminateSharing_1.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _terminateSharing_1: ", simplify(ForAll([locked,requestedL], Implies(True, True))), " :: ", result)
         
-        solver__terminateSharing_1.pop()
-        solver__terminateSharing_1.add(ForAll([locked,requestedL], Implies(True, True))) 
-        if  solver__terminateSharing_1.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True))))) 
             
         if not result: 
             solver__terminateSharing_12.add(Not(ForAll([locked,requestedL], Implies(True, True))))
@@ -291,16 +315,19 @@ def _terminateSharing_2(infos = False):
     #check if post condition implies any pre precondition
     solver__terminateSharing_2.push()
     solver__terminateSharing_2.add(ForAll([locked,requestedL], Implies(True, True)))
-    result = solver__terminateSharing_2.check() == z3.sat
+    post_result = solver__terminateSharing_2.check() == z3.sat
     
+    solver__terminateSharing_2.pop()
+    solver__terminateSharing_2.add(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True)))) 
+    eps_result = solver__terminateSharing_2.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _terminateSharing_2: ", simplify(ForAll([locked,requestedL], Implies(True, True))), " :: ", result)
         
-        solver__terminateSharing_2.pop()
-        solver__terminateSharing_2.add(ForAll([locked,requestedL], Implies(True, True))) 
-        if  solver__terminateSharing_2.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(True, True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(True, True)), ForAll([locked,requestedL], Implies(True, True))))) 
             
         if not result: 
             solver__terminateSharing_22.add(Not(ForAll([locked,requestedL], Implies(True, True))))
@@ -324,16 +351,19 @@ def _revokeThirdPartyRequest_0(infos = False):
     #check if post condition implies any pre precondition
     solver__revokeThirdPartyRequest_0.push()
     solver__revokeThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(And(locked == False), Or(True,locked == False,True))))
-    result = solver__revokeThirdPartyRequest_0.check() == z3.sat
+    post_result = solver__revokeThirdPartyRequest_0.check() == z3.sat
     
+    solver__revokeThirdPartyRequest_0.pop()
+    solver__revokeThirdPartyRequest_0.add(Or(ForAll([locked,requestedL], Implies(And(locked == False), True)), ForAll([locked,requestedL], Implies(And(locked == False), True)))) 
+    eps_result = solver__revokeThirdPartyRequest_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _revokeThirdPartyRequest_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked == False), Or(True,locked == False,True)))), " :: ", result)
         
-        solver__revokeThirdPartyRequest_0.pop()
-        solver__revokeThirdPartyRequest_0.add(ForAll([locked,requestedL], Implies(And(locked == False), True))) 
-        if  solver__revokeThirdPartyRequest_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(And(locked == False), True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(And(locked == False), True)), ForAll([locked,requestedL], Implies(And(locked == False), True))))) 
             
         if not result: 
             solver__revokeThirdPartyRequest_02.add(Not(ForAll([locked,requestedL], Implies(And(locked == False), Or(True,locked == False,True)))))
@@ -357,16 +387,19 @@ def _revokeGrantAccessLocker_0(infos = False):
     #check if post condition implies any pre precondition
     solver__revokeGrantAccessLocker_0.push()
     solver__revokeGrantAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked == False), Or(True,locked == False,True))))
-    result = solver__revokeGrantAccessLocker_0.check() == z3.sat
+    post_result = solver__revokeGrantAccessLocker_0.check() == z3.sat
     
+    solver__revokeGrantAccessLocker_0.pop()
+    solver__revokeGrantAccessLocker_0.add(Or(ForAll([locked,requestedL], Implies(And(locked == False), True)), ForAll([locked,requestedL], Implies(And(locked == False), True)))) 
+    eps_result = solver__revokeGrantAccessLocker_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _revokeGrantAccessLocker_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked == False), Or(True,locked == False,True)))), " :: ", result)
         
-        solver__revokeGrantAccessLocker_0.pop()
-        solver__revokeGrantAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked == False), True))) 
-        if  solver__revokeGrantAccessLocker_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(And(locked == False), True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(And(locked == False), True)), ForAll([locked,requestedL], Implies(And(locked == False), True))))) 
             
         if not result: 
             solver__revokeGrantAccessLocker_02.add(Not(ForAll([locked,requestedL], Implies(And(locked == False), Or(True,locked == False,True)))))
@@ -390,16 +423,19 @@ def _grantAccessLocker_0(infos = False):
     #check if post condition implies any pre precondition
     solver__grantAccessLocker_0.push()
     solver__grantAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked == True), Or(locked == True,True))))
-    result = solver__grantAccessLocker_0.check() == z3.sat
+    post_result = solver__grantAccessLocker_0.check() == z3.sat
     
+    solver__grantAccessLocker_0.pop()
+    solver__grantAccessLocker_0.add(Or(ForAll([locked,requestedL], Implies(And(locked == True), True)), ForAll([locked,requestedL], Implies(And(locked == True), True)))) 
+    eps_result = solver__grantAccessLocker_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _grantAccessLocker_0: ", simplify(ForAll([locked,requestedL], Implies(And(locked == True), Or(locked == True,True)))), " :: ", result)
         
-        solver__grantAccessLocker_0.pop()
-        solver__grantAccessLocker_0.add(ForAll([locked,requestedL], Implies(And(locked == True), True))) 
-        if  solver__grantAccessLocker_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([locked,requestedL], Implies(And(locked == True), True)))) 
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([locked,requestedL], Implies(And(locked == True), True)), ForAll([locked,requestedL], Implies(And(locked == True), True))))) 
             
         if not result: 
             solver__grantAccessLocker_02.add(Not(ForAll([locked,requestedL], Implies(And(locked == True), Or(locked == True,True)))))

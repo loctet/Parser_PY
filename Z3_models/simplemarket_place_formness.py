@@ -27,16 +27,19 @@ def _start_0(infos = False):
     #check if post condition implies any pre precondition
     solver__start_0.push()
     solver__start_0.add(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0)))))
-    result = solver__start_0.check() == z3.sat
+    post_result = solver__start_0.check() == z3.sat
     
+    solver__start_0.pop()
+    solver__start_0.add(Or(ForAll([state,offer,B], Implies(True, True)), ForAll([state,offer,B], Implies(True, True)))) 
+    eps_result = solver__start_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _start_0: ", simplify(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0))))), " :: ", result)
-        
-        solver__start_0.pop()
-        solver__start_0.add(ForAll([state,offer,B], Implies(True, True))) 
-        if  solver__start_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([state,offer,B], Implies(True, True)))) 
+
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([state,offer,B], Implies(True, True)), ForAll([state,offer,B], Implies(True, True))))) 
             
         if not result: 
             solver__start_02.add(Not(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0))))))
@@ -62,16 +65,19 @@ def _acceptOffer_0(infos = False):
     #check if post condition implies any pre precondition
     solver__acceptOffer_0.push()
     solver__acceptOffer_0.add(ForAll([state,offer,B], Implies(True, True)))
-    result = solver__acceptOffer_0.check() == z3.sat
+    post_result = solver__acceptOffer_0.check() == z3.sat
     
+    solver__acceptOffer_0.pop()
+    solver__acceptOffer_0.add(Or(ForAll([state,offer,B], Implies(True, True)), ForAll([state,offer,B], Implies(True, True)))) 
+    eps_result = solver__acceptOffer_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _acceptOffer_0: ", simplify(ForAll([state,offer,B], Implies(True, True))), " :: ", result)
-        
-        solver__acceptOffer_0.pop()
-        solver__acceptOffer_0.add(ForAll([state,offer,B], Implies(True, True))) 
-        if  solver__acceptOffer_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([state,offer,B], Implies(True, True)))) 
+
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([state,offer,B], Implies(True, True)), ForAll([state,offer,B], Implies(True, True))))) 
             
         if not result: 
             solver__acceptOffer_02.add(Not(ForAll([state,offer,B], Implies(True, True))))
@@ -96,16 +102,19 @@ def _rejectOffer_0(infos = False):
     #check if post condition implies any pre precondition
     solver__rejectOffer_0.push()
     solver__rejectOffer_0.add(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0)))))
-    result = solver__rejectOffer_0.check() == z3.sat
+    post_result = solver__rejectOffer_0.check() == z3.sat
     
+    solver__rejectOffer_0.pop()
+    solver__rejectOffer_0.add(Or(ForAll([state,offer,B], Implies(True, True)), ForAll([state,offer,B], Implies(True, True)))) 
+    eps_result = solver__rejectOffer_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _rejectOffer_0: ", simplify(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0))))), " :: ", result)
-        
-        solver__rejectOffer_0.pop()
-        solver__rejectOffer_0.add(ForAll([state,offer,B], Implies(True, True))) 
-        if  solver__rejectOffer_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([state,offer,B], Implies(True, True)))) 
+
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([state,offer,B], Implies(True, True)), ForAll([state,offer,B], Implies(True, True))))) 
             
         if not result: 
             solver__rejectOffer_02.add(Not(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0))))))
@@ -130,16 +139,19 @@ def _makeOffer_0(infos = False):
     #check if post condition implies any pre precondition
     solver__makeOffer_0.push()
     solver__makeOffer_0.add(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True))))
-    result = solver__makeOffer_0.check() == z3.sat
+    post_result = solver__makeOffer_0.check() == z3.sat
     
+    solver__makeOffer_0.pop()
+    solver__makeOffer_0.add(Or(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), True)), ForAll([state,offer,B,_offer], Implies(And(offer == _offer), True)))) 
+    eps_result = solver__makeOffer_0.check() == z3.sat
+    
+    result = post_result and eps_result
     
     if infos :
         print("--For _makeOffer_0: ", simplify(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True)))), " :: ", result)
-        
-        solver__makeOffer_0.pop()
-        solver__makeOffer_0.add(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), True))) 
-        if  solver__makeOffer_0.check() != z3.sat :
-            print ("Non deterministic: ", simplify(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), True)))) 
+
+        if  not eps_result :
+            print ("Non deterministic: ", simplify(Or(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), True)), ForAll([state,offer,B,_offer], Implies(And(offer == _offer), True))))) 
             
         if not result: 
             solver__makeOffer_02.add(Not(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True)))))

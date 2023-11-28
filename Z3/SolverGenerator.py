@@ -67,8 +67,12 @@ class SolverGenerator:
             f'Xor({",".join([self.quantifier_closure(other_precs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in indexes[action]])})'
             for action in indexes if len(indexes[action]) > 1
         ]
+        result2 = [
+            f'And(Not({"), Not(".join([self.quantifier_closure(other_precs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in indexes[action]])}))'
+            for action in indexes if len(indexes[action]) > 1
+        ]
 
-        return f'And({",".join(result)})' if result else "True"
+        return (f'And({",".join(result)})' if result else "True", f'And({",".join(result2)})' if result2 else "True")
 
     
     def add_assertion(self, pre, otherPrecs,inputs, actions, postC = "", add = True):
@@ -84,7 +88,7 @@ class SolverGenerator:
         
         hypothesis = self.z3_post_condition(postC)
         thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[1][i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
-        thesis_non_eps = self.get_formula_for_determinism_at_stage(otherPrecs, inputs[1], actions[1])
+        thesis_non_eps, thesis_non_and_eps = self.get_formula_for_determinism_at_stage(otherPrecs, inputs[1], actions[1])
         
         name_func = f'_{action}_{len(self.solvers[action])}'
         
@@ -94,7 +98,8 @@ class SolverGenerator:
             'sparams': "\n    ".join(sparams.split('\n')),
             'sglobalVars': global_vars,
             'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
-            'epsformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis_non_eps})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys()))
+            'epsformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis_non_eps})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
+            'epsAndformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis_non_and_eps})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys()))
         }
         if add :  
             self.solvers[action].append(result)

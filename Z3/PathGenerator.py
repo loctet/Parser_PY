@@ -77,7 +77,7 @@ class PathGenerator :
             print(f"Path: {path}")
             temp = SolverGenerator()
             temp.paticipants.add_participants(fsm['rPAssociation'])
-            result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(fsm['statesDeclaration'], temp.deploy_init_var_val, temp.var_names)
+            result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(fsm['statesDeclaration'], temp.deploy_init_var_val, temp.var_names, True)
             setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
             setattr(temp, 'var_names', var_names)
             temp.append(result)
