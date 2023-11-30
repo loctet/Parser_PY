@@ -1,7 +1,7 @@
 {
     "id": "countingMachine",
     "initialState": "Counting",
-    "statesDeclaration": "int count; int count_old_1",
+    "statesDeclaration": "int count",
     "states": [
       "Counting",
       "Terminated"
@@ -31,7 +31,7 @@
         "newParticipants": [],
         "existingParticipants": {"Operator": "Operator"},
         "actionLabel": "incrementCounter",
-        "preCondition": "count_old < 100",
+        "preCondition": "count < 100",
         "postCondition": "count := count_old + 1",
         "input": "",
         "externalAction": false

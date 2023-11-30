@@ -1,4 +1,4 @@
-import z3
+import copy
 from PatternChecker import *
 from Extension import generateFuntionsFormulas, replace_assertion
 from SafeVariableAssignment import SafeVariableAssignment as SafeVars
@@ -62,17 +62,19 @@ class SolverGenerator:
 
         for i, action in enumerate(actions):
             indexes[action].append(i)
+        result = []
+        for action in indexes:
+            if len(indexes[action]) == 1:
+                continue
+            for i in range(len(indexes[action])):
+                grouped = copy.deepcopy(indexes[action])
+                index = grouped[i]
+                hypo = other_precs[index]
+                
+                grouped.remove(index)
+                result.append(f"ForAll([{','.join(self.get_vars_names_from_input(inputs[index]))}], Implies({hypo},And(Not({') , Not('.join([other_precs[j] for j in grouped])}))))")
 
-        result = [
-            f'Xor({",".join([self.quantifier_closure(other_precs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in indexes[action]])})'
-            for action in indexes if len(indexes[action]) > 1
-        ]
-        result2 = [
-            f'And(Not({"), Not(".join([self.quantifier_closure(other_precs[i], self.get_vars_names_from_input(inputs[i]), "Exists") for i in indexes[action]])}))'
-            for action in indexes if len(indexes[action]) > 1
-        ]
-
-        return (f'And({",".join(result)})' if result else "True", f'And({",".join(result2)})' if result2 else "True")
+        return f'And({",".join(result)})' if result else "True"
 
     
     def add_assertion(self, pre, otherPrecs,inputs, actions, postC = "", add = True):
@@ -88,7 +90,7 @@ class SolverGenerator:
         
         hypothesis = self.z3_post_condition(postC)
         thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[1][i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
-        thesis_non_eps, thesis_non_and_eps = self.get_formula_for_determinism_at_stage(otherPrecs, inputs[1], actions[1])
+        thesis_non_eps = self.get_formula_for_determinism_at_stage(otherPrecs, inputs[1], actions[1])
         
         name_func = f'_{action}_{len(self.solvers[action])}'
         
@@ -98,8 +100,7 @@ class SolverGenerator:
             'sparams': "\n    ".join(sparams.split('\n')),
             'sglobalVars': global_vars,
             'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
-            'epsformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis_non_eps})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
-            'epsAndformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis_non_and_eps})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys()))
+            'epsformula': thesis_non_eps
         }
         if add :  
             self.solvers[action].append(result)

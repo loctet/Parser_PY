@@ -18,7 +18,7 @@ def {item['snameF']}(infos = False):
     post_result = solver_{item['snameF']}.check() == z3.sat
     
     solver_{item['snameF']}.pop()
-    solver_{item['snameF']}.add(Or({item['epsformula']}, {item['epsAndformula']})) 
+    solver_{item['snameF']}.add({item['epsformula']}) 
     eps_result = solver_{item['snameF']}.check() == z3.sat
     
     result = post_result and eps_result
@@ -27,7 +27,7 @@ def {item['snameF']}(infos = False):
         print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or({item['epsformula']}, {item['epsAndformula']}))) 
+            print ("Non deterministic: ", simplify({item['epsformula']}))
             
         if not result: 
             solver_{item['snameF']}2.add(Not({item['sformula']}))

@@ -1,0 +1,96 @@
+{
+  "id": "c",
+  "initialState": "S0",
+  "statesDeclaration": "int state; int offer; array B",
+  "states": [
+    "S0",
+    "S1",
+    "S2"
+  ],
+  "finalStates": [
+    "S2","S3"
+  ],
+  "transitions": [
+    {
+      "from": "_",
+      "to": "S0",
+      "initialStates": ["o"],
+      "finalStates": [],
+      "newParticipants": {
+        "o" : "O"
+      },
+      "existingParticipants": {"o": "O"},
+      "actionLabel": "start",
+      "preCondition": "True",
+      "postCondition": "",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S0",
+      "to": "S1",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {"b": "B"},
+      "existingParticipants": [],
+      "actionLabel": "makeOffer",
+      "preCondition": "_offer  > 0",
+      "postCondition": "offer  := _offer",
+      "input": "int _offer",
+      "externalAction": false
+    },
+    {
+      "from": "S0",
+      "to": "S1",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {"b": "B"},
+      "existingParticipants": [],
+      "actionLabel": "makeOffer",
+      "preCondition": "_offer  > 0",
+      "postCondition": "offer  := _offer",
+      "input": "int _offer",
+      "externalAction": false
+    },
+    {
+      "from": "S1",
+      "to": "S2",
+      "initialStates": [],
+      "finalStates": ["S2"],
+      "newParticipants": [],
+      "existingParticipants": {},
+      "actionLabel": "acceptOffer",
+      "preCondition": "True",
+      "postCondition": "",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S1",
+      "to": "S0",
+      "initialStates": [],
+      "finalStates": ["S3"],
+      "newParticipants": [],
+      "existingParticipants": {},
+      "actionLabel": "rejectOffer",
+      "preCondition": "True",
+      "postCondition": "",
+      "input": "",
+      "externalAction": false
+    }
+  ],
+  "rPAssociation": [
+    {
+      "role": "O",
+      "participants": [
+        "o"
+      ]
+    },
+    {
+      "role": "B",
+      "participants": [
+        "b"
+      ]
+    }
+  ]
+}
