@@ -29,7 +29,7 @@ def _startCounting_0(infos = False):
     post_result = solver__startCounting_0.check() == z3.sat
     
     solver__startCounting_0.pop()
-    solver__startCounting_0.add(Or(ForAll([count], Implies(And(count == 0), True)), ForAll([count], Implies(And(count == 0), True)))) 
+    solver__startCounting_0.add(True) 
     eps_result = solver__startCounting_0.check() == z3.sat
     
     result = post_result and eps_result
@@ -38,7 +38,7 @@ def _startCounting_0(infos = False):
         print("--For _startCounting_0: ", simplify(ForAll([count], Implies(And(count == 0), Or(count < 100,count >= 100)))), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or(ForAll([count], Implies(And(count == 0), True)), ForAll([count], Implies(And(count == 0), True))))) 
+            print ("Non deterministic: ", simplify(True))
             
         if not result: 
             solver__startCounting_02.add(Not(ForAll([count], Implies(And(count == 0), Or(count < 100,count >= 100)))))
@@ -66,7 +66,7 @@ def _incrementCounter_0(infos = False):
     post_result = solver__incrementCounter_0.check() == z3.sat
     
     solver__incrementCounter_0.pop()
-    solver__incrementCounter_0.add(Or(ForAll([count,count_old], Implies(And(count == count_old + 1), True)), ForAll([count,count_old], Implies(And(count == count_old + 1), True)))) 
+    solver__incrementCounter_0.add(True) 
     eps_result = solver__incrementCounter_0.check() == z3.sat
     
     result = post_result and eps_result
@@ -75,7 +75,7 @@ def _incrementCounter_0(infos = False):
         print("--For _incrementCounter_0: ", simplify(ForAll([count,count_old], Implies(And(count == count_old + 1), Or(count < 100,count >= 100)))), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or(ForAll([count,count_old], Implies(And(count == count_old + 1), True)), ForAll([count,count_old], Implies(And(count == count_old + 1), True))))) 
+            print ("Non deterministic: ", simplify(True))
             
         if not result: 
             solver__incrementCounter_02.add(Not(ForAll([count,count_old], Implies(And(count == count_old + 1), Or(count < 100,count >= 100)))))
@@ -102,7 +102,7 @@ def _terminateCounting_0(infos = False):
     post_result = solver__terminateCounting_0.check() == z3.sat
     
     solver__terminateCounting_0.pop()
-    solver__terminateCounting_0.add(Or(ForAll([count], Implies(True, True)), ForAll([count], Implies(True, True)))) 
+    solver__terminateCounting_0.add(True) 
     eps_result = solver__terminateCounting_0.check() == z3.sat
     
     result = post_result and eps_result
@@ -111,7 +111,7 @@ def _terminateCounting_0(infos = False):
         print("--For _terminateCounting_0: ", simplify(ForAll([count], Implies(True, True))), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or(ForAll([count], Implies(True, True)), ForAll([count], Implies(True, True))))) 
+            print ("Non deterministic: ", simplify(True))
             
         if not result: 
             solver__terminateCounting_02.add(Not(ForAll([count], Implies(True, True))))

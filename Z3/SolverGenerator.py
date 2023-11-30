@@ -76,8 +76,13 @@ class SolverGenerator:
 
         return f'And({",".join(result)})' if result else "True"
 
+    def pre_condition_not_having_old_vars(self, preC):
+        if len(PatternChecker.get_all_old_variables(preC)) > 0:
+            print(f"{preC} should not contain _old variables")
+            exit() 
     
     def add_assertion(self, pre, otherPrecs,inputs, actions, postC = "", add = True):
+        self.pre_condition_not_having_old_vars(pre)
         action = actions[0]
         inputs = (self.add_old_var_from_precs_and_inputs([postC], [inputs[0]])[0], self.add_old_var_from_precs_and_inputs(otherPrecs, inputs[1]))
         data = self.solvers.get(action, [])
