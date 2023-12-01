@@ -27,7 +27,8 @@ def _start_0(infos = False):
     solver__start_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__start_0.push()
-    solver__start_0.add(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0)))))
+    #solver__start_0.add(True)
+    solver__start_0.add(And(True, ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))))
     post_result = solver__start_0.check() == z3.sat
     
     solver__start_0.pop()
@@ -37,14 +38,14 @@ def _start_0(infos = False):
     result = post_result and eps_result
     
     if infos :
-        print("--For _start_0: ", simplify(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))), " :: ", result)
+        print("--For _start_0: ", simplify(ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))), " :: ", result)
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(And(ForAll([_offer], Implies(_offer  > 0,And(Not(_offer  > 0)))),ForAll([_offer], Implies(_offer  > 0,And(Not(_offer  > 0)))))))
             
         if not result: 
-            solver__start_02.add(Not(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0)))))), " :: ", solver__start_02.check() == z3.sat)
+            solver__start_02.add(Not(ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0)))))), " :: ", solver__start_02.check() == z3.sat)
             
           
                    
@@ -65,7 +66,8 @@ def _acceptOffer_0(infos = False):
     solver__acceptOffer_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__acceptOffer_0.push()
-    solver__acceptOffer_0.add(ForAll([state,offer,B], Implies(True, True)))
+    #solver__acceptOffer_0.add(True)
+    solver__acceptOffer_0.add(And(True, ForAll([state,offer,B], Implies(And(True, True), True))))
     post_result = solver__acceptOffer_0.check() == z3.sat
     
     solver__acceptOffer_0.pop()
@@ -75,14 +77,14 @@ def _acceptOffer_0(infos = False):
     result = post_result and eps_result
     
     if infos :
-        print("--For _acceptOffer_0: ", simplify(ForAll([state,offer,B], Implies(True, True))), " :: ", result)
+        print("--For _acceptOffer_0: ", simplify(ForAll([state,offer,B], Implies(And(True, True), True))), " :: ", result)
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__acceptOffer_02.add(Not(ForAll([state,offer,B], Implies(True, True))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B], Implies(True, True)))), " :: ", solver__acceptOffer_02.check() == z3.sat)
+            solver__acceptOffer_02.add(Not(ForAll([state,offer,B], Implies(And(True, True), True))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B], Implies(And(True, True), True)))), " :: ", solver__acceptOffer_02.check() == z3.sat)
             
           
                    
@@ -103,7 +105,8 @@ def _rejectOffer_0(infos = False):
     solver__rejectOffer_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__rejectOffer_0.push()
-    solver__rejectOffer_0.add(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0)))))
+    #solver__rejectOffer_0.add(True)
+    solver__rejectOffer_0.add(And(True, ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))))
     post_result = solver__rejectOffer_0.check() == z3.sat
     
     solver__rejectOffer_0.pop()
@@ -113,14 +116,14 @@ def _rejectOffer_0(infos = False):
     result = post_result and eps_result
     
     if infos :
-        print("--For _rejectOffer_0: ", simplify(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))), " :: ", result)
+        print("--For _rejectOffer_0: ", simplify(ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))), " :: ", result)
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(And(ForAll([_offer], Implies(_offer  > 0,And(Not(_offer  > 0)))),ForAll([_offer], Implies(_offer  > 0,And(Not(_offer  > 0)))))))
             
         if not result: 
-            solver__rejectOffer_02.add(Not(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B], Implies(True, Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0)))))), " :: ", solver__rejectOffer_02.check() == z3.sat)
+            solver__rejectOffer_02.add(Not(ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B], Implies(And(True, True), Or(Exists([_offer], _offer  > 0),Exists([_offer], _offer  > 0)))))), " :: ", solver__rejectOffer_02.check() == z3.sat)
             
           
                    
@@ -140,7 +143,8 @@ def _makeOffer_0(infos = False):
     solver__makeOffer_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__makeOffer_0.push()
-    solver__makeOffer_0.add(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True))))
+    #solver__makeOffer_0.add(True)
+    solver__makeOffer_0.add(And(True, ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True)))))
     post_result = solver__makeOffer_0.check() == z3.sat
     
     solver__makeOffer_0.pop()
@@ -150,14 +154,14 @@ def _makeOffer_0(infos = False):
     result = post_result and eps_result
     
     if infos :
-        print("--For _makeOffer_0: ", simplify(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True)))), " :: ", result)
+        print("--For _makeOffer_0: ", simplify(ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True)))), " :: ", result)
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__makeOffer_02.add(Not(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True))))), " :: ", solver__makeOffer_02.check() == z3.sat)
+            solver__makeOffer_02.add(Not(ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True)))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True))))), " :: ", solver__makeOffer_02.check() == z3.sat)
             
           
                    
@@ -175,7 +179,8 @@ def _makeOffer_1(infos = False):
     solver__makeOffer_12 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__makeOffer_1.push()
-    solver__makeOffer_1.add(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True))))
+    #solver__makeOffer_1.add(True)
+    solver__makeOffer_1.add(And(True, ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True)))))
     post_result = solver__makeOffer_1.check() == z3.sat
     
     solver__makeOffer_1.pop()
@@ -185,14 +190,14 @@ def _makeOffer_1(infos = False):
     result = post_result and eps_result
     
     if infos :
-        print("--For _makeOffer_1: ", simplify(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True)))), " :: ", result)
+        print("--For _makeOffer_1: ", simplify(ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True)))), " :: ", result)
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__makeOffer_12.add(Not(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B,_offer], Implies(And(offer == _offer), Or(True,True))))), " :: ", solver__makeOffer_12.check() == z3.sat)
+            solver__makeOffer_12.add(Not(ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True)))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,B,_offer], Implies(And(_offer  > 0, And(offer == _offer)), Or(True,True))))), " :: ", solver__makeOffer_12.check() == z3.sat)
             
           
                    

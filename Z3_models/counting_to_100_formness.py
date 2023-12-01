@@ -16,7 +16,7 @@ Store(role_Operator, 0, String('Operator'))
 
 
 def _startCounting_0(infos = False):
-    global count 
+    
     # Declare variable before   
     
     
@@ -25,8 +25,11 @@ def _startCounting_0(infos = False):
     solver__startCounting_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__startCounting_0.push()
-    solver__startCounting_0.add(ForAll([count], Implies(And(count == 0), Or(count < 100,count >= 100))))
+    solver__startCounting_0.add(True)
+    
+    solver__startCounting_0.add(ForAll([count], Implies(True, Or(count < 100,count >= 100))))
     post_result = solver__startCounting_0.check() == z3.sat
+    #print((ForAll([count], Implies(True, Or(count < 100,count >= 100)))), post_result)
     
     solver__startCounting_0.pop()
     solver__startCounting_0.add(True) 
@@ -35,14 +38,14 @@ def _startCounting_0(infos = False):
     result = post_result and eps_result
     
     if infos :
-        print("--For _startCounting_0: ", simplify(ForAll([count], Implies(And(count == 0), Or(count < 100,count >= 100)))), " :: ", result)
+        print("--For _startCounting_0: ", simplify(ForAll([count], Implies(True, Or(count < 100,count >= 100)))), " :: ", result)
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__startCounting_02.add(Not(ForAll([count], Implies(And(count == 0), Or(count < 100,count >= 100)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([count], Implies(And(count == 0), Or(count < 100,count >= 100))))), " :: ", solver__startCounting_02.check() == z3.sat)
+            solver__startCounting_02.add(Not(ForAll([count], Implies(True, Or(count < 100,count >= 100)))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([count], Implies(True, Or(count < 100,count >= 100))))), " :: ", solver__startCounting_02.check() == z3.sat)
             
           
                    
@@ -62,8 +65,11 @@ def _incrementCounter_0(infos = False):
     solver__incrementCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__incrementCounter_0.push()
+    solver__incrementCounter_0.add(count < 100)
+    
     solver__incrementCounter_0.add(ForAll([count,count_old], Implies(And(count == count_old + 1), Or(count < 100,count >= 100))))
     post_result = solver__incrementCounter_0.check() == z3.sat
+    #print((ForAll([count,count_old], Implies(And(count == count_old + 1), Or(count < 100,count >= 100)))), post_result)
     
     solver__incrementCounter_0.pop()
     solver__incrementCounter_0.add(True) 
@@ -98,8 +104,11 @@ def _terminateCounting_0(infos = False):
     solver__terminateCounting_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__terminateCounting_0.push()
+    solver__terminateCounting_0.add(count >= 100)
+    
     solver__terminateCounting_0.add(ForAll([count], Implies(True, True)))
     post_result = solver__terminateCounting_0.check() == z3.sat
+    #print((ForAll([count], Implies(True, True))), post_result)
     
     solver__terminateCounting_0.pop()
     solver__terminateCounting_0.add(True) 

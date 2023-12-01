@@ -62,17 +62,20 @@ class SolverGenerator:
 
         for i, action in enumerate(actions):
             indexes[action].append(i)
+
         result = []
-        for action in indexes:
-            if len(indexes[action]) == 1:
+
+        for action, indices in indexes.items():
+            if len(indices) == 1:
                 continue
-            for i in range(len(indexes[action])):
-                grouped = copy.deepcopy(indexes[action])
-                index = grouped[i]
-                hypo = other_precs[index]
-                
-                grouped.remove(index)
-                result.append(f"ForAll([{','.join(self.get_vars_names_from_input(inputs[index]))}], Implies({hypo},And(Not({') , Not('.join([other_precs[j] for j in grouped])}))))")
+
+            for i, index in enumerate(indices):
+                grouped = copy.deepcopy(indices)
+                hypothesis = other_precs[index]
+                grouped.pop(i)
+                var_in = self.get_vars_names_from_input(inputs[index])
+                implication_part = f'And(Not({") , Not(".join([other_precs[j] for j in grouped])}))'
+                result.append(f"ForAll([{','.join(var_in)}], Implies({hypothesis}, {implication_part}))") if var_in else f"Implies({hypothesis}, {implication_part})"
 
         return f'And({",".join(result)})' if result else "True"
 
@@ -93,7 +96,7 @@ class SolverGenerator:
         sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver__{action}_{len(self.solvers[action])}')
         sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in (inputs[1]+[inputs[0]]) if x != ""]))
         
-        hypothesis = self.z3_post_condition(postC)
+        hypothesis = f"{self.z3_post_condition(postC)}"
         thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[1][i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
         thesis_non_eps = self.get_formula_for_determinism_at_stage(otherPrecs, inputs[1], actions[1])
         
@@ -103,6 +106,7 @@ class SolverGenerator:
             'sname': f'solver_{action}',
             'snameF': name_func,
             'sparams': "\n    ".join(sparams.split('\n')),
+            'spre': pre,
             'sglobalVars': global_vars,
             'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
             'epsformula': thesis_non_eps

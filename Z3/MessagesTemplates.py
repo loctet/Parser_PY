@@ -14,8 +14,10 @@ def {item['snameF']}(infos = False):
     solver_{item['snameF']}2 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver_{item['snameF']}.push()
+    #solver_{item['snameF']}.add({item['spre']})
     solver_{item['snameF']}.add({item['sformula']})
     post_result = solver_{item['snameF']}.check() == z3.sat
+    #print(({item['sformula']}), post_result)
     
     solver_{item['snameF']}.pop()
     solver_{item['snameF']}.add({item['epsformula']}) 

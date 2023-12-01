@@ -1,0 +1,81 @@
+{
+  "id": "c",
+  "initialState": "S0",
+  "statesDeclaration": "int rbv; int _c",
+  "states": [
+    "S0"
+  ],
+  "finalStates": [
+    "S0"
+  ],
+  "transitions": [
+    {
+      "from": "_",
+      "to": "S0",
+      "initialStates": ["o"],
+      "finalStates": [],
+      "newParticipants": {
+        "o" : "O"
+      },
+      "existingParticipants": {"o": "O"},
+      "actionLabel": "start",
+      "preCondition": "True",
+      "postCondition": "",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S0",
+      "to": "S0",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {"b": "B"},
+      "existingParticipants": [],
+      "actionLabel": "check_color",
+      "preCondition": "And(_c > 0, _c < 100)",
+      "postCondition": "rbv := 1",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S0",
+      "to": "S0",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {"b": "B"},
+      "existingParticipants": [],
+      "actionLabel": "check_color",
+      "preCondition": "And(_c >= 100, _c < 180)",
+      "postCondition": "rbv := 2",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S0",
+      "to": "S0",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {"b": "B"},
+      "existingParticipants": [],
+      "actionLabel": "check_color",
+      "preCondition": "And(_c >= 180, _c < 255)",
+      "postCondition": "rbv := 3",
+      "input": "",
+      "externalAction": false
+    }
+  ],
+  "rPAssociation": [
+    {
+      "role": "O",
+      "participants": [
+        "o"
+      ]
+    },
+    {
+      "role": "B",
+      "participants": [
+        "b"
+      ]
+    }
+  ]
+}
