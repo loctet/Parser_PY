@@ -22,7 +22,7 @@
       "existingParticipants": {"o": "O"},
       "actionLabel": "start",
       "preCondition": "True",
-      "postCondition": "",
+      "postCondition": "x:=0&y:=0",
       "input": "",
       "externalAction": false
     },
@@ -35,7 +35,7 @@
       "existingParticipants": [],
       "actionLabel": "action1",
       "preCondition": "x<=9",
-      "postCondition": "y:=0",
+      "postCondition": "x:=x_old + 1",
       "input": "",
       "externalAction": false
     },

@@ -24,25 +24,6 @@ class SolverGenerator:
     def quantifier_closure(self, formula, variables = [], quantifier = "ForAll"):
         return f"{quantifier}([{','.join(variables)}], {formula})" if len(variables) > 0 else formula
     
-    def z3_post_condition(self, postC):
-        if  postC.strip() == "" :
-            return "True"
-        
-        _list = postC.split("&")
-        parts = []
-        for item in _list:
-            if item.strip() == "":
-                print(f"{postC} in not correct")
-                exit()
-                
-            _varname, _assign = [a.strip() for a in item.split(":=")]
-            if _varname in self.var_names and self.var_names[_varname] == 'string':
-                parts.append(f"{_varname}.eq({_assign})")
-            else:
-                parts.append(f"{_varname} == {_assign}")
-        formula = ", ".join(parts)
-    
-        return  f"And({formula})"
     
     def get_vars_names_from_input(self, input_c):
         resuls  = VarDefConv.convert_to_z3_declarations(input_c)
@@ -78,30 +59,70 @@ class SolverGenerator:
                 result.append(f"ForAll([{','.join(var_in)}], Implies({hypothesis}, {implication_part}))") if var_in else f"Implies({hypothesis}, {implication_part})"
 
         return f'And({",".join(result)})' if result else "True"
-
-    def pre_condition_not_having_old_vars(self, preC):
-        if len(PatternChecker.get_all_old_variables(preC)) > 0:
-            print(f"{preC} should not contain _old variables")
-            exit() 
     
-    def add_assertion(self, pre, otherPrecs,inputs, actions, postC = "", add = True):
-        self.pre_condition_not_having_old_vars(pre)
+    """
+    Add an assertion to the solvers data structure based on provided conditions and inputs.
+
+    Parameters:
+    - pre (str): The precondition of the assertion.
+    - otherPrecs (list): List of other preconditions.
+    - inputs (tuple): Tuple containing the inputs for the assertion. The first element is the input string, and the second element is the list of corresponding inputs of other transitions.
+    - actions (list): List of actions associated with the assertion. first is the current action and secons is the list of other actions
+    - postC (str): The post-condition of the assertion. Defaults to an empty string.
+    - add (bool): Flag indicating whether to add the assertion to the solvers data structure. Defaults to True.
+
+    Returns:
+    dict: A dictionary containing information about the added assertion.
+
+    The function processes the given conditions and inputs, replaces variables with "_old" versions, and generates Z3-compatible formulas for the assertion. It also handles the addition of the assertion to the solvers data structure.
+
+    """
+    def add_assertion(self, pre, otherPrecs, inputs, actions, postC="", add=True):
+        
+        # Check and handle special cases in the pre and post conditions
+        PatternChecker.pre_condition_not_having_old_vars(pre, postC)
+
+        # Extract Z3-compatible post conditions
+        _postC_A, _post_variable = PatternChecker.z3_post_condition(postC, self.var_names)
+
+        # Select the first action (currect transition's action)
         action = actions[0]
-        inputs = (self.add_old_var_from_precs_and_inputs([postC], [inputs[0]])[0], self.add_old_var_from_precs_and_inputs(otherPrecs, inputs[1]))
+
+        # Replace variables in pre with their "_old" versions
+        data = PatternChecker.replace_var_with_old_in_pre(pre, _post_variable, self.var_names)
+        # change the precondition to the updatd one
+        pre = data[0]
+
+        # Update the inputs with the new "_old" variables
+        inputs = (";".join(inputs[0].split(';') + data[1]), inputs[1])
+        inputs = (
+            self.add_old_var_from_precs_and_inputs([postC], [inputs[0]])[0],
+            self.add_old_var_from_precs_and_inputs(otherPrecs, inputs[1])
+        )
+
+        # Initialize or get the data associated with the current action
         data = self.solvers.get(action, [])
         if not data:
             self.solvers[action] = []
-        
+
+        # Replace assertion in pre
         pre = replace_assertion(pre)
-        sVarUpdate, global_vars  = SafeVars.safe_variable_assignment(postC, f'solver__{action}_{len(self.solvers[action])}')
+
+        # Generate safe variable updates and global variables
+        sVarUpdate, global_vars = SafeVars.safe_variable_assignment(postC, f'solver__{action}_{len(self.solvers[action])}')
+
+        # Convert variables and declarations to Z3 format
         sparams, deploy_init_var_val, var_names = VarDefConv.convert_to_z3_declarations(";".join([x for x in (inputs[1]+[inputs[0]]) if x != ""]))
-        
-        hypothesis = f"{self.z3_post_condition(postC)}"
+
+        # Create the hypothesis and thesis for the assertion
+        hypothesis = f"And({pre},{_postC_A})"
         thesis = f'Or({",".join([self.quantifier_closure(otherPrecs[i], self.get_vars_names_from_input(inputs[1][i]), "Exists") for i in range(len(otherPrecs))])})' if len(otherPrecs) > 0 else "True"
         thesis_non_eps = self.get_formula_for_determinism_at_stage(otherPrecs, inputs[1], actions[1])
-        
+
+        # Create a unique name for the function
         name_func = f'_{action}_{len(self.solvers[action])}'
-        
+
+        # Prepare the result dictionary
         result = {
             'sname': f'solver_{action}',
             'snameF': name_func,
@@ -111,9 +132,13 @@ class SolverGenerator:
             'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
             'epsformula': thesis_non_eps
         }
-        if add :  
+
+        # Add the result to the solvers data if required
+        if add:
             self.solvers[action].append(result)
+
         return result
+
 
     def generate_solver_code(self, result_var):
         #create formulas functions
