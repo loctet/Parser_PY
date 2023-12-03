@@ -55,83 +55,88 @@ def get_grouped_transaction(transitions):
     return [grouped_transitions, grouped_transitions_copy ]   
 
 def check_well_formness(fsm, file_name):
-    transitions = fsm['transitions']
-    # Example usage
-    declarations_str = fsm['statesDeclaration']
-    print("Checking the well formness of the model----\n")
-    temp = SolverGenerator()
-    temp.participants.add_participants(fsm['rPAssociation'])
-    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names, True)
-    
-    setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
-    setattr(temp, 'var_names', var_names)
-    
-    temp.append(result)
-    grouped_transitions, grouped_transitions_copy = get_grouped_transaction(transitions)
-    data = grouped_transitions_copy.pop("_", [])
-
-    while data:
-        for transition in data:
-            preC = transition['preCondition']
-            to = transition['to']
-            actionL = transition['actionLabel']
-            postC = transition['postCondition']
-            data = grouped_transitions.get(to, [])
-            otherPreC = [item['preCondition'] for item in data]
-            inputs = [item['input'] for item in data]
-            actions = [item['actionLabel'] for item in data]
-            
-            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC, {
-                "newParticipants": transition["newParticipants"],
-                "existingParticipants": transition["existingParticipants"]
-            }, transition["caller"])
-            
-            if to not in grouped_transitions and to not in fsm['finalStates']:
-                print(f"Warning: {to} is not a final state but has no trasitions from {to}")
+    try:
+        transitions = fsm['transitions']
+        # Example usage
+        declarations_str = fsm['statesDeclaration']
+        print("Checking the well formness of the model----\n")
+        temp = SolverGenerator()
+        temp.participants.add_participants(fsm['rPAssociation'])
+        result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names, True)
         
-        key, data = grouped_transitions_copy.popitem() if len(grouped_transitions_copy) > 0 else ["", []]
+        setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
+        setattr(temp, 'var_names', var_names)
+        
+        temp.append(result)
+        grouped_transitions, grouped_transitions_copy = get_grouped_transaction(transitions)
+        data = grouped_transitions_copy.pop("_", [])
+
+        while data:
+            for transition in data:
+                preC = transition['preCondition']
+                to = transition['to']
+                actionL = transition['actionLabel']
+                postC = transition['postCondition']
+                data = grouped_transitions.get(to, [])
+                otherPreC = [item['preCondition'] for item in data]
+                inputs = [item['input'] for item in data]
+                actions = [item['actionLabel'] for item in data]
+                
+                temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC, {
+                    "newParticipants": transition["newParticipants"],
+                    "existingParticipants": transition["existingParticipants"]
+                }, transition["caller"])
+                
+                if to not in grouped_transitions and to not in fsm['finalStates']:
+                    print(f"Warning: {to} is not a final state but has no trasitions from {to}")
+            
+            key, data = grouped_transitions_copy.popitem() if len(grouped_transitions_copy) > 0 else ["", []]
 
 
-    execute_model_and_save(temp, f"{file_name}_formness")
-    print("End----\n\n")
-
+        execute_model_and_save(temp, f"{file_name}_formness")
+        print("End----\n\n")
+    except Exception as e:  
+        print(f"Error : {e}")
 
 def check_independant_sat(fsm, file_name):
-    transitions = fsm['transitions']
-    # Example usage
-    declarations_str = fsm['statesDeclaration']
-    print("Checking independent statisfiability of the model----\n\n")
-    temp = SolverGenerator()
-    temp.participants.add_participants(fsm['rPAssociation'])
-    result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
+    try:
+        transitions = fsm['transitions']
+        # Example usage
+        declarations_str = fsm['statesDeclaration']
+        print("Checking independent statisfiability of the model----\n\n")
+        temp = SolverGenerator()
+        temp.participants.add_participants(fsm['rPAssociation'])
+        result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
 
-    setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
-    setattr(temp, 'var_names', var_names)
-    temp.append(result)
-    
-    grouped_transitions, grouped_transitions_copy = get_grouped_transaction(transitions)
-    
-    for key in grouped_transitions:
-        for transition in grouped_transitions[key]:
-            preC = transition['preCondition']
-            to = transition['to']
-            actionL = transition['actionLabel']
-            postC = transition['postCondition']
-            data_ = grouped_transitions.get(to, [])
-            otherPreC = [item['preCondition'] for item in data_]
-            inputs = [item['input'] for item in data_]
-            actions = [item['actionLabel'] for item in data_]
-            
-            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC, {
-                "newParticipants": transition["newParticipants"],
-                "existingParticipants": transition["existingParticipants"]
-            }, transition["caller"])
-            
-            if to not in grouped_transitions and to not in fsm['finalStates']:
-                print(f"Warning: {to} is not a final state but has no trasitions from {to}")
+        setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
+        setattr(temp, 'var_names', var_names)
+        temp.append(result)
+        
+        grouped_transitions, grouped_transitions_copy = get_grouped_transaction(transitions)
+        
+        for key in grouped_transitions:
+            for transition in grouped_transitions[key]:
+                preC = transition['preCondition']
+                to = transition['to']
+                actionL = transition['actionLabel']
+                postC = transition['postCondition']
+                data_ = grouped_transitions.get(to, [])
+                otherPreC = [item['preCondition'] for item in data_]
+                inputs = [item['input'] for item in data_]
+                actions = [item['actionLabel'] for item in data_]
                 
-    execute_model_and_save(temp, f"{file_name}_indep_sat")
-    print("End----\n\n")
+                temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC, {
+                    "newParticipants": transition["newParticipants"],
+                    "existingParticipants": transition["existingParticipants"]
+                }, transition["caller"])
+                
+                if to not in grouped_transitions and to not in fsm['finalStates']:
+                    print(f"Warning: {to} is not a final state but has no trasitions from {to}")
+                    
+        execute_model_and_save(temp, f"{file_name}_indep_sat")
+        print("End----\n\n")
+    except Exception as e:  
+        print(f"Error : {e}")
 
 def check_path_sat(fsm, file_name = ""):
     print("Checking Path statisfiability of the model----\n\n")

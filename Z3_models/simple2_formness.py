@@ -4,19 +4,24 @@ sys.path.append('../')
 from Parser_PY.Z3.Extension import *
 
 rbv = Int('rbv')
-_c = Int('_c')
 
 
-role_O = Array('O',IntSort() , StringSort())
-Store(role_O, 0, String('o'))
-role_B = Array('B',IntSort() , StringSort())
-Store(role_B, 0, String('b'))
+O_role = []
+O_role.append('o')
+O_role.append('b')
+B_role = []
+B_role.append('b')
+B_role.append('o')
 
 
 
 def _start_0(infos = False):
     
     # Declare variable before   
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
     
     
     #building the solver for the predancontion
@@ -25,25 +30,25 @@ def _start_0(infos = False):
     #check if post condition implies any pre precondition
     solver__start_0.push()
     #solver__start_0.add(True)
-    solver__start_0.add(ForAll([rbv,_c], Implies(True, Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))
+    solver__start_0.add(And('O' in ['O'], ForAll([rbv,_c], Implies(And(True,True), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))
     post_result = solver__start_0.check() == z3.sat
-    #print((ForAll([rbv,_c], Implies(True, Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), post_result)
+    #print((And('O' in ['O'], ForAll([rbv,_c], Implies(And(True,True), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), post_result)
     
     solver__start_0.pop()
-    solver__start_0.add(True) 
+    solver__start_0.add(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))) 
     eps_result = solver__start_0.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _start_0: ", simplify(ForAll([rbv,_c], Implies(True, Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), " :: ", result)
+        print("--For _start_0: ", simplify(And('O' in ['O'], ForAll([rbv,_c], Implies(And(True,True), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(True))
+            print ("Non deterministic: ", simplify(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))))
             
         if not result: 
-            solver__start_02.add(Not(ForAll([rbv,_c], Implies(True, Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([rbv,_c], Implies(True, Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))), " :: ", solver__start_02.check() == z3.sat)
+            solver__start_02.add(Not(And('O' in ['O'], ForAll([rbv,_c], Implies(And(True,True), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And('O' in ['O'], ForAll([rbv,_c], Implies(And(True,True), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))), " :: ", solver__start_02.check() == z3.sat)
             
           
                    
@@ -57,6 +62,10 @@ def _start_0(infos = False):
 def _check_color_0(infos = False):
     global rbv 
     # Declare variable before   
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
     
     
     #building the solver for the predancontion
@@ -65,25 +74,25 @@ def _check_color_0(infos = False):
     #check if post condition implies any pre precondition
     solver__check_color_0.push()
     #solver__check_color_0.add(And(_c > 0, _c < 100))
-    solver__check_color_0.add(ForAll([rbv,_c], Implies(And(rbv == 1), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))
+    solver__check_color_0.add(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c > 0, _c < 100),And(rbv == 1)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))
     post_result = solver__check_color_0.check() == z3.sat
-    #print((ForAll([rbv,_c], Implies(And(rbv == 1), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), post_result)
+    #print((And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c > 0, _c < 100),And(rbv == 1)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), post_result)
     
     solver__check_color_0.pop()
-    solver__check_color_0.add(True) 
+    solver__check_color_0.add(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))) 
     eps_result = solver__check_color_0.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _check_color_0: ", simplify(ForAll([rbv,_c], Implies(And(rbv == 1), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), " :: ", result)
+        print("--For _check_color_0: ", simplify(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c > 0, _c < 100),And(rbv == 1)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(True))
+            print ("Non deterministic: ", simplify(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))))
             
         if not result: 
-            solver__check_color_02.add(Not(ForAll([rbv,_c], Implies(And(rbv == 1), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([rbv,_c], Implies(And(rbv == 1), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))), " :: ", solver__check_color_02.check() == z3.sat)
+            solver__check_color_02.add(Not(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c > 0, _c < 100),And(rbv == 1)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c > 0, _c < 100),And(rbv == 1)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))), " :: ", solver__check_color_02.check() == z3.sat)
             
           
                    
@@ -93,6 +102,10 @@ def _check_color_0(infos = False):
 def _check_color_1(infos = False):
     global rbv 
     # Declare variable before   
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
     
     
     #building the solver for the predancontion
@@ -101,25 +114,25 @@ def _check_color_1(infos = False):
     #check if post condition implies any pre precondition
     solver__check_color_1.push()
     #solver__check_color_1.add(And(_c >= 100, _c < 180))
-    solver__check_color_1.add(ForAll([rbv,_c], Implies(And(rbv == 2), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))
+    solver__check_color_1.add(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 100, _c < 180),And(rbv == 2)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))
     post_result = solver__check_color_1.check() == z3.sat
-    #print((ForAll([rbv,_c], Implies(And(rbv == 2), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), post_result)
+    #print((And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 100, _c < 180),And(rbv == 2)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), post_result)
     
     solver__check_color_1.pop()
-    solver__check_color_1.add(True) 
+    solver__check_color_1.add(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))) 
     eps_result = solver__check_color_1.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _check_color_1: ", simplify(ForAll([rbv,_c], Implies(And(rbv == 2), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), " :: ", result)
+        print("--For _check_color_1: ", simplify(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 100, _c < 180),And(rbv == 2)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(True))
+            print ("Non deterministic: ", simplify(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))))
             
         if not result: 
-            solver__check_color_12.add(Not(ForAll([rbv,_c], Implies(And(rbv == 2), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([rbv,_c], Implies(And(rbv == 2), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))), " :: ", solver__check_color_12.check() == z3.sat)
+            solver__check_color_12.add(Not(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 100, _c < 180),And(rbv == 2)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 100, _c < 180),And(rbv == 2)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))), " :: ", solver__check_color_12.check() == z3.sat)
             
           
                    
@@ -129,6 +142,10 @@ def _check_color_1(infos = False):
 def _check_color_2(infos = False):
     global rbv 
     # Declare variable before   
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
+    _c = Int('_c')
     
     
     #building the solver for the predancontion
@@ -137,25 +154,25 @@ def _check_color_2(infos = False):
     #check if post condition implies any pre precondition
     solver__check_color_2.push()
     #solver__check_color_2.add(And(_c >= 180, _c < 255))
-    solver__check_color_2.add(ForAll([rbv,_c], Implies(And(rbv == 3), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))
+    solver__check_color_2.add(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 180, _c < 255),And(rbv == 3)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))
     post_result = solver__check_color_2.check() == z3.sat
-    #print((ForAll([rbv,_c], Implies(And(rbv == 3), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), post_result)
+    #print((And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 180, _c < 255),And(rbv == 3)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), post_result)
     
     solver__check_color_2.pop()
-    solver__check_color_2.add(True) 
+    solver__check_color_2.add(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))) 
     eps_result = solver__check_color_2.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _check_color_2: ", simplify(ForAll([rbv,_c], Implies(And(rbv == 3), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))), " :: ", result)
+        print("--For _check_color_2: ", simplify(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 180, _c < 255),And(rbv == 3)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))), " :: ", result)
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify(True))
+            print ("Non deterministic: ", simplify(And(ForAll([_c], Implies(And(_c > 0, _c < 100), And(Not(And(_c >= 100, _c < 180)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 100, _c < 180), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 180, _c < 255))))),ForAll([_c], Implies(And(_c >= 180, _c < 255), And(Not(And(_c > 0, _c < 100)) , Not(And(_c >= 100, _c < 180))))))))
             
         if not result: 
-            solver__check_color_22.add(Not(ForAll([rbv,_c], Implies(And(rbv == 3), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([rbv,_c], Implies(And(rbv == 3), Or(And(_c > 0, _c < 100),And(_c >= 100, _c < 180),And(_c >= 180, _c < 255)))))), " :: ", solver__check_color_22.check() == z3.sat)
+            solver__check_color_22.add(Not(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 180, _c < 255),And(rbv == 3)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255))))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And('B' in ['B'], ForAll([rbv,_c], Implies(And(And(_c >= 180, _c < 255),And(rbv == 3)), Or(Exists([_c], And(_c > 0, _c < 100)),Exists([_c], And(_c >= 100, _c < 180)),Exists([_c], And(_c >= 180, _c < 255)))))))), " :: ", solver__check_color_22.check() == z3.sat)
             
           
                    

@@ -1,7 +1,7 @@
 {
   "id": "c",
   "initialState": "S0",
-  "statesDeclaration": "int rbv; int _c",
+  "statesDeclaration": "int rbv",
   "states": [
     "S0"
   ],
@@ -18,10 +18,11 @@
         "o" : "O"
       },
       "existingParticipants": {"o": "O"},
+      "caller" : {"b": "O"},
       "actionLabel": "start",
       "preCondition": "True",
       "postCondition": "",
-      "input": "",
+      "input": "int _c",
       "externalAction": false
     },
     {
@@ -30,11 +31,12 @@
       "initialStates": [],
       "finalStates": [],
       "newParticipants": {"b": "B"},
-      "existingParticipants": [],
+      "existingParticipants": {},
+      "caller" : {"o": "B"},
       "actionLabel": "check_color",
       "preCondition": "And(_c > 0, _c < 100)",
       "postCondition": "rbv := 1",
-      "input": "",
+      "input": "int _c",
       "externalAction": false
     },
     {
@@ -43,11 +45,12 @@
       "initialStates": [],
       "finalStates": [],
       "newParticipants": {"b": "B"},
-      "existingParticipants": [],
+      "existingParticipants": {},
+      "caller" : {"o": "B"},
       "actionLabel": "check_color",
       "preCondition": "And(_c >= 100, _c < 180)",
       "postCondition": "rbv := 2",
-      "input": "",
+      "input": "int _c",
       "externalAction": false
     },
     {
@@ -56,11 +59,12 @@
       "initialStates": [],
       "finalStates": [],
       "newParticipants": {"b": "B"},
-      "existingParticipants": [],
+      "existingParticipants": {},
+      "caller" : {"o": "B"},
       "actionLabel": "check_color",
       "preCondition": "And(_c >= 180, _c < 255)",
       "postCondition": "rbv := 3",
-      "input": "",
+      "input": "int _c",
       "externalAction": false
     }
   ],
