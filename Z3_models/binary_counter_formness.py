@@ -7,8 +7,8 @@ currentStage = Int('currentStage')
 currentNumber = Int('currentNumber')
 
 
-role_Counter = Array('Counter',IntSort() , StringSort())
-Store(role_Counter, 0, String('Counter'))
+Counter_role = []
+Counter_role.append('Counter')
 
 
 
@@ -19,7 +19,6 @@ Store(role_Counter, 0, String('Counter'))
 def _initializeCounter_0(infos = False):
     global currentNumber 
     # Declare variable before   
-    currentNumber_old = Int('currentNumber_old')
     
     
     #building the solver for the predancontion
@@ -27,24 +26,26 @@ def _initializeCounter_0(infos = False):
     solver__initializeCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__initializeCounter_0.push()
-    solver__initializeCounter_0.add(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))
+    #solver__initializeCounter_0.add(True)
+    solver__initializeCounter_0.add(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True)))))
     post_result = solver__initializeCounter_0.check() == z3.sat
+    #print((And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True))))), post_result)
     
     solver__initializeCounter_0.pop()
-    solver__initializeCounter_0.add(Or(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True)), ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True)))) 
+    solver__initializeCounter_0.add(True) 
     eps_result = solver__initializeCounter_0.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _initializeCounter_0: ", simplify(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))), " :: ", result)
-        
+        print("--For _initializeCounter_0: ", simplify(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True))))), " :: ", result)
+
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True)), ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True))))) 
+            print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__initializeCounter_02.add(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))), " :: ", solver__initializeCounter_02.check() == z3.sat)
+            solver__initializeCounter_02.add(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True)))))), " :: ", solver__initializeCounter_02.check() == z3.sat)
             
           
                    
@@ -56,7 +57,6 @@ def _initializeCounter_0(infos = False):
 def _resetCounter_0(infos = False):
     global currentNumber 
     # Declare variable before   
-    currentNumber_old = Int('currentNumber_old')
     
     
     #building the solver for the predancontion
@@ -64,24 +64,26 @@ def _resetCounter_0(infos = False):
     solver__resetCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__resetCounter_0.push()
-    solver__resetCounter_0.add(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))
+    #solver__resetCounter_0.add(True)
+    solver__resetCounter_0.add(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True)))))
     post_result = solver__resetCounter_0.check() == z3.sat
+    #print((And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True))))), post_result)
     
     solver__resetCounter_0.pop()
-    solver__resetCounter_0.add(Or(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True)), ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True)))) 
+    solver__resetCounter_0.add(True) 
     eps_result = solver__resetCounter_0.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _resetCounter_0: ", simplify(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))), " :: ", result)
-        
+        print("--For _resetCounter_0: ", simplify(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True))))), " :: ", result)
+
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True)), ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), True))))) 
+            print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__resetCounter_02.add(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber], Implies(And(currentNumber == 0), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))), " :: ", solver__resetCounter_02.check() == z3.sat)
+            solver__resetCounter_02.add(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber], Implies(And(True,And(currentNumber == 0)), Or(True)))))), " :: ", solver__resetCounter_02.check() == z3.sat)
             
           
                    
@@ -94,7 +96,6 @@ def _finalizeCounter_0(infos = False):
     global currentNumber 
     # Declare variable before   
     currentNumber_old = Int('currentNumber_old')
-    currentNumber_old = Int('currentNumber_old')
     
     
     #building the solver for the predancontion
@@ -102,24 +103,26 @@ def _finalizeCounter_0(infos = False):
     solver__finalizeCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__finalizeCounter_0.push()
-    solver__finalizeCounter_0.add(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))
+    #solver__finalizeCounter_0.add(True)
+    solver__finalizeCounter_0.add(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True)))))
     post_result = solver__finalizeCounter_0.check() == z3.sat
+    #print((And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True))))), post_result)
     
     solver__finalizeCounter_0.pop()
-    solver__finalizeCounter_0.add(Or(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True)), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True)))) 
+    solver__finalizeCounter_0.add(True) 
     eps_result = solver__finalizeCounter_0.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _finalizeCounter_0: ", simplify(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))), " :: ", result)
-        
+        print("--For _finalizeCounter_0: ", simplify(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True))))), " :: ", result)
+
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True)), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True))))) 
+            print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__finalizeCounter_02.add(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(Exists([currentNumber_old], currentNumber == currentNumber_old)))))), " :: ", solver__finalizeCounter_02.check() == z3.sat)
+            solver__finalizeCounter_02.add(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True)))))), " :: ", solver__finalizeCounter_02.check() == z3.sat)
             
           
                    
@@ -139,24 +142,26 @@ def _incrementCounter_0(infos = False):
     solver__incrementCounter_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__incrementCounter_0.push()
-    solver__incrementCounter_0.add(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True))))
+    #solver__incrementCounter_0.add(True)
+    solver__incrementCounter_0.add(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True)))))
     post_result = solver__incrementCounter_0.check() == z3.sat
+    #print((And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True))))), post_result)
     
     solver__incrementCounter_0.pop()
-    solver__incrementCounter_0.add(Or(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True)), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True)))) 
+    solver__incrementCounter_0.add(True) 
     eps_result = solver__incrementCounter_0.check() == z3.sat
     
     result = post_result and eps_result
     
     if infos :
-        print("--For _incrementCounter_0: ", simplify(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True)))), " :: ", result)
-        
+        print("--For _incrementCounter_0: ", simplify(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True))))), " :: ", result)
+
         if  not eps_result :
-            print ("Non deterministic: ", simplify(Or(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True)), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), True))))) 
+            print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__incrementCounter_02.add(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(currentNumber == currentNumber_old + 1), Or(True))))), " :: ", solver__incrementCounter_02.check() == z3.sat)
+            solver__incrementCounter_02.add(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And(Or('Counter' in Counter_role), ForAll([currentStage,currentNumber,currentNumber_old], Implies(And(True,And(currentNumber == currentNumber_old + 1)), Or(True)))))), " :: ", solver__incrementCounter_02.check() == z3.sat)
             
           
                    

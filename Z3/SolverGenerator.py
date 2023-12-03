@@ -67,7 +67,7 @@ class SolverGenerator:
         result = []
         
         try:
-            user, roleU = next(iter(caller.items())) 
+            user, roleU = next(iter(caller.items())) if len(caller) == 1 else ["", ""]
             for p, role in participants["existingParticipants"].items():
                 self.participants.add_participant(role, p)
                 roles_list.append(role)
@@ -81,11 +81,10 @@ class SolverGenerator:
                 self.participants.add_participant(roleU, user) 
             elif roleU.strip() == "":
                 result = [f"'{user}' in {role}_role" for role in roles_list]
-                return f"Or({','.join(result) if result else 'False'})"
+                return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else "True"
             
-            roles_list_str = "', '".join(roles_list)
-            formula1 = f"'{roleU}' in ['{roles_list_str}']" 
-            return f"{formula1}"
+            roles_list_str = "', '".join(roles_list) 
+            return f"'{roleU}' in ['{roles_list_str}']" if len(roles_list) > 0 else "True"
             
         except Exception as e:
             print(f"Participant Error: {e}")
