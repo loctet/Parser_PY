@@ -1,4 +1,5 @@
 import copy
+import pickle
 from PatternChecker import *
 from Extension import generateFuntionsFormulas, replace_assertion
 from SafeVariableAssignment import SafeVariableAssignment as SafeVars
@@ -6,6 +7,7 @@ from VariableDeclarationConverter import VariableDeclarationConverter as VarDefC
 from ParticipantManager import ParticipantManager
 from MessagesTemplates import MessagesTemplates
 from collections import defaultdict
+
 
 class SolverGenerator:
     def __init__(self):
@@ -15,7 +17,7 @@ class SolverGenerator:
         self.var_names = {}
         self.solvers['start'] = []
         self.solvers['starts'] = [] 
-        self.paticipants = ParticipantManager()
+        self.participants = ParticipantManager()
         
     #Append to the global Code Model
     def append(self, str):
@@ -60,6 +62,37 @@ class SolverGenerator:
 
         return f'And({",".join(result)})' if result else "True"
     
+    def get_formula_for_participant_check(self, participants, caller):
+        roles_list = []
+        result = []
+        
+        try:
+            user, roleU = next(iter(caller.items())) 
+            for p, role in participants["existingParticipants"].items():
+                self.participants.add_participant(role, p)
+                roles_list.append(role)
+                
+            for p, role in participants["newParticipants"].items():
+                self.participants.add_participant(role, p)
+                roles_list.append(role)
+            
+            roles_list = list(set(roles_list))
+            if roleU in roles_list:
+                self.participants.add_participant(roleU, user) 
+            elif roleU.strip() == "":
+                result = [f"'{user}' in {role}_role" for role in roles_list]
+                return f"Or({','.join(result) if result else 'False'})"
+            
+            roles_list_str = "', '".join(roles_list)
+            formula1 = f"'{roleU}' in ['{roles_list_str}']" 
+            return f"{formula1}"
+            
+        except Exception as e:
+            print(f"Participant Error: {e}")
+
+        return "True"
+
+    
     """
     Add an assertion to the solvers data structure based on provided conditions and inputs.
 
@@ -77,7 +110,8 @@ class SolverGenerator:
     The function processes the given conditions and inputs, replaces variables with "_old" versions, and generates Z3-compatible formulas for the assertion. It also handles the addition of the assertion to the solvers data structure.
 
     """
-    def add_assertion(self, pre, otherPrecs, inputs, actions, postC="", add=True):
+    def add_assertion(self, pre, otherPrecs, inputs, actions, postC = "", participants = [], caller = {}):
+        formula_for_participant_check = self.get_formula_for_participant_check(participants, caller)
         
         # Check and handle special cases in the pre and post conditions
         PatternChecker.pre_condition_not_having_old_vars(pre, postC)
@@ -121,7 +155,8 @@ class SolverGenerator:
 
         # Create a unique name for the function
         name_func = f'_{action}_{len(self.solvers[action])}'
-
+        
+        sformula = self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys()))
         # Prepare the result dictionary
         result = {
             'sname': f'solver_{action}',
@@ -129,14 +164,11 @@ class SolverGenerator:
             'sparams': "\n    ".join(sparams.split('\n')),
             'spre': pre,
             'sglobalVars': global_vars,
-            'sformula': self.quantifier_closure(f'Implies({hypothesis}, {thesis})', list(self.var_names.keys()) + list(self.get_vars_names_from_input(inputs[0]).keys())),
+            'sformula': f"And({formula_for_participant_check}, {sformula})",
             'epsformula': thesis_non_eps
         }
-
-        # Add the result to the solvers data if required
-        if add:
-            self.solvers[action].append(result)
-
+        self.solvers[action].append(result)
+        
         return result
 
 
@@ -145,9 +177,9 @@ class SolverGenerator:
         self.append(generateFuntionsFormulas())
         
         #Add roles to the model 
-        for role  in self.paticipants.roles:
-            self.append(self.paticipants.roles[role]["declaration"])
-            self.append("\n".join(self.paticipants.roles[role]["list"]))
+        for role  in self.participants.roles:
+            self.append(self.participants.roles[role]["declaration"])
+            self.append("\n".join(self.participants.roles[role]["list"]))
           
         checks = []
         for s in self.solvers:

@@ -60,7 +60,7 @@ def check_well_formness(fsm, file_name):
     declarations_str = fsm['statesDeclaration']
     print("Checking the well formness of the model----\n")
     temp = SolverGenerator()
-    temp.paticipants.add_participants(fsm['rPAssociation'])
+    temp.participants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names, True)
     
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
@@ -81,7 +81,10 @@ def check_well_formness(fsm, file_name):
             inputs = [item['input'] for item in data]
             actions = [item['actionLabel'] for item in data]
             
-            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC)
+            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC, {
+                "newParticipants": transition["newParticipants"],
+                "existingParticipants": transition["existingParticipants"]
+            }, transition["caller"])
             
             if to not in grouped_transitions and to not in fsm['finalStates']:
                 print(f"Warning: {to} is not a final state but has no trasitions from {to}")
@@ -99,7 +102,7 @@ def check_independant_sat(fsm, file_name):
     declarations_str = fsm['statesDeclaration']
     print("Checking independent statisfiability of the model----\n\n")
     temp = SolverGenerator()
-    temp.paticipants.add_participants(fsm['rPAssociation'])
+    temp.participants.add_participants(fsm['rPAssociation'])
     result, deploy_init_var_val, var_names = VariableDeclarationConverter.convert_to_z3_declarations(declarations_str, temp.deploy_init_var_val, temp.var_names)
 
     setattr(temp, 'deploy_init_var_val', deploy_init_var_val)
@@ -119,7 +122,10 @@ def check_independant_sat(fsm, file_name):
             inputs = [item['input'] for item in data_]
             actions = [item['actionLabel'] for item in data_]
             
-            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC)
+            temp.add_assertion(preC, otherPreC, (transition['input'],inputs), (actionL, actions), postC, {
+                "newParticipants": transition["newParticipants"],
+                "existingParticipants": transition["existingParticipants"]
+            }, transition["caller"])
             
             if to not in grouped_transitions and to not in fsm['finalStates']:
                 print(f"Warning: {to} is not a final state but has no trasitions from {to}")

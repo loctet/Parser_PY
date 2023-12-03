@@ -3,25 +3,27 @@ class ParticipantManager:
         self.roles = {}
     
     #add a participant
-    def add_participant(self, role, participant, index):
+    def add_participant(self, role, participant):
         if role not in self.roles:
             self.roles[role] = {
                 'name': role,
-                'declaration': f"role_{role} = Array('{role}',IntSort() , StringSort())",
-                'list': []
+                'declaration': f"{role}_role = []",
+                'list': [],
+                'participants': [],
             }
-        self.roles[role]['list'].append(f"Store(role_{role}, {index}, String('{participant}'))")
+        if participant not in self.roles[role]['participants']:
+            self.roles[role]['list'].append(f"{role}_role.append('{participant}')")
+            self.roles[role]['participants'].append(participant)
 
     def if_part_in_subset(self, participant, role):
+    
         if role not in self.roles:
             return False
-        return participant in self.roles[role]
+        return participant in self.roles[role]['participants']
     
     #Participants Adding list
     def add_participants(self, data):
-        for entry in data:
-            index = 0
-            for participant in entry["participants"]:
-                self.add_participant(entry["role"], participant, index)
-                index += 1
+        [self.add_participant(entry["role"], participant) for entry in data for participant in entry["participants"]]
+
+                
     
