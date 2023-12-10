@@ -25,7 +25,7 @@ def group_transactions(transitions):
     return transitions_by_to_state
 
 def execute_model_and_save(tempSolver, file_name):  
-    file_name = f".\Z3_models\{file_name}"              
+    file_name = f"./Z3_models/{file_name}"              
     str_code = tempSolver.generate_solver_code("check_resut")
 
     
@@ -34,7 +34,7 @@ def execute_model_and_save(tempSolver, file_name):
     save_infile(str_code, file_name)
     #exec
     try:
-        os.system(f'python {file_name}.py')
+        os.system(f'python3 {file_name}.py')
     except FileNotFoundError:
         print(f"Error: The file '{file_name}' does not exist.")
         
@@ -96,7 +96,7 @@ def check_well_formness(fsm, file_name):
         execute_model_and_save(temp, f"{file_name}_formness")
         print("End----\n\n")
     except Exception as e:  
-        print(f"Error : {e}")
+        print(f"Error 1 : {e}")
 
 def check_independant_sat(fsm, file_name):
     try:
@@ -136,7 +136,7 @@ def check_independant_sat(fsm, file_name):
         execute_model_and_save(temp, f"{file_name}_indep_sat")
         print("End----\n\n")
     except Exception as e:  
-        print(f"Error : {e}")
+        print(f"Error 2 : {e}")
 
 def check_path_sat(fsm, file_name = ""):
     print("Checking Path statisfiability of the model----\n\n")

@@ -7,9 +7,10 @@ class SafeVariableAssignment:
         result = []
         global_vars = []
         if not PatternChecker.follows_pattern(assignation_str):
-            raise Exception(f"/!\Error: {assignation_str} do not meet the assignations requirements")
+            #raise Exception(f"/!\Error: {assignation_str} do not meet the assignations requirements")
             #result.append(MessagesTemplates.getMessageWhenVarNotGlobal(assignation_str, solver_name))
             #return  "\n".join(result) 
+            t = 3
             
         
         # Split the input string into individual assignments

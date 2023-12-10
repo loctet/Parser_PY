@@ -44,13 +44,13 @@ class VariableDeclarationConverter:
                         if len(splited) == 3 :
                             z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
                         else: 
-                            z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+                            z3_var = f"{var_name} = []"
 
                     elif var_type == 'array':
                         if len(splited) == 3 :
                             z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
                         else:
-                            z3_var = f"{var_name} =  Array('{var_name}', IntSort(), IntSort())"
+                            z3_var = f"{var_name} =  []"
                             
                 else:
                     # Create Z3 variables without initial values
@@ -66,12 +66,12 @@ class VariableDeclarationConverter:
                         if len(splited) == 3 :
                             z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
                         else:
-                            z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+                            z3_var = f"{var_name} = []"
                     elif var_type == 'array':
                         if len(splited) == 3 :
                             z3_var = f"{splited[2]} = Array('{splited[2]}', IntSort(), {splited[1]}Sort())"
                         else:
-                            z3_var = f"{var_name} = Array('{var_name}', IntSort(), IntSort())"
+                            z3_var = f"{var_name} = []"
 
                 if z3_var is not None:
                     result += f"{z3_var}\n"

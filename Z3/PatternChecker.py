@@ -19,7 +19,7 @@ class PatternChecker:
     @staticmethod
     def z3_post_condition(postC, var_names):
         if  postC.strip() == "" :
-            return ("True", [])
+            return ["True", []]
         
         _list = postC.split("&")
         parts = []
@@ -51,7 +51,7 @@ class PatternChecker:
             return match.group(0) + "_old"
 
         z3_reserved_words = ['And', 'Or', 'Not', 'Implies', 'ForAll', 'Exists', 'Bool', 'Int', 'Real', 'eq']
-        reserved_words = z3_reserved_words + ['and', 'or', 'not', 'if', 'else', 'for', 'while', 'in', 'True', 'False', 'None', 'len']
+        reserved_words = z3_reserved_words + ['and', 'or', 'not', 'if', 'else', 'for', 'while', 'in', 'True', 'False', 'None', 'len', 'append']
         pattern = r'\b(?:[a-zA-Z_]\w*)\b'
         variable_names = re.findall(pattern, preC)
 
