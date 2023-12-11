@@ -33,9 +33,9 @@ def _initializeGame_0(infos = False):
     #check if post condition implies any pre precondition
     solver__initializeGame_0.push()
     #solver__initializeGame_0.add(True)
-    solver__initializeGame_0.add(And('Owner' in ['Guesser', 'Owner'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret))))))))
+    solver__initializeGame_0.add(And('Owner' in ['Owner', 'Guesser'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret))))))))
     post_result = solver__initializeGame_0.check() == z3.sat
-    #print((And('Owner' in ['Guesser', 'Owner'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret)))))))), post_result)
+    #print((And('Owner' in ['Owner', 'Guesser'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret)))))))), post_result)
     
     solver__initializeGame_0.pop()
     solver__initializeGame_0.add(And(ForAll([_guess], Implies(And(Not(gameWon), Not(_guess.eq(secret))), And(Not(And(Not(gameWon), _guess.eq(secret)))))),ForAll([_guess], Implies(And(Not(gameWon), _guess.eq(secret)), And(Not(And(Not(gameWon), Not(_guess.eq(secret))))))))) 
@@ -44,14 +44,14 @@ def _initializeGame_0(infos = False):
     result = post_result and eps_result
     
     if infos :
-        print("--For _initializeGame_0: ", simplify(And('Owner' in ['Guesser', 'Owner'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret)))))))), " :: ", result)
+        print("--For _initializeGame_0: ", simplify(And('Owner' in ['Owner', 'Guesser'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret)))))))), " :: ", result)
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(And(ForAll([_guess], Implies(And(Not(gameWon), Not(_guess.eq(secret))), And(Not(And(Not(gameWon), _guess.eq(secret)))))),ForAll([_guess], Implies(And(Not(gameWon), _guess.eq(secret)), And(Not(And(Not(gameWon), Not(_guess.eq(secret))))))))))
             
         if not result: 
-            solver__initializeGame_02.add(Not(And('Owner' in ['Guesser', 'Owner'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret)))))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(And('Owner' in ['Guesser', 'Owner'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret))))))))), " :: ", solver__initializeGame_02.check() == z3.sat)
+            solver__initializeGame_02.add(Not(And('Owner' in ['Owner', 'Guesser'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret)))))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(And('Owner' in ['Owner', 'Guesser'], ForAll([secret,gameWon,_secret], Implies(And(True,And(secret.eq(_secret), gameWon == False)), Or(Exists([_guess], And(Not(gameWon), Not(_guess.eq(secret)))),Exists([_guess], And(Not(gameWon), _guess.eq(secret))))))))), " :: ", solver__initializeGame_02.check() == z3.sat)
             
           
                    
