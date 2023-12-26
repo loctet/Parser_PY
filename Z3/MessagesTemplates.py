@@ -18,11 +18,13 @@ def {item['snameF']}(infos = False):
     solver_{item['snameF']}.add({item['sformula']})
     post_result = solver_{item['snameF']}.check() == z3.sat
     
+    #check determinism
     solver_{item['snameF']}.pop()
     solver_{item['snameF']}.push()
     solver_{item['snameF']}.add({item['epsformula']}) 
     eps_result = solver_{item['snameF']}.check() == z3.sat
 
+    #check participants
     solver_{item['snameF']}.pop()
     solver_{item['snameF']}.add({item['sparticipants']}) 
     part_result = solver_{item['snameF']}.check() == z3.sat

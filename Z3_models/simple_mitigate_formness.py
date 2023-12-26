@@ -26,11 +26,13 @@ def _start_0(infos = False):
     solver__start_0.add(Implies(And(True,True), Or(True,False)))
     post_result = solver__start_0.check() == z3.sat
     
+    #check determinism
     solver__start_0.pop()
     solver__start_0.push()
     solver__start_0.add(True) 
     eps_result = solver__start_0.check() == z3.sat
 
+    #check participants
     solver__start_0.pop()
     solver__start_0.add(Or('o' in O_role)) 
     part_result = solver__start_0.check() == z3.sat
@@ -74,11 +76,13 @@ def _action3_0(infos = False):
     solver__action3_0.add(Implies(And(True,True), True))
     post_result = solver__action3_0.check() == z3.sat
     
+    #check determinism
     solver__action3_0.pop()
     solver__action3_0.push()
     solver__action3_0.add(True) 
     eps_result = solver__action3_0.check() == z3.sat
 
+    #check participants
     solver__action3_0.pop()
     solver__action3_0.add(True) 
     part_result = solver__action3_0.check() == z3.sat
@@ -120,11 +124,13 @@ def _action1_0(infos = False):
     solver__action1_0.add(Implies(And(True,True), Or(True,False)))
     post_result = solver__action1_0.check() == z3.sat
     
+    #check determinism
     solver__action1_0.pop()
     solver__action1_0.push()
     solver__action1_0.add(True) 
     eps_result = solver__action1_0.check() == z3.sat
 
+    #check participants
     solver__action1_0.pop()
     solver__action1_0.add(True) 
     part_result = solver__action1_0.check() == z3.sat
@@ -166,11 +172,13 @@ def _action2_0(infos = False):
     solver__action2_0.add(Implies(And(False,True), Or(True)))
     post_result = solver__action2_0.check() == z3.sat
     
+    #check determinism
     solver__action2_0.pop()
     solver__action2_0.push()
     solver__action2_0.add(True) 
     eps_result = solver__action2_0.check() == z3.sat
 
+    #check participants
     solver__action2_0.pop()
     solver__action2_0.add(True) 
     part_result = solver__action2_0.check() == z3.sat
