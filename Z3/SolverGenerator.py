@@ -61,35 +61,6 @@ class SolverGenerator:
                 result.append(f"ForAll([{','.join(var_in)}], Implies({hypothesis}, {implication_part}))") if var_in else f"Implies({hypothesis}, {implication_part})"
 
         return f'And({",".join(result)})' if result else "True"
-    
-    def get_formula_for_participant_check(self, participants, caller):
-        roles_list = []
-        result = []
-        
-        try:
-            user, roleU = next(iter(caller.items())) if len(caller) == 1 else ["", ""]
-            for p, role in participants["existingParticipants"].items():
-                self.participants.add_participant(role, p)
-                roles_list.append(role)
-                
-            for p, role in participants["newParticipants"].items():
-                self.participants.add_participant(role, p)
-                roles_list.append(role)
-            
-            roles_list = list(set(roles_list))
-            if roleU in roles_list:
-                self.participants.add_participant(roleU, user) 
-            elif roleU.strip() == "":
-                result = [f"'{user}' in {role}_role" for role in roles_list]
-                return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else "True"
-            
-            roles_list_str = "', '".join(roles_list) 
-            return f"'{roleU}' in ['{roles_list_str}']" if len(roles_list) > 0 else "True"
-            
-        except Exception as e:
-            print(f"Participant Error: {e}")
-
-        return "True"
 
     
     """
@@ -110,7 +81,7 @@ class SolverGenerator:
 
     """
     def add_assertion(self, pre, otherPrecs, inputs, actions, postC = "", participants = [], caller = {}):
-        formula_for_participant_check = self.get_formula_for_participant_check(participants, caller)
+        formula_for_participant_check = self.participants.get_formula_for_participant_check(participants, caller)
         
         # Check and handle special cases in the pre and post conditions
         PatternChecker.pre_condition_not_having_old_vars(pre, postC)
@@ -163,7 +134,8 @@ class SolverGenerator:
             'sparams': "\n    ".join(sparams.split('\n')),
             'spre': pre,
             'sglobalVars': global_vars,
-            'sformula': f"And({formula_for_participant_check}, {sformula})",
+            'sformula': sformula,
+            'sparticipants': formula_for_participant_check,
             'epsformula': thesis_non_eps
         }
         self.solvers[action].append(result)
@@ -193,7 +165,7 @@ class SolverGenerator:
         return self.str_code
 
     def dump_models(self):
-        code = "print('\\nFuntions minimized formula and satisfiability result :')"
+        code = "print('\\nFunctions simplified formula and satisfiability results :')"
         for s in self.solvers:
            for item in self.solvers[s]:
                 code += f"\n\n{item['snameF']}(True)"

@@ -1,9 +1,10 @@
-from z3 import * 
-from Z3.Extension import *
+from z3 import *
+# setting path
+sys.path.append('../') 
+from Parser_PY.Z3.Extension import *
 
 state = Int('state')
 offer = Int('offer')
-B = Array('B', IntSort(), IntSort())
 
 solver = z3.Solver()
 check = True

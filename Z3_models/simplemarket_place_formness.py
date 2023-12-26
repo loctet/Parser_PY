@@ -5,7 +5,6 @@ from Parser_PY.Z3.Extension import *
 
 state = Int('state')
 offer = Int('offer')
-B = Array('B', IntSort(), IntSort())
 
 
 O_role = []
@@ -26,26 +25,34 @@ def _start_0(infos = False):
     solver__start_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__start_0.push()
-    #solver__start_0.add(True)
-    solver__start_0.add(And('O' in ['O'], ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))))
+    
+    solver__start_0.add(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))
     post_result = solver__start_0.check() == z3.sat
-    #print((And('O' in ['O'], ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))), post_result)
     
     solver__start_0.pop()
+    solver__start_0.push()
     solver__start_0.add(True) 
     eps_result = solver__start_0.check() == z3.sat
+
+    solver__start_0.pop()
+    solver__start_0.add( set(['O']).issubset(set(['O']))) 
+    part_result = solver__start_0.check() == z3.sat
     
-    result = post_result and eps_result
+    result = post_result and eps_result and part_result
     
     if infos :
-        print("--For _start_0: ", simplify(And('O' in ['O'], ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))), " :: ", result)
+        print()
+        print("--For _start_0: ", simplify(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))), " :: ", result)
+        print(f"--- Participants       : {part_result}")
+        print(f"--- Determinism        : {eps_result}")
+        print(f"--- Sat of o Prec-Conds: {post_result}")
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__start_02.add(Not(And('O' in ['O'], ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(And('O' in ['O'], ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))))), " :: ", solver__start_02.check() == z3.sat)
+            solver__start_02.add(Not(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))), " :: ", solver__start_02.check() == z3.sat)
             
           
                    
@@ -66,26 +73,34 @@ def _acceptOffer_0(infos = False):
     solver__acceptOffer_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__acceptOffer_0.push()
-    #solver__acceptOffer_0.add(True)
-    solver__acceptOffer_0.add(And(Or('b' in B_role), ForAll([state,offer,B], Implies(And(True,True), True))))
+    
+    solver__acceptOffer_0.add(ForAll([state,offer], Implies(And(True,True), True)))
     post_result = solver__acceptOffer_0.check() == z3.sat
-    #print((And(Or('b' in B_role), ForAll([state,offer,B], Implies(And(True,True), True)))), post_result)
     
     solver__acceptOffer_0.pop()
+    solver__acceptOffer_0.push()
     solver__acceptOffer_0.add(True) 
     eps_result = solver__acceptOffer_0.check() == z3.sat
+
+    solver__acceptOffer_0.pop()
+    solver__acceptOffer_0.add(Or('b' in B_role)) 
+    part_result = solver__acceptOffer_0.check() == z3.sat
     
-    result = post_result and eps_result
+    result = post_result and eps_result and part_result
     
     if infos :
-        print("--For _acceptOffer_0: ", simplify(And(Or('b' in B_role), ForAll([state,offer,B], Implies(And(True,True), True)))), " :: ", result)
+        print()
+        print("--For _acceptOffer_0: ", simplify(ForAll([state,offer], Implies(And(True,True), True))), " :: ", result)
+        print(f"--- Participants       : {part_result}")
+        print(f"--- Determinism        : {eps_result}")
+        print(f"--- Sat of o Prec-Conds: {post_result}")
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__acceptOffer_02.add(Not(And(Or('b' in B_role), ForAll([state,offer,B], Implies(And(True,True), True)))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(And(Or('b' in B_role), ForAll([state,offer,B], Implies(And(True,True), True))))), " :: ", solver__acceptOffer_02.check() == z3.sat)
+            solver__acceptOffer_02.add(Not(ForAll([state,offer], Implies(And(True,True), True))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer], Implies(And(True,True), True)))), " :: ", solver__acceptOffer_02.check() == z3.sat)
             
           
                    
@@ -105,26 +120,34 @@ def _rejectOffer_0(infos = False):
     solver__rejectOffer_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__rejectOffer_0.push()
-    #solver__rejectOffer_0.add(True)
-    solver__rejectOffer_0.add(And(Or('o' in O_role), ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))))
+    
+    solver__rejectOffer_0.add(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))
     post_result = solver__rejectOffer_0.check() == z3.sat
-    #print((And(Or('o' in O_role), ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))), post_result)
     
     solver__rejectOffer_0.pop()
+    solver__rejectOffer_0.push()
     solver__rejectOffer_0.add(True) 
     eps_result = solver__rejectOffer_0.check() == z3.sat
+
+    solver__rejectOffer_0.pop()
+    solver__rejectOffer_0.add(Or('o' in O_role)) 
+    part_result = solver__rejectOffer_0.check() == z3.sat
     
-    result = post_result and eps_result
+    result = post_result and eps_result and part_result
     
     if infos :
-        print("--For _rejectOffer_0: ", simplify(And(Or('o' in O_role), ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))), " :: ", result)
+        print()
+        print("--For _rejectOffer_0: ", simplify(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))), " :: ", result)
+        print(f"--- Participants       : {part_result}")
+        print(f"--- Determinism        : {eps_result}")
+        print(f"--- Sat of o Prec-Conds: {post_result}")
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__rejectOffer_02.add(Not(And(Or('o' in O_role), ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(And(Or('o' in O_role), ForAll([state,offer,B], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))))), " :: ", solver__rejectOffer_02.check() == z3.sat)
+            solver__rejectOffer_02.add(Not(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))), " :: ", solver__rejectOffer_02.check() == z3.sat)
             
           
                    
@@ -144,26 +167,34 @@ def _makeOffer_0(infos = False):
     solver__makeOffer_02 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver__makeOffer_0.push()
-    #solver__makeOffer_0.add(_offer  > 0)
-    solver__makeOffer_0.add(And(Or('b' in B_role), ForAll([state,offer,B,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True)))))
+    
+    solver__makeOffer_0.add(ForAll([state,offer,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True))))
     post_result = solver__makeOffer_0.check() == z3.sat
-    #print((And(Or('b' in B_role), ForAll([state,offer,B,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True))))), post_result)
     
     solver__makeOffer_0.pop()
+    solver__makeOffer_0.push()
     solver__makeOffer_0.add(True) 
     eps_result = solver__makeOffer_0.check() == z3.sat
+
+    solver__makeOffer_0.pop()
+    solver__makeOffer_0.add(Or('b' in B_role)) 
+    part_result = solver__makeOffer_0.check() == z3.sat
     
-    result = post_result and eps_result
+    result = post_result and eps_result and part_result
     
     if infos :
-        print("--For _makeOffer_0: ", simplify(And(Or('b' in B_role), ForAll([state,offer,B,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True))))), " :: ", result)
+        print()
+        print("--For _makeOffer_0: ", simplify(ForAll([state,offer,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True)))), " :: ", result)
+        print(f"--- Participants       : {part_result}")
+        print(f"--- Determinism        : {eps_result}")
+        print(f"--- Sat of o Prec-Conds: {post_result}")
 
         if  not eps_result :
             print ("Non deterministic: ", simplify(True))
             
         if not result: 
-            solver__makeOffer_02.add(Not(And(Or('b' in B_role), ForAll([state,offer,B,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True))))))
-            print("\nSimplify of the Not Formula: ", simplify(Not(And(Or('b' in B_role), ForAll([state,offer,B,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True)))))), " :: ", solver__makeOffer_02.check() == z3.sat)
+            solver__makeOffer_02.add(Not(ForAll([state,offer,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True)))))
+            print("\nSimplify of the Not Formula: ", simplify(Not(ForAll([state,offer,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True))))), " :: ", solver__makeOffer_02.check() == z3.sat)
             
           
                    
@@ -176,7 +207,7 @@ if  check_resut == True:
 else:
     print("unSatisfy")
         
-print('\nFuntions minimized formula and satisfiability result :')
+print('\nFunctions simplified formula and satisfiability results :')
 
 _start_0(True)
 

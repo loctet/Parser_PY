@@ -14,19 +14,27 @@ def {item['snameF']}(infos = False):
     solver_{item['snameF']}2 = z3.Solver() 
     #check if post condition implies any pre precondition
     solver_{item['snameF']}.push()
-    #solver_{item['snameF']}.add({item['spre']})
+    
     solver_{item['snameF']}.add({item['sformula']})
     post_result = solver_{item['snameF']}.check() == z3.sat
-    #print(({item['sformula']}), post_result)
     
     solver_{item['snameF']}.pop()
+    solver_{item['snameF']}.push()
     solver_{item['snameF']}.add({item['epsformula']}) 
     eps_result = solver_{item['snameF']}.check() == z3.sat
+
+    solver_{item['snameF']}.pop()
+    solver_{item['snameF']}.add({item['sparticipants']}) 
+    part_result = solver_{item['snameF']}.check() == z3.sat
     
-    result = post_result and eps_result
+    result = post_result and eps_result and part_result
     
     if infos :
+        print()
         print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
+        print(f"--- Participants       : {{part_result}}")
+        print(f"--- Determinism        : {{eps_result}}")
+        print(f"--- Sat of o Prec-Conds: {{post_result}}")
 
         if  not eps_result :
             print ("Non deterministic: ", simplify({item['epsformula']}))

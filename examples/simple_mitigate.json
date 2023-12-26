@@ -20,7 +20,7 @@
         "o" : "O"
       },
       "existingParticipants": {"o": "O"},
-      "caller" : {"o": ""},
+      "caller" : {"o": []},
       "actionLabel": "start",
       "preCondition": "True",
       "postCondition": "",
