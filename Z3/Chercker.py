@@ -29,7 +29,7 @@ def execute_model_and_save(tempSolver, file_name):
     str_code = tempSolver.generate_solver_code("check_resut")
 
     
-    str_code += tempSolver.dump_models()
+    str_code += tempSolver.dump_models("check_resut")
     #save with models in file_name
     save_infile(str_code, file_name)
     #exec

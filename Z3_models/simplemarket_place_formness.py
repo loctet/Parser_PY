@@ -29,11 +29,13 @@ def _start_0(infos = False):
     solver__start_0.add(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))
     post_result = solver__start_0.check() == z3.sat
     
+    #check determinism
     solver__start_0.pop()
     solver__start_0.push()
     solver__start_0.add(True) 
     eps_result = solver__start_0.check() == z3.sat
 
+    #check participants
     solver__start_0.pop()
     solver__start_0.add( set(['O']).issubset(set(['O']))) 
     part_result = solver__start_0.check() == z3.sat
@@ -77,11 +79,13 @@ def _acceptOffer_0(infos = False):
     solver__acceptOffer_0.add(ForAll([state,offer], Implies(And(True,True), True)))
     post_result = solver__acceptOffer_0.check() == z3.sat
     
+    #check determinism
     solver__acceptOffer_0.pop()
     solver__acceptOffer_0.push()
     solver__acceptOffer_0.add(True) 
     eps_result = solver__acceptOffer_0.check() == z3.sat
 
+    #check participants
     solver__acceptOffer_0.pop()
     solver__acceptOffer_0.add(Or('b' in B_role)) 
     part_result = solver__acceptOffer_0.check() == z3.sat
@@ -124,11 +128,13 @@ def _rejectOffer_0(infos = False):
     solver__rejectOffer_0.add(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0)))))
     post_result = solver__rejectOffer_0.check() == z3.sat
     
+    #check determinism
     solver__rejectOffer_0.pop()
     solver__rejectOffer_0.push()
     solver__rejectOffer_0.add(True) 
     eps_result = solver__rejectOffer_0.check() == z3.sat
 
+    #check participants
     solver__rejectOffer_0.pop()
     solver__rejectOffer_0.add(Or('o' in O_role)) 
     part_result = solver__rejectOffer_0.check() == z3.sat
@@ -171,11 +177,13 @@ def _makeOffer_0(infos = False):
     solver__makeOffer_0.add(ForAll([state,offer,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True))))
     post_result = solver__makeOffer_0.check() == z3.sat
     
+    #check determinism
     solver__makeOffer_0.pop()
     solver__makeOffer_0.push()
     solver__makeOffer_0.add(True) 
     eps_result = solver__makeOffer_0.check() == z3.sat
 
+    #check participants
     solver__makeOffer_0.pop()
     solver__makeOffer_0.add(Or('b' in B_role)) 
     part_result = solver__makeOffer_0.check() == z3.sat

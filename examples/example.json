@@ -1,0 +1,28 @@
+{
+  "id": "c",
+  "initialState": "S0",
+  "statesDeclaration": "",
+  "states": [
+    "S0"
+  ],
+  "finalStates": [
+    "S0"
+  ],
+  "transitions": [
+    {
+      "from": "_",
+      "to": "S0",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {},
+      "existingParticipants": {},
+      "caller" : {"o": []},
+      "actionLabel": "start",
+      "preCondition": "True",
+      "postCondition": "",
+      "input": "",
+      "externalAction": false
+    }
+  ],
+  "rPAssociation": []
+}

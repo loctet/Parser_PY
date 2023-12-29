@@ -164,9 +164,9 @@ class SolverGenerator:
         self.append(MessagesTemplates.getResultCheckPart())
         return self.str_code
 
-    def dump_models(self):
-        code = "print('\\nFunctions simplified formula and satisfiability results :')"
+    def dump_models(self, result_var):
+        code = f"if not {result_var}: \n    print('\\nFunctions simplified formula and satisfiability results :')"
         for s in self.solvers:
            for item in self.solvers[s]:
-                code += f"\n\n{item['snameF']}(True)"
+                code += f"\n    {item['snameF']}(True)"
         return code 

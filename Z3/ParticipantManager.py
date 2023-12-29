@@ -21,6 +21,16 @@ class ParticipantManager:
             return False
         return participant in self.roles[role]['participants']
     
+    def get_formula_check_part_existance(self, participant):
+        if (len(self.roles) == 0) :
+            return "False"
+        
+        str = []
+        for role in self.roles:
+            str.append(f"{participant} in {self.roles[role]['name']}_role")
+
+        return " or ".join(str)
+
     #Participants Adding list
     def add_participants(self, data):
         [self.add_participant(entry["role"], participant) for entry in data for participant in entry["participants"]]
@@ -46,14 +56,14 @@ class ParticipantManager:
                         self.add_participant(roleU, user) 
                     elif roleU.strip() == "":
                         result = [f"'{user}' in {role}_role" for role in roles_list]
-                        return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else "True"
+                        return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
                 
                 roles_list_str = "', '".join(roles_list) 
                 rolesU_list_str = "', '".join(rolesU) 
-                return f" set(['{rolesU_list_str}']).issubset(set(['{roles_list_str}']))" if len(roles_list) > 0 else "True"
+                return f" set(['{rolesU_list_str}']).issubset(set(['{roles_list_str}']))" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
             else:
                 result = [f"'{user}' in {role}_role" for role in roles_list]
-                return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else "True" 
+                return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
             
         except Exception as e:
             print(f"Participant Error: {e}")

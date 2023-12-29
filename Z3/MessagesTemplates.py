@@ -33,15 +33,17 @@ def {item['snameF']}(infos = False):
     
     if infos :
         print()
-        print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
-        print(f"--- Participants       : {{part_result}}")
-        print(f"--- Determinism        : {{eps_result}}")
-        print(f"--- Sat of o Prec-Conds: {{post_result}}")
+        if not result:
+            print("--For {item['snameF']}: ", simplify({item['sformula']}), " :: ", result)
+
+        if not part_result :
+            print(f"--- Participants       : {{part_result}}", "({item['sparticipants']})")
 
         if  not eps_result :
-            print ("Non deterministic: ", simplify({item['epsformula']}))
+            print ("--- Non Determinism  : ", simplify({item['epsformula']}))
             
-        if not result: 
+        if not post_result: 
+            print(f"--- Sat of o Prec-Conds: {{post_result}}")
             solver_{item['snameF']}2.add(Not({item['sformula']}))
             print("\\nSimplify of the Not Formula: ", simplify(Not({item['sformula']})), " :: ", solver_{item['snameF']}2.check() == z3.sat)
             
