@@ -1,0 +1,42 @@
+{
+  "id": "c",
+  "initialState": "S0",
+  "statesDeclaration": "",
+  "states": [
+    "S0,S1"
+  ],
+  "finalStates": [
+    "S1"
+  ],
+  "transitions": [
+    {
+      "from": "_",
+      "to": "S0",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {"o" : "O"},
+      "existingParticipants": {},
+      "caller" : {"o": []},
+      "actionLabel": "start",
+      "preCondition": "True",
+      "postCondition": "",
+      "input": "",
+      "externalAction": false
+    },
+    {
+      "from": "S0",
+      "to": "S1",
+      "initialStates": [],
+      "finalStates": [],
+      "newParticipants": {},
+      "existingParticipants": {},
+      "caller" : {"o": []},
+      "actionLabel": "start",
+      "preCondition": "True",
+      "postCondition": "",
+      "input": "",
+      "externalAction": false
+    }
+  ],
+  "rPAssociation": []
+}

@@ -27,7 +27,7 @@ class ParticipantManager:
         
         str = []
         for role in self.roles:
-            str.append(f"{participant} in {self.roles[role]['name']}_role")
+            str.append(f"'{participant}' in {self.roles[role]['name']}_role")
 
         return " or ".join(str)
 
