@@ -32,7 +32,7 @@ def _start_0(infos = False):
 
     #check participants
     solver__start_0.pop()
-    solver__start_0.add(Or('o' in O_role)) 
+    solver__start_0.add('o' in O_role) 
     part_result = solver__start_0.check() == z3.sat
     
     result = post_result and eps_result and part_result
@@ -43,7 +43,7 @@ def _start_0(infos = False):
             print("--For _start_0: ", simplify(Implies(And(True,True), Or(True))), " :: ", result)
 
         if not part_result :
-            print(f"--- Participants       : {part_result}", "(Or('o' in O_role))")
+            print(f"--- Participants       : {part_result}", "('o' in O_role)")
 
         if  not eps_result :
             print ("--- Non Determinism  : ", simplify(True))
@@ -80,7 +80,7 @@ def _start_1(infos = False):
 
     #check participants
     solver__start_1.pop()
-    solver__start_1.add('o' in O_role) 
+    solver__start_1.add(Or('o' in O_role)) 
     part_result = solver__start_1.check() == z3.sat
     
     result = post_result and eps_result and part_result
@@ -91,7 +91,7 @@ def _start_1(infos = False):
             print("--For _start_1: ", simplify(Implies(And(True,True), True)), " :: ", result)
 
         if not part_result :
-            print(f"--- Participants       : {part_result}", "('o' in O_role)")
+            print(f"--- Participants       : {part_result}", "(Or('o' in O_role))")
 
         if  not eps_result :
             print ("--- Non Determinism  : ", simplify(True))

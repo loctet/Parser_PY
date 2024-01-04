@@ -36,31 +36,37 @@ class ParticipantManager:
         [self.add_participant(entry["role"], participant) for entry in data for participant in entry["participants"]]
 
     def get_formula_for_participant_check(self, participants, caller):
-        roles_list = []
+        roles_list = list(self.roles.keys())
         result = []
 
         try:
             user, rolesU = next(iter(caller.items())) if len(caller) == 1 else ["", ""]
-            for p, role in participants["existingParticipants"].items():
+            """for p, role in participants["existingParticipants"].items():
                 self.add_participant(role, p)
-                roles_list.append(role)
+                roles_list.append(role)"""
                 
             for p, role in participants["newParticipants"].items():
                 self.add_participant(role, p)
-                roles_list.append(role)
             
             roles_list = list(set(roles_list))
+            setList = []
             if len(rolesU) > 0:
                 for roleU in rolesU:
-                    if roleU in roles_list:
-                        self.add_participant(roleU, user) 
-                    elif roleU.strip() == "":
+                    if roleU.strip() == "":
                         result = [f"'{user}' in {role}_role" for role in roles_list]
                         return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
+                    else:
+                        if roleU not in roles_list:
+                            return "False" 
+                        setList.append(f"set({roleU}_role)")
                 
-                roles_list_str = "', '".join(roles_list) 
-                rolesU_list_str = "', '".join(rolesU) 
-                return f" set(['{rolesU_list_str}']).issubset(set(['{roles_list_str}']))" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
+                strJ = ""
+                if len(rolesU) == 1:
+                    strJ = f"len({rolesU[0]}_role) > 0"
+                else: 
+                    strJ = f"len(list({' & '.join(setList)})) > 0"
+                    
+                return f" {strJ}" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
             else:
                 result = [f"'{user}' in {role}_role" for role in roles_list]
                 return f"Or({','.join(result) if result else 'False'})" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
@@ -71,3 +77,4 @@ class ParticipantManager:
         return "True"
                 
     
+ 

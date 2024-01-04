@@ -37,7 +37,7 @@ def _start_0(infos = False):
 
     #check participants
     solver__start_0.pop()
-    solver__start_0.add( set(['O']).issubset(set(['O']))) 
+    solver__start_0.add( len(O_role) > 0) 
     part_result = solver__start_0.check() == z3.sat
     
     result = post_result and eps_result and part_result
@@ -48,7 +48,7 @@ def _start_0(infos = False):
             print("--For _start_0: ", simplify(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))), " :: ", result)
 
         if not part_result :
-            print(f"--- Participants       : {part_result}", "( set(['O']).issubset(set(['O'])))")
+            print(f"--- Participants       : {part_result}", "( len(O_role) > 0)")
 
         if  not eps_result :
             print ("--- Non Determinism  : ", simplify(True))
@@ -89,7 +89,7 @@ def _acceptOffer_0(infos = False):
 
     #check participants
     solver__acceptOffer_0.pop()
-    solver__acceptOffer_0.add(Or('b' in B_role)) 
+    solver__acceptOffer_0.add(Or('b' in O_role,'b' in B_role)) 
     part_result = solver__acceptOffer_0.check() == z3.sat
     
     result = post_result and eps_result and part_result
@@ -100,7 +100,7 @@ def _acceptOffer_0(infos = False):
             print("--For _acceptOffer_0: ", simplify(ForAll([state,offer], Implies(And(True,True), True))), " :: ", result)
 
         if not part_result :
-            print(f"--- Participants       : {part_result}", "(Or('b' in B_role))")
+            print(f"--- Participants       : {part_result}", "(Or('b' in O_role,'b' in B_role))")
 
         if  not eps_result :
             print ("--- Non Determinism  : ", simplify(True))
@@ -140,7 +140,7 @@ def _rejectOffer_0(infos = False):
 
     #check participants
     solver__rejectOffer_0.pop()
-    solver__rejectOffer_0.add(Or('o' in O_role)) 
+    solver__rejectOffer_0.add(Or('o' in O_role,'o' in B_role)) 
     part_result = solver__rejectOffer_0.check() == z3.sat
     
     result = post_result and eps_result and part_result
@@ -151,7 +151,7 @@ def _rejectOffer_0(infos = False):
             print("--For _rejectOffer_0: ", simplify(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))), " :: ", result)
 
         if not part_result :
-            print(f"--- Participants       : {part_result}", "(Or('o' in O_role))")
+            print(f"--- Participants       : {part_result}", "(Or('o' in O_role,'o' in B_role))")
 
         if  not eps_result :
             print ("--- Non Determinism  : ", simplify(True))
@@ -191,7 +191,7 @@ def _makeOffer_0(infos = False):
 
     #check participants
     solver__makeOffer_0.pop()
-    solver__makeOffer_0.add(Or('b' in B_role)) 
+    solver__makeOffer_0.add(Or('b' in O_role,'b' in B_role)) 
     part_result = solver__makeOffer_0.check() == z3.sat
     
     result = post_result and eps_result and part_result
@@ -202,7 +202,7 @@ def _makeOffer_0(infos = False):
             print("--For _makeOffer_0: ", simplify(ForAll([state,offer,_offer], Implies(And(_offer  > 0,And(offer == _offer)), Or(True,True)))), " :: ", result)
 
         if not part_result :
-            print(f"--- Participants       : {part_result}", "(Or('b' in B_role))")
+            print(f"--- Participants       : {part_result}", "(Or('b' in O_role,'b' in B_role))")
 
         if  not eps_result :
             print ("--- Non Determinism  : ", simplify(True))

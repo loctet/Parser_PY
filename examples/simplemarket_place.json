@@ -47,7 +47,7 @@
       "initialStates": [],
       "finalStates": ["S2"],
       "newParticipants": {},
-      "existingParticipants": {"b": "B"},
+      "existingParticipants": {},
       "caller" : {"b": []},
       "actionLabel": "acceptOffer",
       "preCondition": "True",
