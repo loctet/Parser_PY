@@ -62,9 +62,9 @@ class ParticipantManager:
                 
                 strJ = ""
                 if len(rolesU) == 1:
-                    strJ = f"len({rolesU[0]}_role) > 0"
+                    strJ = f"len({rolesU[0]}_role) > 0 and '{user}' in {rolesU[0]}_role"
                 else: 
-                    strJ = f"len(list({' & '.join(setList)})) > 0"
+                    strJ = f"len(list({' & '.join(setList)})) > 0 and  '{user}' in list({' & '.join(setList)})"
                     
                 return f" {strJ}" if len(roles_list) > 0 else self.get_formula_check_part_existance(user)
             else:

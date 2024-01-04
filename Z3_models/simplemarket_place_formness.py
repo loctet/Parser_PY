@@ -37,7 +37,7 @@ def _start_0(infos = False):
 
     #check participants
     solver__start_0.pop()
-    solver__start_0.add( len(O_role) > 0) 
+    solver__start_0.add( len(O_role) > 0 and 'o' in O_role) 
     part_result = solver__start_0.check() == z3.sat
     
     result = post_result and eps_result and part_result
@@ -48,7 +48,7 @@ def _start_0(infos = False):
             print("--For _start_0: ", simplify(ForAll([state,offer], Implies(And(True,True), Or(Exists([_offer], _offer  > 0))))), " :: ", result)
 
         if not part_result :
-            print(f"--- Participants       : {part_result}", "( len(O_role) > 0)")
+            print(f"--- Participants       : {part_result}", "( len(O_role) > 0 and 'o' in O_role)")
 
         if  not eps_result :
             print ("--- Non Determinism  : ", simplify(True))
